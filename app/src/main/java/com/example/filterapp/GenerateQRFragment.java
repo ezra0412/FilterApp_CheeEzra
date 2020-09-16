@@ -1,6 +1,7 @@
 package com.example.filterapp;
 
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,6 +62,40 @@ public class GenerateQRFragment extends Fragment {
         commission = mCommission.getText().toString().trim();
         price = mCommission.getText().toString().trim();
         note = mCommission.getText().toString().trim();
+
+        if (invoiceNum.isEmpty()) {
+            mInvoiceNum.setError("Invoice number cannot be empty");
+            mInvoiceNum.requestFocus();
+        }
+
+        if (mobile.isEmpty()) {
+            mMobile.setError("Mobile cannot be empty");
+            mMobile.requestFocus();
+        }
+
+        if (Patterns.PHONE.matcher(mobile).matches()) {
+            mMobile.setError("Invalid mobile format");
+            mMobile.requestFocus();
+        }
+
+        if (fModel.isEmpty()) {
+            mFModel.setError("Filter model cannot be empty");
+            mFModel.requestFocus();
+        }
+
+        if (commission.isEmpty()) {
+            mCommission.setError("Commission cannot be empty");
+            mCommission.requestFocus();
+        }
+
+        if (price.isEmpty()) {
+            mPrice.setError("Price cannot be empty");
+            mPrice.requestFocus();
+        }
+
+        if (note.isEmpty()) {
+            note = "No note provided";
+        }
 
     }
 }

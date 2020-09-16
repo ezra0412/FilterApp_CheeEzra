@@ -1,6 +1,9 @@
 package com.example.filterapp;
 
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -12,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     TabLayout tabLayout;
     TabItem generateQR, scanQR;
     ViewPager viewPager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,4 +49,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 }
