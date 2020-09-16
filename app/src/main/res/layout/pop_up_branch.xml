@@ -19,19 +19,17 @@
 
             <TextView
                 android:id="@+id/tv_title_branchPU"
-                style="@style/lable"
+                style="@style/pop_up_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="42dp"
-                android:layout_marginEnd="42dp"
+                android:layout_marginTop="16dp"
                 android:text="Please select your branch"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/bt_a_branchPU"
+                app:layout_constraintStart_toStartOf="@+id/bt_a_branchPU"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.089999974" />
+                app:layout_constraintVertical_bias="0.0" />
 
             <Button
                 android:id="@+id/bt_a_branchPU"
@@ -41,22 +39,24 @@
                 android:layout_marginTop="16dp"
                 android:text="A"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/tv_title_branchPU"
-                app:layout_constraintStart_toStartOf="@+id/tv_title_branchPU"
+                app:layout_constraintEnd_toEndOf="@+id/bt_b_branchPU"
+                app:layout_constraintStart_toStartOf="@+id/bt_b_branchPU"
                 app:layout_constraintTop_toBottomOf="@+id/tv_title_branchPU"
                 app:layout_constraintVertical_bias="0.0" />
 
             <Button
                 android:id="@+id/bt_c_branchPU"
                 style="@style/button_long"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="24dp"
                 android:text="C"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/bt_b_branchPU"
-                app:layout_constraintStart_toStartOf="@+id/bt_b_branchPU"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/bt_b_branchPU" />
 
             <Button
@@ -67,9 +67,9 @@
                 android:layout_marginTop="16dp"
                 android:text="B"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/bt_a_branchPU"
+                app:layout_constraintEnd_toEndOf="@+id/bt_c_branchPU"
                 app:layout_constraintHorizontal_bias="0.494"
-                app:layout_constraintStart_toStartOf="@+id/bt_a_branchPU"
+                app:layout_constraintStart_toStartOf="@+id/bt_c_branchPU"
                 app:layout_constraintTop_toBottomOf="@+id/bt_a_branchPU"
                 app:layout_constraintVertical_bias="0.0" />
 
@@ -77,13 +77,10 @@
                 android:id="@+id/img_close_branchPU"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.157"
-                app:layout_constraintStart_toEndOf="@+id/tv_title_branchPU"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.050000012"
                 app:srcCompat="@drawable/x_symbol" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -60,5 +60,13 @@
 
     </style>
 
+    <style name="pop_up_title" parent="lable">
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:fontFamily">@font/archivo_narrow</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 
 </resources>

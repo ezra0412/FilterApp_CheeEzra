@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/popUpBackground"
+        app:cardCornerRadius="20dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/bt_mt_sa_popUpM"
+                style="@style/button_long"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="24dp"
+                android:text="MT-SA"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <Button
+                android:id="@+id/bt_mt_s_popUpM"
+                style="@style/button_long"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="MT-S"
+                app:layout_constraintBottom_toTopOf="@+id/bt_mt_sa_popUpM"
+                app:layout_constraintEnd_toEndOf="@+id/bt_mt_sa_popUpM"
+                app:layout_constraintStart_toStartOf="@+id/bt_mt_sa_popUpM"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <Button
+                android:id="@+id/bt_mt_h_popUpM"
+                style="@style/button_long"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="MT-H"
+                app:layout_constraintBottom_toTopOf="@+id/bt_mt_s_popUpM"
+                app:layout_constraintEnd_toEndOf="@+id/bt_mtsa_popUpM"
+                app:layout_constraintStart_toStartOf="@+id/bt_mt_sa_popUpM"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <Button
+                android:id="@+id/bt_mt_ca_popUpM"
+                style="@style/button_long"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="MT-CA"
+                app:layout_constraintBottom_toTopOf="@+id/bt_mt_h_popUpM"
+                app:layout_constraintEnd_toEndOf="@+id/bt_mt_sa_popUpM"
+                app:layout_constraintStart_toStartOf="@+id/bt_mt_sa_popUpM"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <Button
+                android:id="@+id/bt_mt_c_popUpM"
+                style="@style/button_long"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="MT-C"
+                app:layout_constraintBottom_toTopOf="@+id/bt_mt_ca_popUpM"
+                app:layout_constraintEnd_toEndOf="@+id/bt_mt_sa_popUpM"
+                app:layout_constraintStart_toStartOf="@+id/bt_mt_sa_popUpM"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <Button
+                android:id="@+id/bt_mc_a_popUpM"
+                style="@style/button_long"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="MC-A"
+                app:layout_constraintBottom_toTopOf="@+id/bt_mt_c_popUpM"
+                app:layout_constraintEnd_toEndOf="@+id/bt_mt_c_popUpM"
+                app:layout_constraintStart_toStartOf="@+id/bt_mt_c_popUpM"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <Button
+                android:id="@+id/bt_mc_popUpM"
+                style="@style/button_long"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="MC"
+                app:layout_constraintBottom_toTopOf="@+id/bt_mc_a_popUpM"
+                app:layout_constraintEnd_toEndOf="@+id/bt_mc_a_popUpM"
+                app:layout_constraintStart_toStartOf="@+id/bt_mc_a_popUpM"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <TextView
+                android:id="@+id/textView44"
+                style="@style/pop_up_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="Please Select Filter"
+                app:layout_constraintBottom_toTopOf="@+id/bt_mc_popUpM"
+                app:layout_constraintEnd_toEndOf="@+id/bt_mt_sa_popUpM"
+                app:layout_constraintStart_toStartOf="@+id/bt_mt_sa_popUpM"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <ImageView
+                android:id="@+id/img_close_popUpM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/x_symbol" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

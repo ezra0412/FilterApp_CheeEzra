@@ -22,16 +22,14 @@
                 style="@style/lable"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="42dp"
-                android:layout_marginEnd="42dp"
+                android:layout_marginTop="16dp"
                 android:text="Please select your position"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/bt_sales_positionPU"
+                app:layout_constraintStart_toStartOf="@+id/bt_sales_positionPU"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.089999974" />
+                app:layout_constraintVertical_bias="0.0" />
 
             <Button
                 android:id="@+id/bt_sales_positionPU"
@@ -41,22 +39,24 @@
                 android:layout_marginTop="16dp"
                 android:text="Sales"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/textView20"
-                app:layout_constraintStart_toStartOf="@+id/textView20"
+                app:layout_constraintEnd_toEndOf="@+id/bt_technician_positionPU"
+                app:layout_constraintStart_toStartOf="@+id/bt_technician_positionPU"
                 app:layout_constraintTop_toBottomOf="@+id/textView20"
                 app:layout_constraintVertical_bias="0.0" />
 
             <Button
                 android:id="@+id/bt_admin_positionPU"
                 style="@style/button_long"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="24dp"
                 android:text="Admin"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/bt_technician_positionPU"
-                app:layout_constraintStart_toStartOf="@+id/bt_technician_positionPU"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/bt_technician_positionPU" />
 
             <Button
@@ -67,9 +67,9 @@
                 android:layout_marginTop="16dp"
                 android:text="Technician"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/bt_sales_positionPU"
+                app:layout_constraintEnd_toEndOf="@+id/bt_admin_positionPU"
                 app:layout_constraintHorizontal_bias="0.494"
-                app:layout_constraintStart_toStartOf="@+id/bt_sales_positionPU"
+                app:layout_constraintStart_toStartOf="@+id/bt_admin_positionPU"
                 app:layout_constraintTop_toBottomOf="@+id/bt_sales_positionPU"
                 app:layout_constraintVertical_bias="0.0" />
 
@@ -77,13 +77,10 @@
                 android:id="@+id/img_close_positionPU"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.157"
-                app:layout_constraintStart_toEndOf="@+id/textView20"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.050000012"
                 app:srcCompat="@drawable/x_symbol" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
