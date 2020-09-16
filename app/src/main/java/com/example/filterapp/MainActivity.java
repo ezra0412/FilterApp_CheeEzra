@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabItem;
@@ -25,6 +26,11 @@ public class MainActivity extends AppCompatActivity {
         generateQR = findViewById(R.id.tab_item_generateQR_main);
         scanQR = findViewById(R.id.tab_item_scanQR_main);
         viewPager = findViewById(R.id.vp_main);
+
+        MovableFloatingActionButton fab = (MovableFloatingActionButton) findViewById(R.id.fab_main);
+        CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
+        fab.setCoordinatorLayout(lp);
+
         MainTabAdapter mainTabAdapter = new
                 MainTabAdapter(getSupportFragmentManager(),
                 tabLayout.getTabCount());

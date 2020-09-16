@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 
 
@@ -50,6 +51,7 @@ public class GenerateQRFragment extends Fragment {
         mFilter4 = v.findViewById(R.id.tv_filter4_generateQR);
 
         mFilter5 = v.findViewById(R.id.tv_filter5_generateQR);
+
 
         return v;
     }

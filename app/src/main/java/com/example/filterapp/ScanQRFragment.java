@@ -95,7 +95,7 @@ public class ScanQRFragment extends Fragment {
                 });
                 final Snackbar snackbar = Snackbar.make(v,"Camera permission is needed in order to scan QR code", Snackbar.LENGTH_LONG);
                 snackbar.setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE);
-                snackbar.setDuration(100000);
+                snackbar.setDuration(10000);
                 snackbar.setAction("Setting", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
