@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">FilterApp</string>
+    <string name="TermCondition">I agree to App Name <i><b><u>User Agreement</u></b></i>,  <i><b><u>Privacy Policy</u></b></i>, and  <i><b><u>Cookies Policy</u></b></i></string>
+    <string name="NeedHelp"><u><b><i>Need help? </i></b></u></string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
