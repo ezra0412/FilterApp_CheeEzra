@@ -9,7 +9,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/popUpBackground"
+        app:cardBackgroundColor="@color/pop_up_background"
         app:cardCornerRadius="20dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,7 +19,7 @@
             <Button
                 android:id="@+id/bt_cto_s_popUpC"
                 style="@style/button_long"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
@@ -76,12 +76,14 @@
                 style="@style/pop_up_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="64dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="64dp"
                 android:layout_marginBottom="16dp"
                 android:text="Please Select Filter "
                 app:layout_constraintBottom_toTopOf="@+id/bt_cc_n_popUpC"
-                app:layout_constraintEnd_toEndOf="@+id/bt_cto_s_popUpC"
-                app:layout_constraintStart_toStartOf="@+id/bt_cto_s_popUpC"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="1.0" />
 

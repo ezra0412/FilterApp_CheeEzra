@@ -9,7 +9,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/popUpBackground"
+        app:cardBackgroundColor="@color/pop_up_background"
         app:cardCornerRadius="20dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -58,7 +58,6 @@
                 android:text="Done"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cb_tnc_googlePU"
                 app:layout_constraintVertical_bias="0.0" />
@@ -100,12 +99,12 @@
 
             <TextView
                 android:id="@+id/tv_branch_googlePU"
-                style="@style/edit_text"
+                style="@style/tv_dropDown"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/spinner_close"
                 android:gravity="center_vertical"
-                android:text="  No Branch Seleted"
+                android:hint="  No Branch Seleted"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/tv_position_googlePU"
@@ -126,12 +125,12 @@
 
             <TextView
                 android:id="@+id/tv_position_googlePU"
-                style="@style/edit_text"
+                style="@style/tv_dropDown"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/spinner_close"
                 android:gravity="center_vertical"
-                android:text="  No Position Selected"
+                android:hint="  No Position Selected"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/bt_done_googlePU"
@@ -144,7 +143,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:buttonTint="@color/red"
+                android:buttonTint="@color/light_green"
                 android:gravity="center"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"

@@ -3,13 +3,19 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
-    <color name="grey_background">#1C2029</color>
+    <color name="background">#F8F8F8</color>
     <color name="light_grey">#6D7486</color>
     <color name="dark_grey">#0A0A0A</color>
     <color name="red">#FB6771</color>
     <color name="dark_red">#921818</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-    <color name="popUpBackground">#555860</color>
+    <color name="text_hint">#B0DDDDDD</color>
     <color name="green">#006400</color>
+    <color name="dark_green">#154219</color>
+    <color name="medium_green">#1D8A43</color>
+    <color name="light_green">#00a501</color>
+    <color name="text_color">#333333</color>
+    <color name="yellow">#F5E60A</color>
+    <color name="pop_up_background">#E7E7E7</color>
 </resources>

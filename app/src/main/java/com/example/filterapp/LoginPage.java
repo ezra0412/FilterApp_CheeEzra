@@ -255,8 +255,9 @@ public class LoginPage extends AppCompatActivity {
         loadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
-                Toast.makeText(LoginPage.this, "Mainpage", Toast.LENGTH_SHORT).show();
-                //TODO:: Redirect user to the mainpage
+                Intent intent = new Intent(LoginPage.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
     }

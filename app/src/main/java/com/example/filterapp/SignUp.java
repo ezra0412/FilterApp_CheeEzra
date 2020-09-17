@@ -176,7 +176,6 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mBranch.setText("  Branch A");
-                Toast.makeText(SignUp.this, "Branch A selected", Toast.LENGTH_SHORT).show();
                 branchDialog.dismiss();
             }
         });
@@ -186,7 +185,6 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mBranch.setText("  Branch B");
-                Toast.makeText(SignUp.this, "Branch B selected", Toast.LENGTH_SHORT).show();
                 branchDialog.dismiss();
             }
         });
@@ -195,7 +193,6 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mBranch.setText("  Branch C");
-                Toast.makeText(SignUp.this, "Branch C selected", Toast.LENGTH_SHORT).show();
                 branchDialog.dismiss();
             }
         });
@@ -578,7 +575,7 @@ public class SignUp extends AppCompatActivity {
      */
     public void loadingScreen() {
         ProgressBar progressBar;
-        Sprite style = new Wave();
+        final Sprite style = new Wave();
         loadingDialog.setContentView(R.layout.pop_up_loading_screen);
         loadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         progressBar = loadingDialog.findViewById(R.id.sk_loadingPU);
@@ -601,8 +598,9 @@ public class SignUp extends AppCompatActivity {
         loadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
-                Toast.makeText(SignUp.this, "Mainpage", Toast.LENGTH_SHORT).show();
-                //TODO:: Redirect user to the mainpage
+                Intent intent = new Intent(SignUp.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
     }
@@ -761,7 +759,7 @@ public class SignUp extends AppCompatActivity {
                                     getEmail.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                         @Override
                                         public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                            sendMailToAdmin(documentSnapshot.getString("email"), sEmail);
+                                            sendMailToAdmin(documentSnapshot.getString("adminEmail"), sEmail);
                                         }
                                     });
 

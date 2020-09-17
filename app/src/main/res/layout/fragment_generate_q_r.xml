@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/grey_background">
+    android:background="@color/background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -205,6 +205,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="24dp"
                     android:hint="  Please Select Filter 1"
+                    android:textColorHint="@color/text_hint"
                     app:layout_constraintBottom_toTopOf="@+id/textView43"
                     app:layout_constraintEnd_toEndOf="@+id/button5"
                     app:layout_constraintStart_toStartOf="@+id/button5"

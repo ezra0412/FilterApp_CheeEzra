@@ -4,26 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_background"
+    android:background="@color/background"
     tools:context=".SignUp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/grey_background"
-        >
+        android:background="@color/background"
+        android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="1050dp"
-            android:background="@color/grey_background">
+            android:background="@color/background">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@color/dark_grey"
+                android:background="@color/yellow"
                 android:minHeight="?attr/actionBarSize"
                 android:theme="?attr/actionBarTheme"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -102,6 +101,8 @@
                 android:layout_marginStart="24dp"
                 android:onClick="back"
                 app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+                app:layout_constraintEnd_toStartOf="@+id/textView6"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/toolbar"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/back_button" />
@@ -193,14 +194,14 @@
 
             <TextView
                 android:id="@+id/textView6"
+                style="@style/top_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Sign Up"
                 app:layout_constraintBottom_toBottomOf="@+id/toolbar"
                 app:layout_constraintEnd_toEndOf="@+id/toolbar"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                style="@style/top_bar" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/et_email_signUp"
@@ -237,6 +238,7 @@
                 android:hint="  No Branch Selected"
                 android:onClick="branchPopUp"
                 android:textColor="@color/white"
+                android:textColorHint="@color/text_hint"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/tv_position_signUp"
@@ -253,6 +255,7 @@
                 android:gravity="center_vertical"
                 android:hint="  No Position Selected"
                 android:onClick="positionPopUp"
+                android:textColorHint="@color/text_hint"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/button2"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -264,7 +267,7 @@
                 android:id="@+id/cb_tNc_signUp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:buttonTint="@color/red"
+                android:buttonTint="@color/light_green"
                 android:gravity="center"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -280,9 +283,8 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/archivo_narrow"
                 android:text="Or Sign Up With "
-                android:textColor="@color/white"
+                android:textColor="@color/text_color"
                 android:textSize="18sp"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
@@ -297,7 +299,7 @@
                 android:layout_marginBottom="8dp"
                 android:fontFamily="@font/archivo_narrow"
                 android:text="Already have an account "
-                android:textColor="@color/white"
+                android:textColor="@color/text_color"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -311,7 +313,7 @@
                 android:fontFamily="@font/archivo_narrow"
                 android:onClick="signIn"
                 android:text="Login "
-                android:textColor="@color/red"
+                android:textColor="@color/light_green"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView21"
@@ -323,7 +325,7 @@
                 android:id="@+id/divider3"
                 android:layout_width="2dp"
                 android:layout_height="0dp"
-                android:background="@color/white"
+                android:background="@color/text_color"
                 app:layout_constraintBottom_toBottomOf="@+id/textView22"
                 app:layout_constraintEnd_toStartOf="@+id/textView22"
                 app:layout_constraintStart_toEndOf="@+id/textView21"

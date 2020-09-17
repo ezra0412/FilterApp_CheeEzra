@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         app:frameAspectRatioHeight="1"
         app:frameAspectRatioWidth="1"
-        app:frameColor="@color/red"
+        app:frameColor="@color/light_green"
         app:frameCornersRadius="0dp"
         app:frameCornersSize="50dp"
         app:frameSize="0.75"
@@ -23,7 +23,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:maskColor="#77000000"/>
+        app:maskColor="#77000000" />
 
     <TextView
         android:id="@+id/tv_message_scanQR"
@@ -32,6 +32,7 @@
         android:layout_height="wrap_content"
         android:text=" (Camera Permission Not Granted) "
         android:textColor="@color/red"
+        android:textStyle="normal"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

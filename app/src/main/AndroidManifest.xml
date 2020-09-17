@@ -16,8 +16,8 @@
         <activity android:name=".FQA" />
         <activity android:name=".TermNCondition" />
         <activity android:name=".ForgetPassword" />
-        <activity android:name=".SignUp" />
         <activity android:name=".LoginPage" />
+        <activity android:name=".SignUp" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
