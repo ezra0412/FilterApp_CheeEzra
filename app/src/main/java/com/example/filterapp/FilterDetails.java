@@ -1,33 +1,71 @@
 package com.example.filterapp;
 
+
 public class FilterDetails {
     private String invoiceNumber;
-    private String InvoiceNum;
-    private String Mobile;
-    private String FModel;
-    private String Commission;
-    private String Price;
-    private String Note;
-    private String Filter1;
-    private String Filter2;
-    private String Filter3;
-    private String Filter4;
-    private String Filter5;
+    private String mobile;
+    private String fName;
+    private String fModel;
+    private String filter1;
+    private String filter2;
+    private String filter3;
+    private String filter4;
+    private String filter5;
+    private String filterNum;
+    private String commission;
+    private String price;
+    private String note;
+    private String salesID;
+    private String filter1LC;
+    private String filter2LC;
+    private String filter3LC;
+    private String filter4LC;
+    private String filter5LC;
+    private boolean wt;
+    private boolean wt_s;
+    private boolean FC_D;
+    private String wtLC;
+    private String wt_sLC;
+    private String FC_DLC;
+    private boolean img;
 
-    public FilterDetails(String invoiceNumber, String invoiceNum, String mobile, String FModel, String commission,
-                         String price, String note, String filter1, String filter2, String filter3, String filter4, String filter5) {
+
+    public FilterDetails() {
+        this("", "", "", "", "", "", "", "", "", "", "",
+                "", "", "", "", "", "", "", "", false, false, false,
+                "", "", "", false);
+    }
+
+    public FilterDetails(String invoiceNumber, String mobile, String fName, String fModel, String filter1, String filter2, String filter3,
+                         String filter4, String filter5, String filterNum, String commission, String price, String note, String salesID,
+                         String filter1LC, String filter2LC, String filter3LC, String filter4LC, String filter5LC, boolean wt, boolean wt_s,
+                         boolean FC_D, String wtLC, String wt_sLC, String FC_DLC, boolean img) {
         this.invoiceNumber = invoiceNumber;
-        InvoiceNum = invoiceNum;
-        Mobile = mobile;
-        this.FModel = FModel;
-        Commission = commission;
-        Price = price;
-        Note = note;
-        Filter1 = filter1;
-        Filter2 = filter2;
-        Filter3 = filter3;
-        Filter4 = filter4;
-        Filter5 = filter5;
+        this.mobile = mobile;
+        this.fName = fName;
+        this.fModel = fModel;
+        this.filter1 = filter1;
+        this.filter2 = filter2;
+        this.filter3 = filter3;
+        this.filter4 = filter4;
+        this.filter5 = filter5;
+        this.filterNum = filterNum;
+        this.commission = commission;
+        this.price = price;
+        this.note = note;
+        this.salesID = salesID;
+        this.filter1LC = filter1LC;
+        this.filter2LC = filter2LC;
+        this.filter3LC = filter3LC;
+        this.filter4LC = filter4LC;
+        this.filter5LC = filter5LC;
+        this.wt = wt;
+        this.wt_s = wt_s;
+        this.FC_D = FC_D;
+        this.wtLC = wtLC;
+        this.wt_sLC = wt_sLC;
+        this.FC_DLC = FC_DLC;
+        this.img = img;
     }
 
     public String getInvoiceNumber() {
@@ -38,91 +76,203 @@ public class FilterDetails {
         this.invoiceNumber = invoiceNumber;
     }
 
-    public String getInvoiceNum() {
-        return InvoiceNum;
-    }
-
-    public void setInvoiceNum(String invoiceNum) {
-        InvoiceNum = invoiceNum;
-    }
-
     public String getMobile() {
-        return Mobile;
+        return mobile;
     }
 
     public void setMobile(String mobile) {
-        Mobile = mobile;
+        this.mobile = mobile;
     }
 
-    public String getFModel() {
-        return FModel;
+    public String getfName() {
+        return fName;
     }
 
-    public void setFModel(String FModel) {
-        this.FModel = FModel;
+    public void setfName(String fName) {
+        this.fName = fName;
     }
 
-    public String getCommission() {
-        return Commission;
+    public String getfModel() {
+        return fModel;
     }
 
-    public void setCommission(String commission) {
-        Commission = commission;
-    }
-
-    public String getPrice() {
-        return Price;
-    }
-
-    public void setPrice(String price) {
-        Price = price;
-    }
-
-    public String getNote() {
-        return Note;
-    }
-
-    public void setNote(String note) {
-        Note = note;
+    public void setfModel(String fModel) {
+        this.fModel = fModel;
     }
 
     public String getFilter1() {
-        return Filter1;
+        return filter1;
     }
 
     public void setFilter1(String filter1) {
-        Filter1 = filter1;
+        this.filter1 = filter1;
     }
 
     public String getFilter2() {
-        return Filter2;
+        return filter2;
     }
 
     public void setFilter2(String filter2) {
-        Filter2 = filter2;
+        this.filter2 = filter2;
     }
 
     public String getFilter3() {
-        return Filter3;
+        return filter3;
     }
 
     public void setFilter3(String filter3) {
-        Filter3 = filter3;
+        this.filter3 = filter3;
     }
 
     public String getFilter4() {
-        return Filter4;
+        return filter4;
     }
 
     public void setFilter4(String filter4) {
-        Filter4 = filter4;
+        this.filter4 = filter4;
     }
 
     public String getFilter5() {
-        return Filter5;
+        return filter5;
     }
 
     public void setFilter5(String filter5) {
-        Filter5 = filter5;
+        this.filter5 = filter5;
+    }
+
+    public String getFilterNum() {
+        return filterNum;
+    }
+
+    public void setFilterNum(String filterNum) {
+        this.filterNum = filterNum;
+    }
+
+    public String getCommission() {
+        return commission;
+    }
+
+    public void setCommission(String commission) {
+        this.commission = commission;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public String getSalesID() {
+        return salesID;
+    }
+
+    public void setSalesID(String salesID) {
+        this.salesID = salesID;
+    }
+
+    public String getFilter1LC() {
+        return filter1LC;
+    }
+
+    public void setFilter1LC(String filter1LC) {
+        this.filter1LC = filter1LC;
+    }
+
+    public String getFilter2LC() {
+        return filter2LC;
+    }
+
+    public void setFilter2LC(String filter2LC) {
+        this.filter2LC = filter2LC;
+    }
+
+    public String getFilter3LC() {
+        return filter3LC;
+    }
+
+    public void setFilter3LC(String filter3LC) {
+        this.filter3LC = filter3LC;
+    }
+
+    public String getFilter4LC() {
+        return filter4LC;
+    }
+
+    public void setFilter4LC(String filter4LC) {
+        this.filter4LC = filter4LC;
+    }
+
+    public String getFilter5LC() {
+        return filter5LC;
+    }
+
+    public void setFilter5LC(String filter5LC) {
+        this.filter5LC = filter5LC;
+    }
+
+    public boolean isWt() {
+        return wt;
+    }
+
+    public void setWt(boolean wt) {
+        this.wt = wt;
+    }
+
+    public boolean isWt_s() {
+        return wt_s;
+    }
+
+    public void setWt_s(boolean wt_s) {
+        this.wt_s = wt_s;
+    }
+
+    public boolean isFC_D() {
+        return FC_D;
+    }
+
+    public void setFC_D(boolean FC_D) {
+        this.FC_D = FC_D;
+    }
+
+    public String getWtLC() {
+        return wtLC;
+    }
+
+    public void setWtLC(String wtLC) {
+        this.wtLC = wtLC;
+    }
+
+    public String getWt_sLC() {
+        return wt_sLC;
+    }
+
+    public void setWt_sLC(String wt_sLC) {
+        this.wt_sLC = wt_sLC;
+    }
+
+    public String getFC_DLC() {
+        return FC_DLC;
+    }
+
+    public void setFC_DLC(String FC_DLC) {
+        this.FC_DLC = FC_DLC;
+    }
+
+    public boolean isImg() {
+        return img;
+    }
+
+    public void setImg(boolean img) {
+        this.img = img;
     }
 }

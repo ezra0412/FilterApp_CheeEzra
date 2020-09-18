@@ -21,7 +21,7 @@
                 android:layout_height="wrap_content">
 
                 <Button
-                    android:id="@+id/button5"
+                    android:id="@+id/bt_generate_fQR"
                     style="@style/button_long"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -43,10 +43,10 @@
                     android:background="@drawable/et_medium_bg"
                     android:ems="10"
                     android:inputType="textMultiLine"
-                    app:layout_constraintBottom_toTopOf="@+id/button5"
-                    app:layout_constraintEnd_toEndOf="@+id/button5"
+                    app:layout_constraintBottom_toTopOf="@+id/bt_generate_fQR"
+                    app:layout_constraintEnd_toEndOf="@+id/bt_generate_fQR"
                     app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="@+id/button5"
+                    app:layout_constraintStart_toStartOf="@+id/bt_generate_fQR"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="1.0" />
 
@@ -69,8 +69,8 @@
                     android:hint="  Enter Sales price"
                     android:inputType="numberDecimal"
                     app:layout_constraintBottom_toTopOf="@+id/textView33"
-                    app:layout_constraintEnd_toEndOf="@+id/button5"
-                    app:layout_constraintStart_toStartOf="@+id/button5"
+                    app:layout_constraintEnd_toEndOf="@+id/bt_generate_fQR"
+                    app:layout_constraintStart_toStartOf="@+id/bt_generate_fQR"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="1.0" />
 
@@ -93,9 +93,9 @@
                     android:hint="  Enter Commission"
                     android:inputType="numberDecimal"
                     app:layout_constraintBottom_toTopOf="@+id/textView35"
-                    app:layout_constraintEnd_toEndOf="@+id/button5"
+                    app:layout_constraintEnd_toEndOf="@+id/bt_generate_fQR"
                     app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/button5"
+                    app:layout_constraintStart_toStartOf="@+id/bt_generate_fQR"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.998" />
 
@@ -108,8 +108,8 @@
                     android:ems="10"
                     android:hint="  Please Select Filter 5"
                     app:layout_constraintBottom_toTopOf="@+id/textView36"
-                    app:layout_constraintEnd_toEndOf="@+id/button5"
-                    app:layout_constraintStart_toStartOf="@+id/button5"
+                    app:layout_constraintEnd_toEndOf="@+id/bt_generate_fQR"
+                    app:layout_constraintStart_toStartOf="@+id/bt_generate_fQR"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="1.0" />
 
@@ -139,8 +139,8 @@
                     android:layout_marginBottom="24dp"
                     android:hint="  Please Select Filter 4"
                     app:layout_constraintBottom_toTopOf="@+id/textView37"
-                    app:layout_constraintEnd_toEndOf="@+id/button5"
-                    app:layout_constraintStart_toStartOf="@+id/button5"
+                    app:layout_constraintEnd_toEndOf="@+id/bt_generate_fQR"
+                    app:layout_constraintStart_toStartOf="@+id/bt_generate_fQR"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="1.0" />
 
@@ -184,8 +184,8 @@
                     android:autofillHints=" "
                     android:hint="  Please Select Filter 2"
                     app:layout_constraintBottom_toTopOf="@+id/textView41"
-                    app:layout_constraintEnd_toEndOf="@+id/button5"
-                    app:layout_constraintStart_toStartOf="@+id/button5"
+                    app:layout_constraintEnd_toEndOf="@+id/bt_generate_fQR"
+                    app:layout_constraintStart_toStartOf="@+id/bt_generate_fQR"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="1.0" />
 
@@ -207,8 +207,8 @@
                     android:hint="  Please Select Filter 1"
                     android:textColorHint="@color/text_hint"
                     app:layout_constraintBottom_toTopOf="@+id/textView43"
-                    app:layout_constraintEnd_toEndOf="@+id/button5"
-                    app:layout_constraintStart_toStartOf="@+id/button5"
+                    app:layout_constraintEnd_toEndOf="@+id/bt_generate_fQR"
+                    app:layout_constraintStart_toStartOf="@+id/bt_generate_fQR"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="1.0" />
 
@@ -226,7 +226,7 @@
                     style="@style/lable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Filter model "
+                    android:text="Filter Model "
                     app:layout_constraintBottom_toTopOf="@+id/et_filterModel_generateQR"
                     app:layout_constraintStart_toStartOf="@+id/et_filterModel_generateQR" />
 
@@ -235,7 +235,7 @@
                     style="@style/lable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Customer mobile "
+                    android:text="Customer Mobile  "
                     app:layout_constraintBottom_toTopOf="@+id/et_mobile_generateQR"
                     app:layout_constraintStart_toStartOf="@+id/et_mobile_generateQR" />
 
@@ -244,14 +244,14 @@
                     style="@style/edit_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
+                    android:layout_marginBottom="16dp"
                     android:ems="10"
                     android:fontFamily="@font/archivo_narrow"
                     android:hint="  Enter Customer Mobile"
                     android:inputType="phone"
-                    app:layout_constraintBottom_toTopOf="@+id/textView46"
-                    app:layout_constraintEnd_toEndOf="@+id/button5"
-                    app:layout_constraintStart_toStartOf="@+id/button5"
+                    app:layout_constraintBottom_toTopOf="@+id/textView"
+                    app:layout_constraintEnd_toEndOf="@+id/bt_generate_fQR"
+                    app:layout_constraintStart_toStartOf="@+id/bt_generate_fQR"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="1.0" />
 
@@ -266,8 +266,8 @@
                     android:hint="  Enter Invoice Number"
                     android:inputType="text"
                     app:layout_constraintBottom_toTopOf="@+id/tv_mobile_generateQR"
-                    app:layout_constraintEnd_toEndOf="@+id/button5"
-                    app:layout_constraintStart_toStartOf="@+id/button5"
+                    app:layout_constraintEnd_toEndOf="@+id/bt_generate_fQR"
+                    app:layout_constraintStart_toStartOf="@+id/bt_generate_fQR"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="1.0" />
 
@@ -277,7 +277,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:text="Invoice Number "
+                    android:text="Invoice Number  "
                     app:layout_constraintBottom_toTopOf="@+id/et_invNum_generateQR"
                     app:layout_constraintStart_toStartOf="@+id/et_invNum_generateQR"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -292,9 +292,34 @@
                     android:hint="  Enter Filter Model"
                     android:inputType="textPersonName"
                     app:layout_constraintBottom_toTopOf="@+id/textView45"
-                    app:layout_constraintEnd_toEndOf="@+id/button5"
+                    app:layout_constraintEnd_toEndOf="@+id/bt_generate_fQR"
                     app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="@+id/button5"
+                    app:layout_constraintStart_toStartOf="@+id/bt_generate_fQR"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    style="@style/lable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Customer First Name   "
+                    app:layout_constraintBottom_toTopOf="@+id/et_fName_generateQR"
+                    app:layout_constraintStart_toStartOf="@+id/et_fName_generateQR" />
+
+                <EditText
+                    android:id="@+id/et_fName_generateQR"
+                    style="@style/edit_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:ems="10"
+                    android:hint="  Enter Customer First Name"
+                    android:inputType="textPersonName"
+                    app:layout_constraintBottom_toTopOf="@+id/textView46"
+                    app:layout_constraintEnd_toEndOf="@+id/bt_generate_fQR"
+                    app:layout_constraintHorizontal_bias="0.35"
+                    app:layout_constraintStart_toStartOf="@+id/bt_generate_fQR"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="1.0" />
 

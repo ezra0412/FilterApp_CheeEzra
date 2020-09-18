@@ -258,6 +258,7 @@ public class LoginPage extends AppCompatActivity {
                 Intent intent = new Intent(LoginPage.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                finish();
             }
         });
     }

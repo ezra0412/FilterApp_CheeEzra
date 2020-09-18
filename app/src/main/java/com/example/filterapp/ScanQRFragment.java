@@ -19,8 +19,13 @@ import androidx.fragment.app.Fragment;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.Result;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -46,6 +51,7 @@ public class ScanQRFragment extends Fragment {
     CodeScannerView codeScannerView;
     Activity activity;
     TextView message;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     View v;
 
     @Override
@@ -96,6 +102,7 @@ public class ScanQRFragment extends Fragment {
                 final Snackbar snackbar = Snackbar.make(v,"Camera permission is needed in order to scan QR code", Snackbar.LENGTH_LONG);
                 snackbar.setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE);
                 snackbar.setDuration(10000);
+                snackbar.setActionTextColor(getResources().getColor(R.color.red));
                 snackbar.setAction("Setting", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -119,13 +126,38 @@ public class ScanQRFragment extends Fragment {
     }
 
     public void startCamera(){
+        message.setVisibility(View.INVISIBLE);
+
         codeScanner.setDecodeCallback(new DecodeCallback() {
             @Override
             public void onDecoded(@NonNull final Result result) {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(activity, result.getText(), Toast.LENGTH_SHORT).show();
+                        final String scanResult = result.getText();
+                        String year = scanResult.substring(0, 4);
+                        String month = scanResult.substring(4, 7);
+
+                        DocumentReference filterDetailsDB = db.collection("sales").document(year).collection(month).document(scanResult);
+                        filterDetailsDB.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot documentSnapshot = task.getResult();
+                                    if (documentSnapshot.exists()) {
+                                        message.setVisibility(View.INVISIBLE);
+                                        Intent intent = new Intent(getActivity(), FilterDetail.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        intent.putExtra("documentID", scanResult);
+                                        startActivity(intent);
+                                        getFragmentManager().beginTransaction().remove(ScanQRFragment.this).commitAllowingStateLoss();
+                                    } else {
+                                        message.setText("No result found");
+                                        message.setVisibility(View.VISIBLE);
+                                    }
+                                }
+                            }
+                        });
                     }
                 });
             }
@@ -134,6 +166,7 @@ public class ScanQRFragment extends Fragment {
         codeScannerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                message.setVisibility(View.INVISIBLE);
                 codeScanner.startPreview();
             }
         });

@@ -16,7 +16,8 @@
         android:layout_gravity="bottom|end"
         app:backgroundTint="@color/light_green"
         app:fabSize="normal"
-        android:src="@drawable/add_account"
+        android:src="@drawable/plus_sign"
+        app:maxImageSize="28dp"
         app:layout_anchorGravity="bottom|right|end" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
