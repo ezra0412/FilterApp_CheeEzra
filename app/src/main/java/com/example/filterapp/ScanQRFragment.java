@@ -150,7 +150,6 @@ public class ScanQRFragment extends Fragment {
                                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         intent.putExtra("documentID", scanResult);
                                         startActivity(intent);
-                                        getFragmentManager().beginTransaction().remove(ScanQRFragment.this).commitAllowingStateLoss();
                                     } else {
                                         message.setText("No result found");
                                         message.setVisibility(View.VISIBLE);

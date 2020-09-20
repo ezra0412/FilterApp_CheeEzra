@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +14,21 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.Wave;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.time.LocalDateTime;
@@ -47,6 +55,9 @@ public class GenerateQRFragment extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     String documentID;
+    boolean exist = true;
+
+    Dialog loadingDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,6 +87,8 @@ public class GenerateQRFragment extends Fragment {
         mFilter4 = v.findViewById(R.id.tv_filter4_generateQR);
 
         mFilter5 = v.findViewById(R.id.tv_filter5_generateQR);
+
+        loadingDialog = new Dialog(getActivity());
 
         filterDialog = new Dialog(getActivity());
 
@@ -509,7 +522,6 @@ public class GenerateQRFragment extends Fragment {
         commission = mCommission.getText().toString().trim();
         price = mPrice.getText().toString().trim();
         note = mNote.getText().toString().trim();
-        FilterDetails filterDetails = new FilterDetails();
         if (invoiceNum.isEmpty()) {
             mInvoiceNum.setError("Invoice number cannot be empty");
             mInvoiceNum.requestFocus();
@@ -528,9 +540,15 @@ public class GenerateQRFragment extends Fragment {
             return;
         }
 
+
         if (fName.isEmpty()) {
             mFName.setError("Customer first name cannot be empty");
             mFName.requestFocus();
+            return;
+        }
+
+        checkCustomer();
+        if (!exist) {
             return;
         }
 
@@ -552,20 +570,61 @@ public class GenerateQRFragment extends Fragment {
             return;
         }
 
+        if (price.equalsIgnoreCase("0")) {
+            mPrice.setError("Price cannot be less than 0");
+            mPrice.requestFocus();
+            return;
+        }
+
+
         if (filters.size() < 1) {
             Toast.makeText(getActivity(), "Need to have at least one filter.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (note.isEmpty()) {
-            note = "No note provided";
-        }
+        ProgressBar progressBar;
+        final Sprite style = new Wave();
+        loadingDialog.setContentView(R.layout.pop_up_loading_screen);
+        loadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        progressBar = loadingDialog.findViewById(R.id.sk_loadingPU);
+        progressBar.setIndeterminateDrawable(style);
 
-        for (int i = filters.size(); i < 5; i++) {
-            filters.add("No filter");
-        }
+        //Make the loading dialog not dismissible
+        loadingDialog.setCanceledOnTouchOutside(false);
 
+        loadingDialog.show();
 
+        //Let the loading dialog run for 3 sec to make sure everything is prepared
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loadingDialog.dismiss();
+            }
+        }, 4000);
+
+        loadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                if (!exist) {
+                    return;
+                }
+                storeData();
+            }
+        });
+    }
+
+    public void storeData() {
+
+        String invoiceNum, mobile, fName, fModel, commission, price, note;
+        invoiceNum = mInvoiceNum.getText().toString().trim();
+        mobile = mMobile.getText().toString().trim();
+        fName = mFName.getText().toString().trim();
+        fModel = mFModel.getText().toString().trim();
+        commission = mCommission.getText().toString().trim();
+        price = mPrice.getText().toString().trim();
+        note = mNote.getText().toString().trim();
+        FilterDetails filterDetails = new FilterDetails();
         documentID = createID();
 
         String year = documentID.substring(0, 4);
@@ -579,6 +638,11 @@ public class GenerateQRFragment extends Fragment {
         filterDetails.setMobile(mobile);
         filterDetails.setfName(fName);
         filterDetails.setfModel(fModel);
+        filterDetails.setSalesID(mAuth.getCurrentUser().getUid());
+
+        if (note.isEmpty()) {
+            note = "No note provided";
+        }
 
         switch (filters.size()) {
             case 1: {
@@ -649,10 +713,29 @@ public class GenerateQRFragment extends Fragment {
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("documentID", documentID);
                 startActivity(intent);
-                getFragmentManager().beginTransaction().remove(GenerateQRFragment.this).commitAllowingStateLoss();
             }
         });
+    }
 
+    public void checkCustomer() {
+        String fName = mFName.getText().toString().trim();
+        String mobile = mMobile.getText().toString().trim();
+        DocumentReference checkCustomer = db.collection("customerDetails").document("sorted").
+                collection(fName.substring(0, 1).toLowerCase()).document(fName.substring(0, 1).toLowerCase() + mobile);
+        checkCustomer.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    if (!documentSnapshot.exists()) {
+                        mFName.setError("Customer not yet registered");
+                        mFName.requestFocus();
+                        exist = false;
+                    } else
+                        exist = true;
+                }
+            }
+        });
     }
 
     public String createID() {

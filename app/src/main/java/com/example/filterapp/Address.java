@@ -13,6 +13,10 @@ public class Address {
    String state;
    String addressNote;
 
+    public Address() {
+        this(0, 0, "", "", "", "", "", "", "", "", "");
+    }
+
     public Address(int houseNumber, int level, String block, String building, String streetName, String garden, String area, String city, String postCode, String state, String addressNote) {
         this.houseNumber = houseNumber;
         this.level = level;

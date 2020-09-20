@@ -14,6 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".AddCustomer"></activity>
+        <activity android:name=".MainActivity" />
         <activity android:name=".FilterDetail" />
         <activity android:name=".QRcode" />
         <activity android:name=".FQA" />
@@ -21,7 +22,7 @@
         <activity android:name=".ForgetPassword" />
         <activity android:name=".LoginPage" />
         <activity android:name=".SignUp" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

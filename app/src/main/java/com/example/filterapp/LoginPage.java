@@ -21,18 +21,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.Wave;
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -64,7 +61,6 @@ public class LoginPage extends AppCompatActivity {
     GoogleSignInClient mGoogleSignInClient;
     final static int RC_SIGN_IN = 234;
     StaffDetails staffDetails;
-    private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,15 +87,16 @@ public class LoginPage extends AppCompatActivity {
         });
 
     }
-/*
+
     @Override
     protected void onStart() {
         super.onStart();
         if (mAuth.getCurrentUser() != null) {
+            startActivity(new Intent(LoginPage.this, MainActivity.class));
             finish();
         }
     }
-    */
+
 
     public void login(View view) {
         String email, password;
