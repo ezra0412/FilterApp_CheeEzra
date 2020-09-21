@@ -547,10 +547,7 @@ public class GenerateQRFragment extends Fragment {
             return;
         }
 
-        checkCustomer();
-        if (!exist) {
-            return;
-        }
+
 
         if (fModel.isEmpty()) {
             mFModel.setError("Filter model cannot be empty");
@@ -594,22 +591,23 @@ public class GenerateQRFragment extends Fragment {
 
         loadingDialog.show();
 
-        //Let the loading dialog run for 3 sec to make sure everything is prepared
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        DocumentReference checkCustomer = db.collection("customerDetails").document("sorted").
+                collection(fName.substring(0, 1).toLowerCase()).document(fName.substring(0, 1).toLowerCase() + mobile);
+        checkCustomer.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void run() {
-                loadingDialog.dismiss();
-            }
-        }, 4000);
-
-        loadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                if (!exist) {
-                    return;
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    if (!documentSnapshot.exists()) {
+                        loadingDialog.dismiss();
+                        mFName.setError("Customer not yet registered");
+                        mFName.requestFocus();
+                        return;
+                    } else {
+                        loadingDialog.dismiss();
+                        storeData();
+                    }
                 }
-                storeData();
             }
         });
     }
@@ -720,22 +718,7 @@ public class GenerateQRFragment extends Fragment {
     public void checkCustomer() {
         String fName = mFName.getText().toString().trim();
         String mobile = mMobile.getText().toString().trim();
-        DocumentReference checkCustomer = db.collection("customerDetails").document("sorted").
-                collection(fName.substring(0, 1).toLowerCase()).document(fName.substring(0, 1).toLowerCase() + mobile);
-        checkCustomer.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot documentSnapshot = task.getResult();
-                    if (!documentSnapshot.exists()) {
-                        mFName.setError("Customer not yet registered");
-                        mFName.requestFocus();
-                        exist = false;
-                    } else
-                        exist = true;
-                }
-            }
-        });
+
     }
 
     public String createID() {

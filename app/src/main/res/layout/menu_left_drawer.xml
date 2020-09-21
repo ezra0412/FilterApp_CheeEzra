@@ -9,10 +9,10 @@
 
     <Space
         android:layout_width="wrap_content"
-        android:layout_height="80dp" />
+        android:layout_height="16dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
+        android:layout_width="240dp"
         android:layout_height="wrap_content">
 
         <TextView
@@ -27,8 +27,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/imageView12"
-            app:layout_constraintTop_toBottomOf="@+id/imageView12"
+            app:layout_constraintStart_toStartOf="@+id/img_pi_menu"
+            app:layout_constraintTop_toBottomOf="@+id/img_pi_menu"
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
@@ -59,10 +59,10 @@
             app:layout_constraintTop_toBottomOf="@+id/textView57"
             app:layout_constraintVertical_bias="0.0" />
 
-        <ImageView
-            android:id="@+id/imageView12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/img_pi_menu"
+            android:layout_width="103dp"
+            android:layout_height="103dp"
             android:layout_marginStart="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -70,37 +70,36 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/profile_picture" />
+            android:src="@drawable/profile_picture"
+            app:civ_border_width="2dp"
+            app:civ_border_color="@color/light_green" />
 
         <TextView
-            android:id="@+id/textView59"
+            android:id="@+id/tv_name_menu"
             style="@style/lable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
-            android:text="Ezra"
             android:textStyle="normal"
             app:layout_constraintBaseline_toBaselineOf="@+id/textView54"
             app:layout_constraintStart_toEndOf="@+id/textView54" />
 
         <TextView
-            android:id="@+id/textView60"
+            android:id="@+id/tv_branch_menu"
             style="@style/lable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
-            android:text="A"
             android:textStyle="normal"
             app:layout_constraintBaseline_toBaselineOf="@+id/textView57"
             app:layout_constraintStart_toEndOf="@+id/textView57" />
 
         <TextView
-            android:id="@+id/textView61"
+            android:id="@+id/tv_position_menu"
             style="@style/lable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
-            android:text="Admin"
             android:textStyle="normal"
             app:layout_constraintBaseline_toBaselineOf="@+id/textView58"
             app:layout_constraintStart_toEndOf="@+id/textView58" />
@@ -108,15 +107,32 @@
 
     <Space
         android:layout_width="wrap_content"
-        android:layout_height="16dp" />
+        android:layout_height="8dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list"
         android:layout_width="240dp"
         android:layout_height="wrap_content" />
 
-    <Space
-        android:layout_width="wrap_content"
-        android:layout_height="40dp" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="240dp"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textView52"
+            style="@style/lable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Version 1.0"
+            android:textColor="@color/dark_green"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

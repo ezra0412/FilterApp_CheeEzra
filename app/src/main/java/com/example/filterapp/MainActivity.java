@@ -1,20 +1,33 @@
 package com.example.filterapp;
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.MotionEvent;
+import android.provider.MediaStore;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -23,12 +36,23 @@ import com.example.filterapp.menu.DrawerAdapter;
 import com.example.filterapp.menu.DrawerItem;
 import com.example.filterapp.menu.SimpleItem;
 import com.example.filterapp.menu.SpaceItem;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.Wave;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
+import com.yarolegovich.slidingrootnav.SlidingRootNavLayout;
 
 import java.util.Arrays;
 
@@ -36,15 +60,27 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     TabLayout tabLayout;
     TabItem generateQR, scanQR;
     ViewPager viewPager;
+
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseFirestore fs = FirebaseFirestore.getInstance();
+    StorageReference storageReference = FirebaseStorage.getInstance().getReference();
 
     private SlidingRootNav slidingRootNav;
     private String[] screenTitles;
     private Drawable[] screenIcons;
-
+    boolean showPasswordPU = false;
+    TextView name, position, branch;
+    ImageView pi;
+    Dialog loadingDialog, adminDialog;
     private static final int account = 0;
-    private static final int faq = 1;
-    private static final int logout = 3;
+    private static final int addCustomer = 1;
+    private static final int customerDetails = 2;
+    private static final int stock = 3;
+    private static final int commission = 4;
+    private static final int faq = 5;
+    private static final int tnc = 6;
+    private static final int logout = 8;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +90,8 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         generateQR = findViewById(R.id.tab_item_generateQR_main);
         scanQR = findViewById(R.id.tab_item_scanQR_main);
         viewPager = findViewById(R.id.vp_main);
-
+        loadingDialog = new Dialog(this);
+        adminDialog = new Dialog(this);
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.tb_main);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -64,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 .withContentClickableWhenMenuOpened(true)
                 .withSavedState(savedInstanceState)
                 .withMenuLayout(R.layout.menu_left_drawer)
-                .withDragDistance(150)
+                .withDragDistance(160)
                 .withRootViewScale(0.8f)
                 .withRootViewElevation(10)
                 .withRootViewYTranslation(4)
@@ -72,13 +109,59 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
         screenIcons = loadScreenIcons();
         screenTitles = loadScreenTitles();
-        SlidingRootNav changeName = slidingRootNav.getLayout();
-        //TextView ChangeName = changeName.findViewById*
+
+        SlidingRootNavLayout sideBar = slidingRootNav.getLayout();
+        name = sideBar.findViewById(R.id.tv_name_menu);
+        branch = sideBar.findViewById(R.id.tv_branch_menu);
+        position = sideBar.findViewById(R.id.tv_position_menu);
+        pi = sideBar.findViewById(R.id.img_pi_menu);
+        DocumentReference userDetails = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid());
+        userDetails.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                name.setText(documentSnapshot.getString("fName"));
+                branch.setText(documentSnapshot.getString("branch"));
+                position.setText(documentSnapshot.getString("position"));
+
+            }
+        });
+
+        pi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent openGallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(openGallery, 1000);
+            }
+        });
+
+        StorageReference profileRef = storageReference.child("staff/" + mAuth.getCurrentUser().getUid() + "/profileImage.jpg");
+        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri).into(pi);
+            }
+        });
+
+        position.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!position.getText().toString().trim().equalsIgnoreCase("admin")) {
+                    adminCheck();
+                } else {
+                    Toast.makeText(MainActivity.this, "My account", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
         DrawerAdapter adapter = new DrawerAdapter(Arrays.asList(
-                createItemFor(account).setChecked(true),
+                createItemFor(account),
+                createItemFor(addCustomer),
+                createItemFor(customerDetails),
+                createItemFor(stock),
+                createItemFor(commission),
                 createItemFor(faq),
-                new SpaceItem(48),
+                createItemFor(tnc),
+                new SpaceItem(35),
                 createItemFor(logout)));
         adapter.setListener(this);
 
@@ -118,10 +201,36 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
     @Override
     public void onItemSelected(int position) {
-        if (position == logout) {
-            logout();
-        } else if (position == account) {
-            Toast.makeText(MainActivity.this, "My account", Toast.LENGTH_LONG).show();
+        switch (position) {
+            case account:
+                Toast.makeText(this, "Account", Toast.LENGTH_LONG).show();
+                break;
+
+            case addCustomer:
+                Toast.makeText(this, "Add Customer", Toast.LENGTH_LONG).show();
+                break;
+
+            case customerDetails:
+                Toast.makeText(this, "Customer Details", Toast.LENGTH_LONG).show();
+
+            case stock:
+                Toast.makeText(this, "Stock", Toast.LENGTH_LONG).show();
+
+            case commission:
+                Toast.makeText(this, "Commission", Toast.LENGTH_LONG).show();
+                break;
+
+            case faq:
+                Toast.makeText(this, "FAQ", Toast.LENGTH_LONG).show();
+                break;
+
+            case tnc:
+                Toast.makeText(this, "Term & comission", Toast.LENGTH_LONG).show();
+                break;
+
+            case logout:
+                logout();
+                break;
         }
         slidingRootNav.closeMenu();
 
@@ -161,11 +270,136 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         return icons;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @androidx.annotation.Nullable Intent data) {
+        super.onActivityResult(requestCode, requestCode, data);
+        if (requestCode == 1000) {
+            if (resultCode == Activity.RESULT_OK) {
+                Uri image = data.getData();
+                uploadImageToFirebase(image);
+            }
+        }
+    }
+
+    private void uploadImageToFirebase(Uri image) {
+        ProgressBar progressBar;
+        Sprite style = new Wave();
+        loadingDialog.setContentView(R.layout.pop_up_loading_screen);
+        loadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        progressBar = loadingDialog.findViewById(R.id.sk_loadingPU);
+        progressBar.setIndeterminateDrawable(style);
+        loadingDialog.setCanceledOnTouchOutside(false);
+        loadingDialog.show();
+        final StorageReference imageRefence = storageReference.child("staff/" + mAuth.getCurrentUser().getUid() + "/profileImage.jpg");
+        imageRefence.putFile(image).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                imageRefence.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Picasso.get().load(uri).into(pi);
+                        loadingDialog.dismiss();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        loadingDialog.dismiss();
+                        Toast.makeText(MainActivity.this, "Failed to change profile picture", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        });
+    }
+
+    public void adminCheck() {
+        final ImageView close, showPassword;
+        Button done;
+        final EditText etPassword;
+        adminDialog.setContentView(R.layout.pop_up_admin_password_check);
+        adminDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        close = adminDialog.findViewById(R.id.img_close_adminPU);
+
+        showPassword = adminDialog.findViewById(R.id.img_showPassword_adminPU);
+
+        etPassword = adminDialog.findViewById(R.id.et_enterCode_adminPU);
+
+        done = adminDialog.findViewById(R.id.bt_done_adminPU);
+
+
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                adminDialog.dismiss();
+            }
+        });
+
+        showPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!showPasswordPU) {
+                    showPassword.setImageResource(R.drawable.hide_password_icon);
+                    etPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    etPassword.setSelection(etPassword.getText().length());
+                    showPasswordPU = true;
+                } else {
+                    showPassword.setImageResource(R.drawable.show_password_icon);
+                    etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    etPassword.setSelection(etPassword.getText().length());
+                    showPasswordPU = false;
+                }
+            }
+        });
+
+        done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String password = etPassword.getText().toString().trim();
+
+                if (password.isEmpty()) {
+                    etPassword.setError("Cannot leave empty");
+                    etPassword.requestFocus();
+                    return;
+                }
+
+                DocumentReference passwordCheck = db.collection("adminDetails").document("loginDetails");
+                passwordCheck.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (password.equals(documentSnapshot.getString("verificationPassword"))) {
+                            Toast.makeText(MainActivity.this, "Admin verification successfully", Toast.LENGTH_SHORT).show();
+                            adminDialog.dismiss();
+                        } else {
+                            Toast.makeText(MainActivity.this, "Admin verification failed", Toast.LENGTH_SHORT).show();
+                            adminDialog.dismiss();
+                        }
+                    }
+                });
+            }
+        });
+        adminDialog.show();
+
+        adminDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                closeKeyboard();
+            }
+        });
+    }
+
+
 
     public void logout() {
         mAuth.signOut();
         startActivity(new Intent(MainActivity.this, LoginPage.class));
         finish();
+    }
+
+    private void closeKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     @ColorInt
