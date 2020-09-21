@@ -34,20 +34,20 @@
                 app:layout_constraintVertical_bias="0.0" />
 
             <Button
-                android:id="@+id/bt_a_branchPU"
+                android:id="@+id/bt_lg_branchPU"
                 style="@style/button_long"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="A"
+                android:text="LG"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/bt_b_branchPU"
-                app:layout_constraintStart_toStartOf="@+id/bt_b_branchPU"
+                app:layout_constraintEnd_toEndOf="@+id/bt_pb_branchPU"
+                app:layout_constraintStart_toStartOf="@+id/bt_pb_branchPU"
                 app:layout_constraintTop_toBottomOf="@+id/tv_title_branchPU"
                 app:layout_constraintVertical_bias="0.0" />
 
             <Button
-                android:id="@+id/bt_c_branchPU"
+                android:id="@+id/bt_pt_branchPU"
                 style="@style/button_long"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -55,24 +55,24 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="24dp"
-                android:text="C"
+                android:text="PT"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bt_b_branchPU" />
+                app:layout_constraintTop_toBottomOf="@+id/bt_pb_branchPU" />
 
             <Button
-                android:id="@+id/bt_b_branchPU"
+                android:id="@+id/bt_pb_branchPU"
                 style="@style/button_long"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="B"
+                android:text="PB"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/bt_c_branchPU"
+                app:layout_constraintEnd_toEndOf="@+id/bt_pt_branchPU"
                 app:layout_constraintHorizontal_bias="0.494"
-                app:layout_constraintStart_toStartOf="@+id/bt_c_branchPU"
-                app:layout_constraintTop_toBottomOf="@+id/bt_a_branchPU"
+                app:layout_constraintStart_toStartOf="@+id/bt_pt_branchPU"
+                app:layout_constraintTop_toBottomOf="@+id/bt_lg_branchPU"
                 app:layout_constraintVertical_bias="0.0" />
 
             <ImageView

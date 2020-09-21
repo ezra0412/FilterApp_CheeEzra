@@ -25,6 +25,7 @@ import android.widget.Toast;
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
@@ -38,6 +39,9 @@ import com.example.filterapp.menu.SimpleItem;
 import com.example.filterapp.menu.SpaceItem;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.Wave;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabItem;
@@ -45,7 +49,9 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -73,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     TextView name, position, branch;
     ImageView pi;
     Dialog loadingDialog, adminDialog;
+
     private static final int account = 0;
     private static final int addCustomer = 1;
     private static final int customerDetails = 2;
@@ -81,6 +88,8 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private static final int faq = 5;
     private static final int tnc = 6;
     private static final int logout = 8;
+
+    GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +101,14 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         viewPager = findViewById(R.id.vp_main);
         loadingDialog = new Dialog(this);
         adminDialog = new Dialog(this);
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.tb_main);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -116,13 +133,12 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         position = sideBar.findViewById(R.id.tv_position_menu);
         pi = sideBar.findViewById(R.id.img_pi_menu);
         DocumentReference userDetails = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid());
-        userDetails.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        userDetails.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
                 name.setText(documentSnapshot.getString("fName"));
                 branch.setText(documentSnapshot.getString("branch"));
                 position.setText(documentSnapshot.getString("position"));
-
             }
         });
 
@@ -145,10 +161,8 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         position.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!position.getText().toString().trim().equalsIgnoreCase("admin")) {
+                if (position.getText().toString().trim().equalsIgnoreCase("admin")) {
                     adminCheck();
-                } else {
-                    Toast.makeText(MainActivity.this, "My account", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -203,11 +217,15 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     public void onItemSelected(int position) {
         switch (position) {
             case account:
-                Toast.makeText(this, "Account", Toast.LENGTH_LONG).show();
+                Intent accountPage = new Intent(MainActivity.this, AccountDetails.class);
+                accountPage.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(accountPage);
                 break;
 
             case addCustomer:
-                Toast.makeText(this, "Add Customer", Toast.LENGTH_LONG).show();
+                Intent addCustomerPage = new Intent(MainActivity.this, AddCustomer.class);
+                addCustomerPage.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(addCustomerPage);
                 break;
 
             case customerDetails:
@@ -390,6 +408,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
     public void logout() {
         mAuth.signOut();
+        mGoogleSignInClient.revokeAccess();
         startActivity(new Intent(MainActivity.this, LoginPage.class));
         finish();
     }
@@ -405,6 +424,36 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     @ColorInt
     private int color(@ColorRes int res) {
         return ContextCompat.getColor(this, res);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        DocumentReference userDetails = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid());
+        userDetails.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                name.setText(documentSnapshot.getString("fName"));
+                branch.setText(documentSnapshot.getString("branch"));
+                position.setText(documentSnapshot.getString("position"));
+            }
+        });
+
+
+        StorageReference profileRef = storageReference.child("staff/" + mAuth.getCurrentUser().getUid() + "/profileImage.jpg");
+        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri).into(pi);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                pi.setImageDrawable(getDrawable(R.drawable.profile_picture));
+            }
+        });
+
     }
 
 }

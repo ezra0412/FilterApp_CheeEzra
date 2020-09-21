@@ -1,9 +1,279 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".AccountDetails">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textView68"
+                style="@style/edit_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="bottom|center_vertical"
+                android:password="false"
+                android:text="  ******"
+                android:textSize="30sp"
+                app:layout_constraintEnd_toEndOf="@+id/button8"
+                app:layout_constraintStart_toStartOf="@+id/button8"
+                app:layout_constraintTop_toBottomOf="@+id/textView66" />
+
+            <TextView
+                android:id="@+id/textView64"
+                style="@style/lable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Last Name"
+                app:layout_constraintStart_toStartOf="@+id/et_lName_accountDetails"
+                app:layout_constraintTop_toBottomOf="@+id/button6" />
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/yellow"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_pi_myAccount"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                android:layout_marginTop="16dp"
+                android:onClick="changeImage"
+                android:src="@drawable/profile_picture"
+                app:civ_border_color="@color/light_green"
+                app:civ_border_width="2dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar3"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/textView53"
+                style="@style/top_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="My Account"
+                app:layout_constraintBottom_toBottomOf="@+id/toolbar3"
+                app:layout_constraintEnd_toEndOf="@+id/toolbar3"
+                app:layout_constraintStart_toStartOf="@+id/toolbar3"
+                app:layout_constraintTop_toTopOf="@+id/toolbar3" />
+
+            <ImageView
+                android:id="@+id/imageView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:onClick="back"
+                app:layout_constraintBottom_toBottomOf="@+id/toolbar3"
+                app:layout_constraintEnd_toStartOf="@+id/textView53"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/toolbar3"
+                app:layout_constraintTop_toTopOf="@+id/toolbar3"
+                app:srcCompat="@drawable/back_button" />
+
+            <Button
+                android:id="@+id/button6"
+                style="@style/button_short"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:onClick="removePI"
+                android:text="Remove"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/img_pi_myAccount"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <Button
+                android:id="@+id/button8"
+                style="@style/button_long"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="24dp"
+                android:onClick="update"
+                android:text="Update"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_position_accountDetails"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/tv_position_accountDetails"
+                style="@style/tv_dropDown"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="  No Position Selected"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/button8"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/button8"
+                app:layout_constraintTop_toBottomOf="@+id/textView61"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/tv_branch_accountDetails"
+                style="@style/tv_dropDown"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="  No Branch Selected"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/button8"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/button8"
+                app:layout_constraintTop_toBottomOf="@+id/textView62"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/textView61"
+                style="@style/lable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Position"
+                app:layout_constraintStart_toStartOf="@+id/tv_position_accountDetails"
+                app:layout_constraintTop_toBottomOf="@+id/tv_branch_accountDetails" />
+
+            <TextView
+                android:id="@+id/textView62"
+                style="@style/lable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Branch"
+                app:layout_constraintStart_toStartOf="@+id/tv_branch_accountDetails"
+                app:layout_constraintTop_toBottomOf="@+id/et_mobile_accountDetails" />
+
+            <EditText
+                android:id="@+id/et_fName_accountDetails"
+                style="@style/edit_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:ems="10"
+                android:hint="  Enter First Name"
+                android:inputType="textPersonName"
+                app:layout_constraintBaseline_toBaselineOf="@+id/et_lName_accountDetails"
+                app:layout_constraintEnd_toStartOf="@+id/et_lName_accountDetails"
+                app:layout_constraintStart_toStartOf="@+id/button8" />
+
+            <EditText
+                android:id="@+id/et_lName_accountDetails"
+                style="@style/edit_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="150dp"
+                android:ems="10"
+                android:hint="  Enter Last Name"
+                android:inputType="textPersonName"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/button8"
+                app:layout_constraintStart_toStartOf="@+id/button8"
+                app:layout_constraintTop_toBottomOf="@+id/textView64"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/textView63"
+                style="@style/lable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="First Name"
+                app:layout_constraintBaseline_toBaselineOf="@+id/textView64"
+                app:layout_constraintStart_toStartOf="@+id/et_fName_accountDetails" />
+
+            <TextView
+                android:id="@+id/tv_email_accountDetails"
+                style="@style/edit_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="center_vertical"
+                android:hint="  Enter Email"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/button8"
+                app:layout_constraintStart_toStartOf="@+id/button8"
+                app:layout_constraintTop_toBottomOf="@+id/textView65"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/textView65"
+                style="@style/lable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Email"
+                app:layout_constraintStart_toStartOf="@+id/tv_email_accountDetails"
+                app:layout_constraintTop_toBottomOf="@+id/et_fName_accountDetails" />
+
+            <TextView
+                android:id="@+id/textView66"
+                style="@style/lable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Password"
+                app:layout_constraintStart_toStartOf="@+id/textView68"
+                app:layout_constraintTop_toBottomOf="@+id/tv_email_accountDetails" />
+
+            <TextView
+                android:id="@+id/textView69"
+                style="@style/lable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Mobile"
+                app:layout_constraintStart_toStartOf="@+id/et_mobile_accountDetails"
+                app:layout_constraintTop_toBottomOf="@+id/textView68" />
+
+            <EditText
+                android:id="@+id/et_mobile_accountDetails"
+                style="@style/edit_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="  Enter Mobile Number"
+                android:inputType="phone"
+                android:textAlignment="textStart"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/button8"
+                app:layout_constraintStart_toStartOf="@+id/button8"
+                app:layout_constraintTop_toBottomOf="@+id/textView69"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/tv_verify_accountDetails"
+                style="@style/lable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="(Not yet verified)"
+                android:textColor="@color/red"
+                android:textSize="14dp"
+                android:textStyle="normal"
+                android:visibility="invisible"
+                app:layout_constraintBaseline_toBaselineOf="@+id/textView61"
+                app:layout_constraintStart_toEndOf="@+id/textView61" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</ScrollView>

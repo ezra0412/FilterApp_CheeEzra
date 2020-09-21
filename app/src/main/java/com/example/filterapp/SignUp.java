@@ -149,7 +149,7 @@ public class SignUp extends AppCompatActivity {
      */
     public void branchPopUp(View view) {
         ImageView close;
-        Button branchA, branchB, branchC;
+        Button branchLG, branchPB, branchPT;
         //Change the back ground as open
         mBranch.setBackgroundResource(R.drawable.spinner_open);
         branchDialog.setContentView(R.layout.pop_up_branch);
@@ -164,33 +164,33 @@ public class SignUp extends AppCompatActivity {
             }
         });
 
-        branchA = branchDialog.findViewById(R.id.bt_a_branchPU);
+        branchLG = branchDialog.findViewById(R.id.bt_lg_branchPU);
 
-        branchB = branchDialog.findViewById(R.id.bt_b_branchPU);
+        branchPB = branchDialog.findViewById(R.id.bt_pb_branchPU);
 
-        branchC = branchDialog.findViewById(R.id.bt_c_branchPU);
+        branchPT = branchDialog.findViewById(R.id.bt_pt_branchPU);
 
-        branchA.setOnClickListener(new View.OnClickListener() {
+        branchLG.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mBranch.setText("  Branch A");
+                mBranch.setText("  Branch LG");
                 branchDialog.dismiss();
             }
         });
 
 
-        branchB.setOnClickListener(new View.OnClickListener() {
+        branchPB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mBranch.setText("  Branch B");
+                mBranch.setText("  Branch PB");
                 branchDialog.dismiss();
             }
         });
 
-        branchC.setOnClickListener(new View.OnClickListener() {
+        branchPT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mBranch.setText("  Branch C");
+                mBranch.setText("  Branch PT");
                 branchDialog.dismiss();
             }
         });
@@ -462,14 +462,14 @@ public class SignUp extends AppCompatActivity {
 
         closeKeyboard();
 
-        if (branch.equalsIgnoreCase("Branch A"))
-            branch = "A";
+        if (branch.equalsIgnoreCase("Branch LG"))
+            branch = "LG";
 
-        else if (branch.equalsIgnoreCase("Branch B"))
-            branch = "B";
+        else if (branch.equalsIgnoreCase("Branch PB"))
+            branch = "PB";
 
         else
-            branch = "C";
+            branch = "PT";
 
         staffDetails = new StaffDetails(capitalize(fName), capitalize(lName), mobile, position, branch, false);
 
@@ -708,17 +708,17 @@ public class SignUp extends AppCompatActivity {
 
         //Pop up branch
         ImageView branchClose;
-        Button branchA, branchB, branchC;
+        Button branchLG, branchPB, branchPT;
         branchDialog.setContentView(R.layout.pop_up_branch);
         branchDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         branchClose = branchDialog.findViewById(R.id.img_close_branchPU);
 
-        branchA = branchDialog.findViewById(R.id.bt_a_branchPU);
+        branchLG = branchDialog.findViewById(R.id.bt_lg_branchPU);
 
-        branchB = branchDialog.findViewById(R.id.bt_b_branchPU);
+        branchPB = branchDialog.findViewById(R.id.bt_pb_branchPU);
 
-        branchC = branchDialog.findViewById(R.id.bt_c_branchPU);
+        branchPT = branchDialog.findViewById(R.id.bt_pt_branchPU);
 
 
         //Pop up position
@@ -858,27 +858,27 @@ public class SignUp extends AppCompatActivity {
         });
 
 
-        branchA.setOnClickListener(new View.OnClickListener() {
+        branchLG.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sBranch = "A";
+                sBranch = "LG";
                 branchDialog.dismiss();
             }
         });
 
 
-        branchB.setOnClickListener(new View.OnClickListener() {
+        branchPB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sBranch = "B";
+                sBranch = "PB";
                 branchDialog.dismiss();
             }
         });
 
-        branchC.setOnClickListener(new View.OnClickListener() {
+        branchPT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sBranch = "C";
+                sBranch = "LG";
                 branchDialog.dismiss();
             }
         });

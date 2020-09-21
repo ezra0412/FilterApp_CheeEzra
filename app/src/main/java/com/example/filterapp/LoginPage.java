@@ -364,17 +364,17 @@ public class LoginPage extends AppCompatActivity {
 
         //Pop up branch
         ImageView branchClose;
-        Button branchA, branchB, branchC;
+        Button branchLG, branchPB, branchPT;
         branchDialog.setContentView(R.layout.pop_up_branch);
         branchDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         branchClose = branchDialog.findViewById(R.id.img_close_branchPU);
 
-        branchA = branchDialog.findViewById(R.id.bt_a_branchPU);
+        branchLG = branchDialog.findViewById(R.id.bt_lg_branchPU);
 
-        branchB = branchDialog.findViewById(R.id.bt_b_branchPU);
+        branchPB = branchDialog.findViewById(R.id.bt_pb_branchPU);
 
-        branchC = branchDialog.findViewById(R.id.bt_c_branchPU);
+        branchPT = branchDialog.findViewById(R.id.bt_pt_branchPU);
 
 
         //Pop up position
@@ -514,27 +514,27 @@ public class LoginPage extends AppCompatActivity {
         });
 
 
-        branchA.setOnClickListener(new View.OnClickListener() {
+        branchLG.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sBranch = "A";
+                sBranch = "LG";
                 branchDialog.dismiss();
             }
         });
 
 
-        branchB.setOnClickListener(new View.OnClickListener() {
+        branchPB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sBranch = "B";
+                sBranch = "PB";
                 branchDialog.dismiss();
             }
         });
 
-        branchC.setOnClickListener(new View.OnClickListener() {
+        branchPT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sBranch = "C";
+                sBranch = "PT";
                 branchDialog.dismiss();
             }
         });
@@ -543,7 +543,7 @@ public class LoginPage extends AppCompatActivity {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
                 if (!sBranch.isEmpty()) {
-                    branch.setText("  " + sBranch);
+                    branch.setText("  Branch" + sBranch);
                 }
                 branch.setBackgroundResource(R.drawable.spinner_close);
             }
