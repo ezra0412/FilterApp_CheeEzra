@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="menuScreenTitles">
+        <item>My Account</item>
+        <item>FAQ</item>
+        <item>0</item>
+        <item>Log Out</item>
+    </string-array>
+
+    <array name="menuScreenIcons">
+        <item>@drawable/ic_account</item>
+        <item>@drawable/ic_faq</item>
+        <item>0</item>
+        <item>@drawable/ic_logout</item>
+    </array>
+</resources>
