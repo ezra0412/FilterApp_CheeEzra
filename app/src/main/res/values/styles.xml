@@ -6,6 +6,12 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/dark_green</item>
         <item name="colorAccent">@color/medium_green</item>
+        <item name="android:textColorSecondary">@color/medium_green</item>
+
+    </style>
+
+    <style name="ToolbarColoredBackArrow" parent="AppTheme">
+        <item name="android:textColorSecondary">@color/white</item>
     </style>
 
     <style name="edit_text">

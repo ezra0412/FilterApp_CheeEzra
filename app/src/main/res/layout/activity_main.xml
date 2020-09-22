@@ -66,10 +66,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/yellow"
+            android:foregroundTint="@color/white"
             android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
+            android:theme="?attr/actionBarWidgetTheme"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView59"
+            style="@style/top_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ashita, Return to nature"
+            android:textColor="@color/medium_green"
+            app:layout_constraintBottom_toBottomOf="@+id/tb_main"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tb_main"
+            app:layout_constraintTop_toTopOf="@+id/tb_main" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

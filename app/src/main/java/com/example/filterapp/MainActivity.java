@@ -108,7 +108,6 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.tb_main);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -229,8 +228,10 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 break;
 
             case customerDetails:
-                Toast.makeText(this, "Customer Details", Toast.LENGTH_LONG).show();
-
+                Intent customerDetailsPage = new Intent(MainActivity.this, Abcd.class);
+                customerDetailsPage.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(customerDetailsPage);
+                break;
             case stock:
                 Toast.makeText(this, "Stock", Toast.LENGTH_LONG).show();
 
@@ -243,11 +244,16 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 break;
 
             case tnc:
-                Toast.makeText(this, "Term & comission", Toast.LENGTH_LONG).show();
+                Intent tnc = new Intent(MainActivity.this, TermNCondition.class);
+                tnc.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(tnc);
                 break;
 
             case logout:
-                logout();
+                mAuth.signOut();
+                mGoogleSignInClient.revokeAccess();
+                startActivity(new Intent(MainActivity.this, LoginPage.class));
+                finish();
                 break;
         }
         slidingRootNav.closeMenu();
@@ -402,15 +408,6 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 closeKeyboard();
             }
         });
-    }
-
-
-
-    public void logout() {
-        mAuth.signOut();
-        mGoogleSignInClient.revokeAccess();
-        startActivity(new Intent(MainActivity.this, LoginPage.class));
-        finish();
     }
 
     private void closeKeyboard() {
