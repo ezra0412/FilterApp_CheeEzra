@@ -1,9 +1,5 @@
 package com.example.filterapp;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -25,11 +21,22 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.Wave;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -46,15 +53,20 @@ import java.util.Map;
 public class AccountDetails extends AppCompatActivity {
     boolean showPasswordPU = false;
     boolean verifiedAdmin = false;
+    boolean showPasswordPPU = false;
+    boolean showPassword2PPU = false;
+    boolean showPasswordPIC = false;
     int selected = 0;
+    String emailCU, passwordCU;
+
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    FirebaseFirestore fs = FirebaseFirestore.getInstance();
     StorageReference storageReference = FirebaseStorage.getInstance().getReference();
     TextView mEmail, mBranch, mPosition, verify;
     EditText mFName, mLName, mMobile;
     ImageView pi;
-    Dialog loadingDialog, branchDialog, positionDialog, adminDialog;
+    Dialog loadingDialog, branchDialog, positionDialog, adminDialog, changePasswordDialog, checkUserDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +76,8 @@ public class AccountDetails extends AppCompatActivity {
         branchDialog = new Dialog(this);
         positionDialog = new Dialog(this);
         adminDialog = new Dialog(this);
+        changePasswordDialog = new Dialog(this);
+        checkUserDialog = new Dialog(this);
         mFName = findViewById(R.id.et_fName_accountDetails);
         mLName = findViewById(R.id.et_lName_accountDetails);
         mEmail = findViewById(R.id.tv_email_accountDetails);
@@ -71,6 +85,14 @@ public class AccountDetails extends AppCompatActivity {
         mBranch = findViewById(R.id.tv_branch_accountDetails);
         mPosition = findViewById(R.id.tv_position_accountDetails);
         verify = findViewById(R.id.tv_verify_accountDetails);
+
+
+        mEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(AccountDetails.this, "Email cannot be changed", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         mBranch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -583,6 +605,251 @@ public class AccountDetails extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(AccountDetails.this, "Error, fail to update user details", Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+    public void changePassword(View view) {
+        DocumentReference userDetails = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid());
+        userDetails.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.getBoolean("google")) {
+                    Toast.makeText(AccountDetails.this, "Google login cannot change password", Toast.LENGTH_LONG).show();
+                    return;
+                } else {
+                    changePasswordPopUp();
+                }
+            }
+        });
+    }
+
+    public void changePasswordPopUp() {
+        final ImageView closeCU, showPasswordCU, showPassword2CU;
+        TextView message, title, tvPassword, tvPassword2;
+        final Button updateCU;
+        final EditText etEmail, etPasswordCU;
+
+        checkUserDialog.setContentView(R.layout.pop_up_change_password);
+        checkUserDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        closeCU = checkUserDialog.findViewById(R.id.img_close_passwordPU);
+        showPasswordCU = checkUserDialog.findViewById(R.id.img_showPassword_passwordPU);
+        showPassword2CU = checkUserDialog.findViewById(R.id.img_showPassword2_passwordPU);
+        updateCU = checkUserDialog.findViewById(R.id.bt_update_passwordPU);
+        etEmail = checkUserDialog.findViewById(R.id.et_password_passwordPU);
+        etPasswordCU = checkUserDialog.findViewById(R.id.et_password2_passwordPU);
+        title = checkUserDialog.findViewById(R.id.tv_title_passwordPU);
+        message = checkUserDialog.findViewById(R.id.tv_message_passwordPU);
+        tvPassword = checkUserDialog.findViewById(R.id.tv_password_passwordPU);
+        tvPassword2 = checkUserDialog.findViewById(R.id.tv_password2_passwordPU);
+
+        checkUserDialog.setCanceledOnTouchOutside(false);
+        checkUserDialog.show();
+        closeCU.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(AccountDetails.this, "Password not changed", Toast.LENGTH_LONG).show();
+                checkUserDialog.dismiss();
+            }
+        });
+
+        showPasswordCU.setVisibility(View.INVISIBLE);
+        message.setVisibility(View.INVISIBLE);
+        tvPassword.setText("Email");
+        tvPassword2.setText("Password");
+        title.setText("Identity verification");
+        etEmail.setHint("  Enter Email");
+        etEmail.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+        etPasswordCU.setHint("  Enter Password");
+        updateCU.setText("Verify");
+        showPassword2CU.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!showPasswordPIC) {
+                    showPassword2CU.setImageResource(R.drawable.hide_password_icon);
+                    etPasswordCU.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    etPasswordCU.setSelection(etPasswordCU.getText().length());
+                    showPasswordPIC = true;
+                } else {
+                    showPassword2CU.setImageResource(R.drawable.show_password_icon);
+                    etPasswordCU.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    etPasswordCU.setSelection(etPasswordCU.getText().length());
+                    showPasswordPIC = false;
+                }
+            }
+        });
+
+        updateCU.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                emailCU = etEmail.getText().toString().trim();
+                passwordCU = etPasswordCU.getText().toString().trim();
+
+                if (emailCU.isEmpty()) {
+                    etEmail.setError("Email cannot be empty");
+                    etEmail.requestFocus();
+                    return;
+                }
+
+                //Check if the email format is correct
+                if (!Patterns.EMAIL_ADDRESS.matcher(emailCU).matches()) {
+                    etEmail.setError("Wrong email format");
+                    etEmail.requestFocus();
+                    return;
+                }
+
+                if (passwordCU.isEmpty()) {
+                    etPasswordCU.setError("Password cannot be empty");
+                    etPasswordCU.requestFocus();
+                    return;
+                }
+
+                if (!emailCU.equalsIgnoreCase(mAuth.getCurrentUser().getEmail())) {
+                    mAuth.signOut();
+                    startActivity(new Intent(AccountDetails.this, LoginPage.class));
+                    Toast.makeText(AccountDetails.this, "Wrong email, signed out", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+
+                FirebaseUser user = mAuth.getCurrentUser();
+                AuthCredential credential = EmailAuthProvider
+                        .getCredential(emailCU, passwordCU);
+                user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            changePasswordDialog.show();
+                            checkUserDialog.dismiss();
+                        } else if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                            mAuth.signOut();
+                            startActivity(new Intent(AccountDetails.this, LoginPage.class));
+                            Toast.makeText(AccountDetails.this, "Wrong password, signed out", Toast.LENGTH_LONG).show();
+                            finish();
+                        } else if (task.getException() instanceof FirebaseAuthInvalidUserException) {
+                            checkUserDialog.dismiss();
+                            mAuth.signOut();
+                            startActivity(new Intent(AccountDetails.this, LoginPage.class));
+                            Toast.makeText(AccountDetails.this, "Invalid user, signed out", Toast.LENGTH_LONG).show();
+                            finish();
+                        }
+                    }
+                });
+            }
+        });
+
+        final ImageView close, showPassword, showPassword2;
+        final Button update;
+        final EditText etPassword, etPassword2;
+        changePasswordDialog.setContentView(R.layout.pop_up_change_password);
+        changePasswordDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        close = changePasswordDialog.findViewById(R.id.img_close_passwordPU);
+        showPassword = changePasswordDialog.findViewById(R.id.img_showPassword_passwordPU);
+        showPassword2 = changePasswordDialog.findViewById(R.id.img_showPassword2_passwordPU);
+        update = changePasswordDialog.findViewById(R.id.bt_update_passwordPU);
+        etPassword = changePasswordDialog.findViewById(R.id.et_password_passwordPU);
+        etPassword2 = changePasswordDialog.findViewById(R.id.et_password2_passwordPU);
+        changePasswordDialog.setCanceledOnTouchOutside(false);
+
+
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(AccountDetails.this, "Password not changed", Toast.LENGTH_LONG).show();
+                changePasswordDialog.dismiss();
+            }
+        });
+
+        showPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!showPasswordPPU) {
+                    showPassword.setImageResource(R.drawable.hide_password_icon);
+                    etPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    etPassword.setSelection(etPassword.getText().length());
+                    showPasswordPPU = true;
+                } else {
+                    showPassword.setImageResource(R.drawable.show_password_icon);
+                    etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    etPassword.setSelection(etPassword.getText().length());
+                    showPasswordPPU = false;
+                }
+            }
+        });
+
+        showPassword2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!showPassword2PPU) {
+                    showPassword2.setImageResource(R.drawable.hide_password_icon);
+                    etPassword2.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    etPassword2.setSelection(etPassword2.getText().length());
+                    showPassword2PPU = true;
+                } else {
+                    showPassword2.setImageResource(R.drawable.show_password_icon);
+                    etPassword2.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    etPassword2.setSelection(etPassword2.getText().length());
+                    showPassword2PPU = false;
+                }
+            }
+        });
+
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String password = etPassword.getText().toString().trim();
+                String password2 = etPassword2.getText().toString().trim();
+
+                if (password.isEmpty()) {
+                    etPassword.setError("Password cannot be empty");
+                    etPassword.requestFocus();
+                    return;
+                }
+
+                if (password.length() < 6) {
+                    etPassword.setError("Password need to be more than 6 character");
+                    etPassword.requestFocus();
+                    return;
+                }
+
+                if (!password2.equals(password)) {
+                    etPassword2.setError("Password doesn't matches");
+                    etPassword2.requestFocus();
+                    return;
+                }
+                final FirebaseUser user2 = mAuth.getCurrentUser();
+                AuthCredential credential2 = EmailAuthProvider
+                        .getCredential(emailCU, passwordCU);
+                user2.reauthenticate(credential2).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            user2.updatePassword(password).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(AccountDetails.this, "Password update successfully", Toast.LENGTH_LONG).show();
+                                    changePasswordDialog.dismiss();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(AccountDetails.this, "Error, failed to update password", Toast.LENGTH_LONG).show();
+                                    changePasswordDialog.dismiss();
+
+                                }
+                            });
+                        } else {
+                            Toast.makeText(AccountDetails.this, "Error, failed to update password", Toast.LENGTH_LONG).show();
+                            changePasswordDialog.dismiss();
+
+                        }
+
+                    }
+                });
+
+
             }
         });
 

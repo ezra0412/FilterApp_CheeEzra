@@ -336,13 +336,14 @@
 
             <TextView
                 android:id="@+id/textView23"
+                style="@style/lable"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/archivo_narrow"
                 android:text="(6 or more character) "
-                android:textColor="@color/white"
                 android:textSize="12sp"
+                android:textStyle="normal"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView10"
                 app:layout_constraintStart_toEndOf="@+id/textView10" />
 

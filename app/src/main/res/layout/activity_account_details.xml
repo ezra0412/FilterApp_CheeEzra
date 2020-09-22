@@ -18,12 +18,13 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/textView68"
+                android:id="@+id/tv_password_accountDetails"
                 style="@style/edit_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="bottom|center_vertical"
-                android:password="false"
+                android:gravity="center_vertical"
+                android:onClick="changePassword"
+                android:password="true"
                 android:text="  ******"
                 android:textSize="30sp"
                 app:layout_constraintEnd_toEndOf="@+id/button8"
@@ -233,7 +234,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Password"
-                app:layout_constraintStart_toStartOf="@+id/textView68"
+                app:layout_constraintStart_toStartOf="@+id/tv_password_accountDetails"
                 app:layout_constraintTop_toBottomOf="@+id/tv_email_accountDetails" />
 
             <TextView
@@ -244,7 +245,7 @@
                 android:layout_marginTop="16dp"
                 android:text="Mobile"
                 app:layout_constraintStart_toStartOf="@+id/et_mobile_accountDetails"
-                app:layout_constraintTop_toBottomOf="@+id/textView68" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_password_accountDetails" />
 
             <EditText
                 android:id="@+id/et_mobile_accountDetails"
