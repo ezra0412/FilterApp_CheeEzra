@@ -1,5 +1,7 @@
 package com.example.filterapp;
 
+import java.util.List;
+
 public class UserDetails {
     String fName;
     String lName;
@@ -35,4 +37,6 @@ public class UserDetails {
     public void setMobile(String mobile) {
         this.mobile = mobile;
     }
+
+
 }

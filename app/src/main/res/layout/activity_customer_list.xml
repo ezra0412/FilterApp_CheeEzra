@@ -91,7 +91,7 @@
         android:layout_height="wrap_content"
         android:text="(No Customer Details Found)"
         android:textColor="@color/red"
-        android:textSize="24sp"
+        android:textSize="18sp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -114,7 +114,7 @@ public class AddCustomer extends AppCompatActivity {
             }
         });
 
-        customerDetails = new CustomerDetails(capitalize(fName), capitalize(lName), email, mobile, note, address);
+        customerDetails = new CustomerDetails(capitalize(fName), capitalize(lName), email, mobile, note);
 
         String documentCollection = fName.substring(0, 1).toLowerCase();
         String documentID = documentCollection + mobile;

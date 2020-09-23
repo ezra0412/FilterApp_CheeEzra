@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FilterApp</string>
+    <string name="app_name">Ashita</string>
     <string name="TermCondition">I agree to App Name <i><b><u>User Agreement</u></b></i>,  <i><b><u>Privacy Policy</u></b></i>, and  <i><b><u>Cookies Policy</u></b></i></string>
     <string name="NeedHelp"><u><b><i>Need help? </i></b></u></string>
     <string name="balance_currency">$</string>
