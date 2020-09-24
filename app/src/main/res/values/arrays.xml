@@ -4,7 +4,7 @@
         <item>My Account</item>
         <item>Add Customer</item>
         <item>Customer Details</item>
-        <item>Stocks</item>
+        <item>GPS</item>
         <item>Commission</item>
         <item>FAQ</item>
         <item>About</item>
@@ -16,7 +16,7 @@
         <item>@drawable/ic_account</item>
         <item>@drawable/ic_add_customer</item>
         <item>@drawable/ic_customer_details</item>
-        <item>@drawable/ic_stock</item>
+        <item>@drawable/ic_gps</item>
         <item>@drawable/ic_commission</item>
         <item>@drawable/ic_faq</item>
         <item>@drawable/ic_tnc</item>

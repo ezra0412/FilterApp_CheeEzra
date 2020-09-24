@@ -6,29 +6,23 @@ public class Address {
     String block;
     String building;
     String streetName;
-    String garden;
     String area;
-    String city;
     String postCode;
     String state;
-    String addressNote;
 
     public Address() {
-        this("", "", "", "", "", "", "", "", "", "", "");
+        this("", "", "", "", "", "", "", "");
     }
 
-    public Address(String houseNumber, String level, String block, String building, String streetName, String garden, String area, String city, String postCode, String state, String addressNote) {
+    public Address(String houseNumber, String level, String block, String building, String streetName, String area, String postCode, String state) {
         this.houseNumber = houseNumber;
         this.level = level;
         this.block = block;
         this.building = building;
         this.streetName = streetName;
-        this.garden = garden;
         this.area = area;
-        this.city = city;
         this.postCode = postCode;
         this.state = state;
-        this.addressNote = addressNote;
     }
 
     public String getHouseNumber() {
@@ -71,14 +65,6 @@ public class Address {
         this.streetName = streetName;
     }
 
-    public String getGarden() {
-        return garden;
-    }
-
-    public void setGarden(String garden) {
-        this.garden = garden;
-    }
-
     public String getArea() {
         return area;
     }
@@ -87,13 +73,6 @@ public class Address {
         this.area = area;
     }
 
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
 
     public String getPostCode() {
         return postCode;
@@ -111,11 +90,20 @@ public class Address {
         this.state = state;
     }
 
-    public String getAddressNote() {
-        return addressNote;
+    public String formatedAddress() {
+        String mBlock = "", mLevel = "", mBuilding = "";
+        if (!getBlock().equalsIgnoreCase("")) {
+            mBlock = "Block: " + getBlock() + " , ";
+        }
+        if (!getLevel().equalsIgnoreCase("")) {
+            mLevel = "Level: " + getLevel() + " , ";
+        }
+        if (!building.equalsIgnoreCase("")) {
+            mBuilding = "Condo / Building: " + getBuilding() + " , ";
+        }
+
+        return mBlock + mLevel + mBuilding + " House number " + getHouseNumber() + " , " + getStreetName() + " , " + getPostCode() + " " + getArea() + " , " + getState();
     }
 
-    public void setAddressNote(String addressNote) {
-        this.addressNote = addressNote;
-    }
+
 }

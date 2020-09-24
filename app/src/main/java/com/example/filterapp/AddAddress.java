@@ -17,6 +17,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import static com.example.filterapp.AddCustomer.isAddAddress;
 import static com.example.filterapp.AddCustomer.sAddress;
 import static com.example.filterapp.AddCustomer.setAddAddress;
@@ -25,8 +30,8 @@ import static com.example.filterapp.AddCustomer.setsAddress;
 public class AddAddress extends AppCompatActivity {
     Dialog stateDialog;
     TextView title, mState;
-    EditText mHouseNum, mBlock, mLevel, mBuilding, mStreetName, mGarden,
-            mArea, mCity, mPostCode;
+    EditText mHouseNum, mBlock, mLevel, mBuilding, mStreetName,
+            mArea, mPostCode;
     Button mDone;
     boolean stateSelected = false;
 
@@ -43,24 +48,20 @@ public class AddAddress extends AppCompatActivity {
         mLevel = findViewById(R.id.et_level_address);
         mBuilding = findViewById(R.id.et_building_address);
         mStreetName = findViewById(R.id.et_streetName_addAddress);
-        mGarden = findViewById(R.id.et_garden_addAddress);
         mArea = findViewById(R.id.et_area_address);
-        mCity = findViewById(R.id.et_city_address);
         mPostCode = findViewById(R.id.et_postCode_address);
         mDone = findViewById(R.id.bt_done_addAddress);
 
         if (isAddAddress()) {
-            String houseNum, block, level, building, streetName, garden,
-                    area, city, postCode, state;
+            String houseNum, block, level, building, streetName,
+                    area, postCode, state;
 
             houseNum = sAddress.getHouseNumber();
             block = sAddress.getBlock();
             level = sAddress.getLevel();
             building = sAddress.getBuilding();
             streetName = sAddress.getStreetName();
-            garden = sAddress.getGarden();
             area = sAddress.getArea();
-            city = sAddress.getCity();
             postCode = sAddress.getPostCode();
             state = sAddress.getState();
 
@@ -78,28 +79,21 @@ public class AddAddress extends AppCompatActivity {
             if (!building.equalsIgnoreCase("")) {
                 mBuilding.setText(building);
             }
-            if (!city.equalsIgnoreCase("")) {
-                mCity.setText(city);
-            }
-            if (!garden.equalsIgnoreCase("")) {
-                mGarden.setText(garden);
-            }
+
         }
 
     }
 
     public void done(View view) {
-        String houseNum, block, level, building, streetName, garden, area,
-                city, postCode, state;
+        String houseNum, block, level, building, streetName, area,
+                postCode, state;
 
         houseNum = mHouseNum.getText().toString().trim();
         block = mBlock.getText().toString().trim();
         level = mLevel.getText().toString().trim();
         building = mBuilding.getText().toString().trim();
         streetName = mStreetName.getText().toString().trim();
-        garden = mGarden.getText().toString().trim();
         area = mArea.getText().toString().trim();
-        city = mCity.getText().toString().trim();
         state = mState.getText().toString().trim();
         postCode = mPostCode.getText().toString().trim();
 
@@ -121,11 +115,6 @@ public class AddAddress extends AppCompatActivity {
             return;
         }
 
-        if (city.isEmpty()) {
-            mCity.setError("City cannot be empty");
-            mCity.requestFocus();
-            return;
-        }
 
         if (postCode.length() < 5) {
             mPostCode.setError("Post code cannot be less than 5 number");
@@ -149,7 +138,6 @@ public class AddAddress extends AppCompatActivity {
         address.setHouseNumber(capitalize(houseNum));
         address.setStreetName(capitalize(streetName));
         address.setArea(capitalize(area));
-        address.setCity(capitalize(city));
         address.setPostCode(postCode);
         address.setState(state);
 
@@ -163,10 +151,6 @@ public class AddAddress extends AppCompatActivity {
 
         if (!building.isEmpty()) {
             address.setBuilding(capitalize(building));
-        }
-
-        if (!garden.isEmpty()) {
-            address.setGarden(capitalize(garden));
         }
 
         setsAddress(address);

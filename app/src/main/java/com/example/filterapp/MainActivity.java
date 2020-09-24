@@ -67,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     TabItem generateQR, scanQR;
     ViewPager viewPager;
 
+    public static int positionCode = 3;
+
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseFirestore fs = FirebaseFirestore.getInstance();
@@ -101,6 +103,16 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         viewPager = findViewById(R.id.vp_main);
         loadingDialog = new Dialog(this);
         adminDialog = new Dialog(this);
+
+        DocumentReference staffDB = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid());
+        staffDB.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                setPositionCodeDB(documentSnapshot.getString("position"));
+            }
+        });
+
+
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -212,6 +224,16 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         });
     }
 
+    private void setPositionCodeDB(String position) {
+        if (position.equalsIgnoreCase("admin"))
+            positionCode = 1;
+
+        else if (position.equalsIgnoreCase("sales"))
+            positionCode = 2;
+        else
+            positionCode = 3;
+    }
+
     @Override
     public void onItemSelected(int position) {
         switch (position) {
@@ -224,6 +246,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
             case addCustomer:
                 Intent addCustomerPage = new Intent(MainActivity.this, AddCustomer.class);
                 addCustomerPage.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                addCustomerPage.putExtra("customerID", "non");
                 startActivity(addCustomerPage);
                 break;
 
@@ -273,6 +296,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     public void addCustomer(View view) {
         Intent intent = new Intent(MainActivity.this, AddCustomer.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("customerID", "non");
         startActivity(intent);
     }
 
@@ -434,6 +458,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 name.setText(documentSnapshot.getString("fName"));
                 branch.setText(documentSnapshot.getString("branch"));
                 position.setText(documentSnapshot.getString("position"));
+                setPositionCodeDB(documentSnapshot.getString("position"));
             }
         });
 
@@ -453,4 +478,11 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
     }
 
+    public static int getPositionCode() {
+        return positionCode;
+    }
+
+    public static void setPositionCode(int positionCode) {
+        MainActivity.positionCode = positionCode;
+    }
 }

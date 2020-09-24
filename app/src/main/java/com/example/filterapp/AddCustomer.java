@@ -1,17 +1,23 @@
 package com.example.filterapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.Wave;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -29,6 +35,9 @@ public class AddCustomer extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CustomerDetails customerDetails;
     String documentCollection, documentID;
+    String customerID = "";
+    Dialog loadingDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +49,44 @@ public class AddCustomer extends AppCompatActivity {
         mNote = findViewById(R.id.et_note_addCustomer);
         mAddress = findViewById(R.id.tv_address_addCustomer);
         addSign = findViewById(R.id.img_addSign_addCustomer);
+
+        loadingDialog = new Dialog(this);
+
+        customerID = getIntent().getStringExtra("customerID");
+
+        if (!customerID.equalsIgnoreCase("non")) {
+            DocumentReference userDetails = db.collection("customerDetails").document("sorted")
+                    .collection(customerID.substring(0, 1)).document(customerID);
+            userDetails.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    CustomerDetails customerDetails = documentSnapshot.toObject(CustomerDetails.class);
+                    mFName.setText(customerDetails.getfName());
+                    mLName.setText(customerDetails.getlName());
+                    mEmail.setText(customerDetails.getEmail());
+                    mMobile.setText(customerDetails.getMobile());
+                    mNote.setText(customerDetails.getNote());
+                }
+            });
+
+            DocumentReference userAddress = db.collection("customerDetails").document("sorted")
+                    .collection(customerID.substring(0, 1)).document(customerID)
+                    .collection("address").document("address");
+            userAddress.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    addSign.setVisibility(View.INVISIBLE);
+                    Address address = documentSnapshot.toObject(Address.class);
+                    storeAddress(address);
+                    mAddress.setText(address.formatedAddress());
+                }
+            });
+        }
+    }
+
+    private void storeAddress(Address address) {
+        sAddress = address;
+        addAddress = true;
     }
 
     public void addCustomer(View view) {
@@ -90,14 +137,26 @@ public class AddCustomer extends AppCompatActivity {
         }
 
 
-        if (!addAddress){
-            Toast.makeText(AddCustomer.this,"Please add customer address",Toast.LENGTH_SHORT).show();
+        if (!addAddress) {
+            Toast.makeText(AddCustomer.this, "Please add customer address", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (note.isEmpty()) {
             note = "No note provided";
         }
+
+        ProgressBar progressBar;
+        final Sprite style = new Wave();
+        loadingDialog.setContentView(R.layout.pop_up_loading_screen);
+        loadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        progressBar = loadingDialog.findViewById(R.id.sk_loadingPU);
+        progressBar.setIndeterminateDrawable(style);
+
+        //Make the loading dialog not dismissible
+        loadingDialog.setCanceledOnTouchOutside(false);
+
+        loadingDialog.show();
 
         DocumentReference checkCustomer = db.collection("customerDetails").document("sorted").collection(fName.substring(0, 1).toLowerCase()).document(fName.substring(0, 1).toLowerCase() + mobile);
         checkCustomer.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -106,6 +165,7 @@ public class AddCustomer extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot documentSnapshot = task.getResult();
                     if (documentSnapshot.exists()) {
+                        loadingDialog.dismiss();
                         mMobile.setText("Customer registered before");
                         mMobile.requestFocus();
                         return;
@@ -127,13 +187,22 @@ public class AddCustomer extends AppCompatActivity {
                 customer.set(customerDetails).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(AddCustomer.this, "Customer added", Toast.LENGTH_SHORT).show();
-                        onBackPressed();
+                        loadingDialog.dismiss();
+                        if (!customerID.equalsIgnoreCase("non"))
+                            Toast.makeText(AddCustomer.this, "Customer detail updated", Toast.LENGTH_SHORT).show();
+                        else
+                            Toast.makeText(AddCustomer.this, "Customer added", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(AddCustomer.this, CustomerDetail.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.putExtra("customerID", documentID);
+                        startActivity(intent);
                         finish();
+
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        loadingDialog.dismiss();
                         Toast.makeText(AddCustomer.this, "Error please try again later", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -141,6 +210,7 @@ public class AddCustomer extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                loadingDialog.dismiss();
                 Toast.makeText(AddCustomer.this, "Error please try again later", Toast.LENGTH_SHORT).show();
             }
         });
@@ -167,41 +237,17 @@ public class AddCustomer extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (addAddress) {
-            String houseNum, block, level, building, streetName, garden,
-                    area, city, postCode, state;
-
-            houseNum = sAddress.getHouseNumber();
-            block = sAddress.getBlock();
-            level = sAddress.getLevel();
-            building = sAddress.getBuilding();
-            streetName = sAddress.getStreetName();
-            garden = sAddress.getGarden();
-            area = sAddress.getArea();
-            city = sAddress.getCity();
-            postCode = sAddress.getPostCode();
-            state = sAddress.getState();
-
-            String formatedAddress = "";
-
-            if (!block.equalsIgnoreCase("")) {
-                block = "Block: " + block + " , ";
-            }
-            if (!level.equalsIgnoreCase("")) {
-                level = "Level: " + level + " , ";
-            }
-            if (!building.equalsIgnoreCase("")) {
-                building = "Condo / Building: " + building + " , ";
-            }
-            if (!city.equalsIgnoreCase("")) {
-                city = city + " , ";
-            }
-            if (!garden.equalsIgnoreCase("")) {
-                garden = garden + " , ";
-            }
-            formatedAddress = block + level + building + " House number " + houseNum + " , " + streetName + " , " + garden + area + city + postCode + " , " + state;
             addSign.setVisibility(View.INVISIBLE);
-            mAddress.setText(formatedAddress);
+            mAddress.setText(sAddress.formatedAddress());
+        } else
+            addSign.setVisibility(View.VISIBLE);
+
+        if (!customerID.equalsIgnoreCase("non")) {
+            addSign.setVisibility(View.INVISIBLE);
+            addAddress = true;
         }
+
+
     }
 
     public String capitalize(String s) {
@@ -227,6 +273,9 @@ public class AddCustomer extends AppCompatActivity {
 
     public void openAddress(View view) {
         Intent intent = new Intent(AddCustomer.this, AddAddress.class);
+        intent.putExtra("customerID", customerID);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("customerID", "non");
         startActivity(intent);
     }
 

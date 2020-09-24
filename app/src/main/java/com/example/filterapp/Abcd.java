@@ -18,6 +18,7 @@ public class Abcd extends AppCompatActivity implements BtAdapterSingle.BtSingleL
     List<String> dataList = new ArrayList<>();
     String chosenOption;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

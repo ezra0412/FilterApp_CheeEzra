@@ -5,7 +5,6 @@ import java.util.List;
 public class CustomerDetails extends UserDetails {
     String email;
     String note;
-    Address address;
 
     public CustomerDetails() {
         this("", "", "", "", "");
@@ -33,13 +32,10 @@ public class CustomerDetails extends UserDetails {
         this.note = note;
     }
 
-    public Address getAddress() {
-        return address;
+    public String fullName() {
+        return getfName() + " " + getlName();
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
-    }
 
 
 }

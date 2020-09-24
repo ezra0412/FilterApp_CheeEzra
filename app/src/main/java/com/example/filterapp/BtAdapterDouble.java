@@ -52,7 +52,7 @@ public class BtAdapterDouble extends RecyclerView.Adapter<BtAdapterDouble.ViewHo
             super(itemView);
             item1 = itemView.findViewById(R.id.tv_item1_buttonLongDouble);
             item2 = itemView.findViewById(R.id.tv_item2_buttonLongDouble);
-
+            itemView.setOnClickListener(this);
             this.btDoubleListener = btDoubleListener;
 
         }
