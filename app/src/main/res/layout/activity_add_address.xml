@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddAddress">
+
+    <TextView
+        android:id="@+id/textView89"
+        style="@style/lable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Block "
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView88"
+        app:layout_constraintStart_toStartOf="@+id/et_block_address" />
+
+    <TextView
+        android:id="@+id/textView87"
+        style="@style/lable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Building / Condo"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView79"
+        app:layout_constraintStart_toStartOf="@+id/et_building_address" />
+
+    <EditText
+        android:id="@+id/et_city_address"
+        style="@style/edit_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="  Enter City"
+        android:inputType="textPersonName"
+        app:layout_constraintBaseline_toBaselineOf="@+id/et_area_address"
+        app:layout_constraintEnd_toEndOf="@+id/tv_state_address"
+        app:layout_constraintStart_toStartOf="@+id/tv_state_address" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar10"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/yellow"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:onClick="back"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar10"
+        app:layout_constraintEnd_toEndOf="@+id/toolbar10"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/toolbar10"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/back_button" />
+
+    <TextView
+        android:id="@+id/tv_title_address"
+        style="@style/top_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Address"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar10"
+        app:layout_constraintEnd_toEndOf="@+id/toolbar10"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/et_houseNum_address"
+        style="@style/edit_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="  Enter House Number"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/et_level_address"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/et_level_address"
+        app:layout_constraintTop_toBottomOf="@+id/textView88"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <EditText
+        android:id="@+id/et_block_address"
+        style="@style/edit_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="  Enter Block"
+        android:inputType="textPersonName"
+        app:layout_constraintBaseline_toBaselineOf="@+id/et_houseNum_address"
+        app:layout_constraintEnd_toEndOf="@+id/et_building_address"
+        app:layout_constraintStart_toStartOf="@+id/et_building_address" />
+
+    <EditText
+        android:id="@+id/et_level_address"
+        style="@style/edit_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="  Enter Level"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/et_streetName_addAddress"
+        app:layout_constraintStart_toStartOf="@+id/et_streetName_addAddress"
+        app:layout_constraintTop_toBottomOf="@+id/textView79"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <EditText
+        android:id="@+id/et_building_address"
+        style="@style/edit_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="  Enter Building "
+        android:inputType="textPersonName"
+        app:layout_constraintBaseline_toBaselineOf="@+id/et_level_address"
+        app:layout_constraintEnd_toEndOf="@+id/et_garden_addAddress"
+        app:layout_constraintStart_toStartOf="@+id/et_garden_addAddress" />
+
+    <EditText
+        android:id="@+id/et_streetName_addAddress"
+        style="@style/edit_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="  Enter Street Name"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/et_area_address"
+        app:layout_constraintStart_toStartOf="@+id/et_area_address"
+        app:layout_constraintTop_toBottomOf="@+id/textView77"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <EditText
+        android:id="@+id/et_garden_addAddress"
+        style="@style/edit_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="  Enter Garden"
+        android:inputType="textPersonName"
+        app:layout_constraintBaseline_toBaselineOf="@+id/et_streetName_addAddress"
+        app:layout_constraintEnd_toEndOf="@+id/et_city_address"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/et_city_address" />
+
+    <EditText
+        android:id="@+id/et_area_address"
+        style="@style/edit_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="  Enter Area"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/et_postCode_address"
+        app:layout_constraintStart_toStartOf="@+id/et_postCode_address"
+        app:layout_constraintTop_toBottomOf="@+id/textView74"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <EditText
+        android:id="@+id/et_postCode_address"
+        style="@style/edit_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="174dp"
+        android:ems="10"
+        android:hint="  Enter Post Code"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/bt_done_addAddress"
+        app:layout_constraintStart_toStartOf="@+id/bt_done_addAddress"
+        app:layout_constraintTop_toBottomOf="@+id/textView72"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/tv_state_address"
+        style="@style/tv_dropDown"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="174dp"
+        android:background="@drawable/spinner_close_short"
+        android:ems="10"
+        android:hint="  Choose State"
+        android:onClick="choseState"
+        app:layout_constraintBaseline_toBaselineOf="@+id/et_postCode_address"
+        app:layout_constraintEnd_toEndOf="@+id/bt_done_addAddress"
+        app:layout_constraintStart_toStartOf="@+id/bt_done_addAddress" />
+
+    <Button
+        android:id="@+id/bt_done_addAddress"
+        style="@style/button_long"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:onClick="done"
+        android:text="Done"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_postCode_address"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView72"
+        style="@style/lable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Post Code *"
+        app:layout_constraintStart_toStartOf="@+id/et_postCode_address"
+        app:layout_constraintTop_toBottomOf="@+id/et_area_address" />
+
+    <TextView
+        android:id="@+id/textView73"
+        style="@style/lable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="State *"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView72"
+        app:layout_constraintStart_toStartOf="@+id/tv_state_address" />
+
+    <TextView
+        android:id="@+id/textView74"
+        style="@style/lable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Area*"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/et_area_address"
+        app:layout_constraintTop_toBottomOf="@+id/et_streetName_addAddress"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView76"
+        style="@style/lable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="City *"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView74"
+        app:layout_constraintStart_toStartOf="@+id/et_city_address" />
+
+    <TextView
+        android:id="@+id/textView77"
+        style="@style/lable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Street Name *"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/et_streetName_addAddress"
+        app:layout_constraintTop_toBottomOf="@+id/et_level_address"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView78"
+        style="@style/lable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Garden"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView77"
+        app:layout_constraintStart_toStartOf="@+id/et_garden_addAddress" />
+
+    <TextView
+        android:id="@+id/textView79"
+        style="@style/lable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Level"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/et_level_address"
+        app:layout_constraintTop_toBottomOf="@+id/et_houseNum_address"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView88"
+        style="@style/lable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="House Number *"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/et_houseNum_address"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar10"
+        app:layout_constraintVertical_bias="0.0" />
+</androidx.constraintlayout.widget.ConstraintLayout>

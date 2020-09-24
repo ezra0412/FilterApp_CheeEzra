@@ -1,23 +1,23 @@
 package com.example.filterapp;
 
 public class Address {
-   int houseNumber;
-   int level;
-   String block;
-   String building;
-   String streetName;
-   String garden;
-   String area;
-   String city;
-   String postCode;
-   String state;
-   String addressNote;
+    String houseNumber;
+    String level;
+    String block;
+    String building;
+    String streetName;
+    String garden;
+    String area;
+    String city;
+    String postCode;
+    String state;
+    String addressNote;
 
     public Address() {
-        this(0, 0, "", "", "", "", "", "", "", "", "");
+        this("", "", "", "", "", "", "", "", "", "", "");
     }
 
-    public Address(int houseNumber, int level, String block, String building, String streetName, String garden, String area, String city, String postCode, String state, String addressNote) {
+    public Address(String houseNumber, String level, String block, String building, String streetName, String garden, String area, String city, String postCode, String state, String addressNote) {
         this.houseNumber = houseNumber;
         this.level = level;
         this.block = block;
@@ -31,19 +31,19 @@ public class Address {
         this.addressNote = addressNote;
     }
 
-    public int getHouseNumber() {
+    public String getHouseNumber() {
         return houseNumber;
     }
 
-    public void setHouseNumber(int houseNumber) {
+    public void setHouseNumber(String houseNumber) {
         this.houseNumber = houseNumber;
     }
 
-    public int getLevel() {
+    public String getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
+    public void setLevel(String level) {
         this.level = level;
     }
 

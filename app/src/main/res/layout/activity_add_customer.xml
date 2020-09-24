@@ -95,8 +95,10 @@
                 android:background="@drawable/et_medium_bg"
                 android:ems="10"
                 android:gravity="center"
+                android:onClick="openAddress"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/et_note_addCustomer"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/et_note_addCustomer"
                 app:layout_constraintTop_toBottomOf="@+id/textView82"
                 app:layout_constraintVertical_bias="0.0" />
@@ -215,11 +217,13 @@
                 android:id="@+id/img_addSign_addCustomer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="openAddress"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_address_addCustomer"
                 app:layout_constraintEnd_toEndOf="@+id/tv_address_addCustomer"
                 app:layout_constraintStart_toStartOf="@+id/tv_address_addCustomer"
                 app:layout_constraintTop_toTopOf="@+id/tv_address_addCustomer"
                 app:srcCompat="@drawable/plus_sign" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </ScrollView>

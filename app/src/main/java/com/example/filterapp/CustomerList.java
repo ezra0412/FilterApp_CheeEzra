@@ -1,6 +1,7 @@
 package com.example.filterapp;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -89,8 +90,12 @@ public class CustomerList extends AppCompatActivity implements BtAdapterDouble.B
 
     @Override
     public void btDoubleListener(int position) {
-
-
+        String documentID = btLongDoubleItemList.get(position).getItem1().substring(0, 1) + btLongDoubleItemList.get(position).getItem2();
+        Intent intent = new Intent(CustomerList.this, AddCustomer.class);
+        intent.putExtra("documentID", documentID);
+        intent.putExtra("admin", false);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     public void back(View view) {

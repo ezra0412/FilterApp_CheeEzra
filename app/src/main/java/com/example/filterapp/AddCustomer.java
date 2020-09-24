@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
@@ -26,9 +25,10 @@ public class AddCustomer extends AppCompatActivity {
     TextView mAddress;
     ImageView addSign;
     static boolean addAddress = false;
-    static Address address = new Address();
+    static Address sAddress = new Address();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CustomerDetails customerDetails;
+    String documentCollection, documentID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,12 +89,12 @@ public class AddCustomer extends AppCompatActivity {
             return;
         }
 
-        /*
+
         if (!addAddress){
             Toast.makeText(AddCustomer.this,"Please add customer address",Toast.LENGTH_SHORT).show();
             return;
         }
-*/
+
         if (note.isEmpty()) {
             note = "No note provided";
         }
@@ -116,16 +116,27 @@ public class AddCustomer extends AppCompatActivity {
 
         customerDetails = new CustomerDetails(capitalize(fName), capitalize(lName), email, mobile, note);
 
-        String documentCollection = fName.substring(0, 1).toLowerCase();
-        String documentID = documentCollection + mobile;
+        documentCollection = fName.substring(0, 1).toLowerCase();
+        documentID = documentCollection + mobile;
 
-        DocumentReference customer = db.collection("customerDetails").document("sorted").collection(documentCollection).document(documentID);
-        customer.set(customerDetails).addOnSuccessListener(new OnSuccessListener<Void>() {
+        DocumentReference customerAddress = db.collection("customerDetails").document("sorted").collection(documentCollection).document(documentID).collection("address").document("address");
+        customerAddress.set(sAddress).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(AddCustomer.this, "Customer added", Toast.LENGTH_SHORT).show();
-                onBackPressed();
-                finish();
+                DocumentReference customer = db.collection("customerDetails").document("sorted").collection(documentCollection).document(documentID);
+                customer.set(customerDetails).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(AddCustomer.this, "Customer added", Toast.LENGTH_SHORT).show();
+                        onBackPressed();
+                        finish();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(AddCustomer.this, "Error please try again later", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -139,15 +150,55 @@ public class AddCustomer extends AppCompatActivity {
         AddCustomer.addAddress = addAddress;
     }
 
-    public static void setAddress(Address address) {
-        AddCustomer.address = address;
+    public static void setsAddress(Address sAddress) {
+        AddCustomer.sAddress = sAddress;
+    }
+
+
+    public static boolean isAddAddress() {
+        return addAddress;
+    }
+
+    public static Address getsAddress() {
+        return sAddress;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         if (addAddress) {
+            String houseNum, block, level, building, streetName, garden,
+                    area, city, postCode, state;
+
+            houseNum = sAddress.getHouseNumber();
+            block = sAddress.getBlock();
+            level = sAddress.getLevel();
+            building = sAddress.getBuilding();
+            streetName = sAddress.getStreetName();
+            garden = sAddress.getGarden();
+            area = sAddress.getArea();
+            city = sAddress.getCity();
+            postCode = sAddress.getPostCode();
+            state = sAddress.getState();
+
             String formatedAddress = "";
+
+            if (!block.equalsIgnoreCase("")) {
+                block = "Block: " + block + " , ";
+            }
+            if (!level.equalsIgnoreCase("")) {
+                level = "Level: " + level + " , ";
+            }
+            if (!building.equalsIgnoreCase("")) {
+                building = "Condo / Building: " + building + " , ";
+            }
+            if (!city.equalsIgnoreCase("")) {
+                city = city + " , ";
+            }
+            if (!garden.equalsIgnoreCase("")) {
+                garden = garden + " , ";
+            }
+            formatedAddress = block + level + building + " House number " + houseNum + " , " + streetName + " , " + garden + area + city + postCode + " , " + state;
             addSign.setVisibility(View.INVISIBLE);
             mAddress.setText(formatedAddress);
         }
@@ -174,7 +225,13 @@ public class AddCustomer extends AppCompatActivity {
         return new String(cArr);
     }
 
+    public void openAddress(View view) {
+        Intent intent = new Intent(AddCustomer.this, AddAddress.class);
+        startActivity(intent);
+    }
+
     public void back(View view) {
         super.onBackPressed();
+        finish();
     }
 }
