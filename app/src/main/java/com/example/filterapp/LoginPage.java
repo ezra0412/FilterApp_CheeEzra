@@ -49,6 +49,8 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginPage extends AppCompatActivity {
     EditText mEmail, mPassword;
@@ -184,13 +186,13 @@ public class LoginPage extends AppCompatActivity {
         String message;
 
         message = "A new staff had signed up at " + formatter.format(dt) + ". Here are all the details about this staff:\n\n"
-                + "First Name: " + staffDetails.getfName() + "\n"
-                + "Last Name: " + staffDetails.getlName() + "\n"
-                + "Email: " + staffEmail + "\n"
-                + "Mobile: " + staffDetails.getMobile() + "\n"
-                + "Branch: " + staffDetails.getBranch() + "\n"
-                + "Position: " + staffDetails.getPosition() + "\n\n"
-                + "If not an staff that you recognize please remove it through the admin account.";
+                + "\tFirst Name: " + staffDetails.getfName() + "\n"
+                + "\tLast Name: " + staffDetails.getlName() + "\n"
+                + "\tEmail: " + staffEmail + "\n"
+                + "\tMobile: " + staffDetails.getMobile() + "\n"
+                + "\tBranch: " + staffDetails.getBranch() + "\n"
+                + "\tPosition: " + staffDetails.getPosition() + "\n\n"
+                + "If not an staff that you recognize please remove it through the admin page.";
 
 
         JavaMailAPI javaMailAPI = new JavaMailAPI(this, adminEmail,
@@ -210,20 +212,20 @@ public class LoginPage extends AppCompatActivity {
         String message;
 
         message = "Dear " + staffDetails.getfName() + ",\n"
-                + "You had sign up as a XXX's staff at during " + formatter.format(dt) + ". Here are all the details about your sign up:\n\n"
-                + "First Name: " + staffDetails.getfName() + "\n"
-                + "Last Name: " + staffDetails.getlName() + "\n"
-                + "Email: " + email + "\n"
-                + "Mobile: " + staffDetails.getMobile() + "\n"
-                + "Branch: " + staffDetails.getBranch() + "\n"
-                + "Position: " + staffDetails.getPosition() + "\n\n"
-                + "Please report to the admin if there's any mistake. Thank you and have a nice day.\n\n"
+                + "\tYou had sign up as a Ashita's staff at during " + formatter.format(dt) + ". Here are all the details about your sign up:\n\n"
+                + "\t\tFirst Name: " + staffDetails.getfName() + "\n"
+                + "\t\tLast Name: " + staffDetails.getlName() + "\n"
+                + "\t\tEmail: " + email + "\n"
+                + "\t\tMobile: " + staffDetails.getMobile() + "\n"
+                + "\t\tBranch: " + staffDetails.getBranch() + "\n"
+                + "\t\tPosition: " + staffDetails.getPosition() + "\n\n"
+                + "\tPlease report to the admin if there's any mistake. Thank you and have a nice day.\n\n"
                 + "Regards,\n"
-                + "XXX ";
+                + "Ashita ";
 
 
         JavaMailAPI javaMailAPI = new JavaMailAPI(this, email,
-                "Sign Up Details", message);
+                "Sign up details", message);
 
         javaMailAPI.execute();
     }
@@ -408,6 +410,36 @@ public class LoginPage extends AppCompatActivity {
                 //User enter all the details correctly and is allowed to sign up
                 if (signUpAllow) {
                     closeKeyboard();
+
+                    Map<String, String> dummyData = new HashMap<>();
+                    dummyData.put("placeHolder", "dummyData");
+
+                    Map<String, Object> notification = new HashMap<>();
+                    notification.put("newSignUpEmail", true);
+                    notification.put("adminPasswordChangeEmail", true);
+                    notification.put("verificationPasswordChangeEmail", true);
+                    notification.put("companyEmailDetailsChangeEmail", true);
+                    notification.put("startDriveEmailEmail", true);
+                    notification.put("moneyWithdrawEmail", true);
+                    notification.put("servicedEmail", true);
+                    notification.put("newFilterEmail", true);
+                    notification.put("positionChangeEmail", true);
+                    notification.put("email", sEmail);
+
+                    if (staffDetails.getPosition().equalsIgnoreCase("admin")) {
+                        DocumentReference upDatePosition = db.collection("adminDetails").document("adminList")
+                                .collection("notificationPreference").document(mAuth.getCurrentUser().getUid());
+                        upDatePosition.set(notification);
+                    } else if (staffDetails.getPosition().equalsIgnoreCase("sales")) {
+                        DocumentReference upDatePosition = db.collection("staffDetails").document("sales")
+                                .collection("sales").document(mAuth.getCurrentUser().getUid());
+                        upDatePosition.set(dummyData);
+                    } else {
+                        DocumentReference upDatePosition = db.collection("staffDetails").document("technician")
+                                .collection("technician").document(mAuth.getCurrentUser().getUid());
+                        upDatePosition.set(dummyData);
+                    }
+
                     DocumentReference staffDetailsDB = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid());
                     staffDetailsDB.set(staffDetails)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {

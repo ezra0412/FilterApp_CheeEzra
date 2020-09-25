@@ -23,4 +23,24 @@
         <item>0</item>
         <item>@drawable/ic_logout</item>
     </array>
+
+    <string-array name="adminMenu">
+        <item>Notification</item>
+        <item>Cash In Store</item>
+        <item>Change Password</item>
+        <item>Manage Staff</item>
+        <item>Mange Customer</item>
+        <item>0</item>
+        <item>Back</item>
+    </string-array>
+
+    <array name="adminMenuIcons">
+        <item>@drawable/ic_notifications</item>
+        <item>@drawable/ic_commission</item>
+        <item>@drawable/show_password_icon</item>
+        <item>@drawable/ic_staff</item>
+        <item>@drawable/ic_customer_details</item>
+        <item>0</item>
+        <item>@drawable/ic_logout</item>
+    </array>
 </resources>

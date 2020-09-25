@@ -40,14 +40,19 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignUp extends AppCompatActivity {
     boolean showPasswordB = false;
@@ -484,14 +489,48 @@ public class SignUp extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
 
+                            Map<String, String> dummyData = new HashMap<>();
+                            dummyData.put("placeHolder", "dummyData");
+
+                            Map<String, Object> notification = new HashMap<>();
+                            notification.put("newSignUpEmail", true);
+                            notification.put("adminPasswordChangeEmail", true);
+                            notification.put("verificationPasswordChangeEmail", true);
+                            notification.put("companyEmailDetailsChangeEmail", true);
+                            notification.put("startDriveEmailEmail", true);
+                            notification.put("moneyWithdrawEmail", true);
+                            notification.put("servicedEmail", true);
+                            notification.put("newFilterEmail", true);
+                            notification.put("positionChangeEmail", true);
+                            notification.put("email", email);
+
+                            if (staffDetails.getPosition().equalsIgnoreCase("admin")) {
+                                DocumentReference upDatePosition = db.collection("adminDetails").document("adminList")
+                                        .collection("notificationPreference").document(mAuth.getCurrentUser().getUid());
+                                upDatePosition.set(notification);
+                            } else if (staffDetails.getPosition().equalsIgnoreCase("sales")) {
+                                DocumentReference upDatePosition = db.collection("staffDetails").document("sales")
+                                        .collection("sales").document(mAuth.getCurrentUser().getUid());
+                                upDatePosition.set(dummyData);
+                            } else {
+                                DocumentReference upDatePosition = db.collection("staffDetails").document("technician")
+                                        .collection("technician").document(mAuth.getCurrentUser().getUid());
+                                upDatePosition.set(dummyData);
+                            }
+
                             //Get the admin email and then send the notice email to the admin
-                            DocumentReference getEmail = db.collection("adminDetails").document("loginDetails");
-                            getEmail.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            CollectionReference adminEmails = db.collection("adminDetails").document("adminList").collection("notificationPreference");
+                            adminEmails.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                 @Override
-                                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                    sendMailToAdmin(documentSnapshot.getString("adminEmail"), email);
+                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                    for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                                        if (documentSnapshot.getBoolean("newSignUpEmail")) {
+                                            sendMailToAdmin(documentSnapshot.getString("email"), email);
+                                        }
+                                    }
                                 }
                             });
+
                             //Send the notice email to the staff
                             sendMailToStaff(email);
 
@@ -527,13 +566,13 @@ public class SignUp extends AppCompatActivity {
         String message;
 
         message = "A new staff had signed up at " + formatter.format(dt) + ". Here are all the details about this staff:\n\n"
-                + "First Name: " + staffDetails.getfName() + "\n"
-                + "Last Name: " + staffDetails.getlName() + "\n"
-                + "Email: " + staffEmail + "\n"
-                + "Mobile: " + staffDetails.getMobile() + "\n"
-                + "Branch: " + staffDetails.getBranch() + "\n"
-                + "Position: " + staffDetails.getPosition() + "\n\n"
-                + "If not an staff that you recognize please remove it through the admin account.";
+                + "\tFirst Name: " + staffDetails.getfName() + "\n"
+                + "\tLast Name: " + staffDetails.getlName() + "\n"
+                + "\tEmail: " + staffEmail + "\n"
+                + "\tMobile: " + staffDetails.getMobile() + "\n"
+                + "\tBranch: " + staffDetails.getBranch() + "\n"
+                + "\tPosition: " + staffDetails.getPosition() + "\n\n"
+                + "If not an staff that you recognize please remove it through the admin page.";
 
 
         JavaMailAPI javaMailAPI = new JavaMailAPI(this, adminEmail,
@@ -553,16 +592,16 @@ public class SignUp extends AppCompatActivity {
         String message;
 
         message = "Dear " + staffDetails.getfName() + ",\n"
-                + "You had sign up as a XXX's staff at during " + formatter.format(dt) + ". Here are all the details about your sign up:\n\n"
-                + "First Name: " + staffDetails.getfName() + "\n"
-                + "Last Name: " + staffDetails.getlName() + "\n"
-                + "Email: " + email + "\n"
-                + "Mobile: " + staffDetails.getMobile() + "\n"
-                + "Branch: " + staffDetails.getBranch() + "\n"
-                + "Position: " + staffDetails.getPosition() + "\n\n"
-                + "Please report to the admin if there's any mistake. Thank you and have a nice day.\n\n"
+                + "\tYou had sign up as a Ashita's staff at during " + formatter.format(dt) + ". Here are all the details about your sign up:\n\n"
+                + "\t\tFirst Name: " + staffDetails.getfName() + "\n"
+                + "\t\tLast Name: " + staffDetails.getlName() + "\n"
+                + "\t\tEmail: " + email + "\n"
+                + "\t\tMobile: " + staffDetails.getMobile() + "\n"
+                + "\t\tBranch: " + staffDetails.getBranch() + "\n"
+                + "\t\tPosition: " + staffDetails.getPosition() + "\n\n"
+                + "\tPlease report to the admin if there's any mistake. Thank you and have a nice day.\n\n"
                 + "Regards,\n"
-                + "XXX ";
+                + "Ashita ";
 
 
         JavaMailAPI javaMailAPI = new JavaMailAPI(this, email,
@@ -751,17 +790,51 @@ public class SignUp extends AppCompatActivity {
                 //User enter all the details correctly and is allowed to sign up
                 if (signUpAllow) {
                     closeKeyboard();
+
+                    Map<String, String> dummyData = new HashMap<>();
+                    dummyData.put("placeHolder", "dummyData");
+
+                    Map<String, Object> notification = new HashMap<>();
+                    notification.put("newSignUpEmail", true);
+                    notification.put("adminPasswordChangeEmail", true);
+                    notification.put("verificationPasswordChangeEmail", true);
+                    notification.put("companyEmailDetailsChangeEmail", true);
+                    notification.put("startDriveEmailEmail", true);
+                    notification.put("moneyWithdrawEmail", true);
+                    notification.put("servicedEmail", true);
+                    notification.put("newFilterEmail", true);
+                    notification.put("positionChangeEmail", true);
+                    notification.put("email", sEmail);
+
+                    if (staffDetails.getPosition().equalsIgnoreCase("admin")) {
+                        DocumentReference upDatePosition = db.collection("adminDetails").document("adminList")
+                                .collection("notificationPreference").document(mAuth.getCurrentUser().getUid());
+                        upDatePosition.set(notification);
+                    } else if (staffDetails.getPosition().equalsIgnoreCase("sales")) {
+                        DocumentReference upDatePosition = db.collection("staffDetails").document("sales")
+                                .collection("sales").document(mAuth.getCurrentUser().getUid());
+                        upDatePosition.set(dummyData);
+                    } else {
+                        DocumentReference upDatePosition = db.collection("staffDetails").document("technician")
+                                .collection("technician").document(mAuth.getCurrentUser().getUid());
+                        upDatePosition.set(dummyData);
+                    }
+
                     DocumentReference staffDetailsDB = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid());
                     staffDetailsDB.set(staffDetails)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    DocumentReference getEmail = db.collection("adminDetails").document("loginDetails");
-
-                                    getEmail.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                    //Get the admin email and then send the notice email to the admin
+                                    CollectionReference adminEmails = db.collection("adminDetails").document("adminList").collection("notificationPreference");
+                                    adminEmails.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                         @Override
-                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                            sendMailToAdmin(documentSnapshot.getString("adminEmail"), sEmail);
+                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                            for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                                                if (documentSnapshot.getBoolean("newSignUpEmail")) {
+                                                    sendMailToAdmin(documentSnapshot.getString("email"), sEmail);
+                                                }
+                                            }
                                         }
                                     });
 

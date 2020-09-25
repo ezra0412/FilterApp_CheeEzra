@@ -192,6 +192,8 @@ public class AddCustomer extends AppCompatActivity {
                             Toast.makeText(AddCustomer.this, "Customer detail updated", Toast.LENGTH_SHORT).show();
                         else
                             Toast.makeText(AddCustomer.this, "Customer added", Toast.LENGTH_SHORT).show();
+
+                        sAddress = new Address();
                         Intent intent = new Intent(AddCustomer.this, CustomerDetail.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.putExtra("customerID", documentID);

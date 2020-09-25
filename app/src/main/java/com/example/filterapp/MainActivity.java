@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     TabItem generateQR, scanQR;
     ViewPager viewPager;
 
+    public static boolean verfiedAdmin = false;
     public static int positionCode = 3;
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -416,6 +417,9 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                         if (password.equals(documentSnapshot.getString("verificationPassword"))) {
                             Toast.makeText(MainActivity.this, "Admin verification successfully", Toast.LENGTH_SHORT).show();
                             adminDialog.dismiss();
+                            Intent intent = new Intent(MainActivity.this, AdminPage.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
                         } else {
                             Toast.makeText(MainActivity.this, "Admin verification failed", Toast.LENGTH_SHORT).show();
                             adminDialog.dismiss();
@@ -484,5 +488,13 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
     public static void setPositionCode(int positionCode) {
         MainActivity.positionCode = positionCode;
+    }
+
+    public static boolean isVerfiedAdmin() {
+        return verfiedAdmin;
+    }
+
+    public static void setVerfiedAdmin(boolean verfiedAdmin) {
+        MainActivity.verfiedAdmin = verfiedAdmin;
     }
 }

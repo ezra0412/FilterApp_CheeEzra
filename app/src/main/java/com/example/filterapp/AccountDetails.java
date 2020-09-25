@@ -37,18 +37,26 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.example.filterapp.MainActivity.getPositionCode;
+import static com.example.filterapp.MainActivity.setPositionCode;
 
 public class AccountDetails extends AppCompatActivity {
     boolean showPasswordPU = false;
@@ -57,7 +65,9 @@ public class AccountDetails extends AppCompatActivity {
     boolean showPassword2PPU = false;
     boolean showPasswordPIC = false;
     int selected = 0;
+
     String emailCU, passwordCU;
+    String oldPosition;
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -595,6 +605,126 @@ public class AccountDetails extends AppCompatActivity {
         user.put("branch", branch);
         user.put("position", position);
 
+        Map<String, String> dummyData = new HashMap<>();
+        dummyData.put("placeHolder", "dummyData");
+
+        Map<String, Object> notification = new HashMap<>();
+        notification.put("newSignUpEmail", true);
+        notification.put("adminPasswordChangeEmail", true);
+        notification.put("verificationPasswordChangeEmail", true);
+        notification.put("companyEmailDetailsChangeEmail", true);
+        notification.put("startDriveEmailEmail", true);
+        notification.put("moneyWithdrawEmail", true);
+        notification.put("servicedEmail", true);
+        notification.put("newFilterEmail", true);
+        notification.put("positionChangeEmail", true);
+        notification.put("email", mAuth.getCurrentUser().getEmail());
+
+        switch (getPositionCode()) {
+            case 1: {
+                if (!position.equalsIgnoreCase("admin")) {
+                    oldPosition = "Admin";
+                    if (position.equalsIgnoreCase("sales")) {
+                        setPositionCode(2);
+                        DocumentReference upDatePosition = db.collection("staffDetails").document("sales")
+                                .collection("sales").document(mAuth.getCurrentUser().getUid());
+                        upDatePosition.set(dummyData);
+                    } else {
+                        setPositionCode(3);
+                        DocumentReference upDatePosition = db.collection("staffDetails").document("technician")
+                                .collection("technician").document(mAuth.getCurrentUser().getUid());
+                        upDatePosition.set(dummyData);
+                    }
+                    DocumentReference deletePosition = db.collection("adminDetails").document("adminList")
+                            .collection("notificationPreference").document(mAuth.getCurrentUser().getUid());
+                    deletePosition.delete();
+
+                    CollectionReference adminEmails = db.collection("adminDetails").document("adminList").collection("notificationPreference");
+                    adminEmails.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                                if (documentSnapshot.getBoolean("positionChangeEmail")) {
+                                    positionChange(documentSnapshot.getString("email"));
+                                }
+                            }
+                        }
+                    });
+
+                }
+                break;
+            }
+
+            case 2: {
+                if (!position.equalsIgnoreCase("sales")) {
+                    oldPosition = "Sales";
+                    if (position.equalsIgnoreCase("admin")) {
+                        setPositionCode(1);
+                        DocumentReference upDatePosition = db.collection("adminDetails").document("adminList")
+                                .collection("notificationPreference").document(mAuth.getCurrentUser().getUid());
+                        upDatePosition.set(notification);
+
+                    } else {
+                        setPositionCode(3);
+                        DocumentReference upDatePosition = db.collection("staffDetails").document("technician")
+                                .collection("technician").document(mAuth.getCurrentUser().getUid());
+                        upDatePosition.set(dummyData);
+                    }
+                    DocumentReference deletePosition = db.collection("staffDetails").document("sales")
+                            .collection("sales").document(mAuth.getCurrentUser().getUid());
+                    deletePosition.delete();
+
+                    CollectionReference adminEmails = db.collection("adminDetails").document("adminList").collection("notificationPreference");
+                    adminEmails.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                                if (documentSnapshot.getBoolean("positionChangeEmail")) {
+                                    positionChange(documentSnapshot.getString("email"));
+                                }
+                            }
+                        }
+                    });
+                }
+                break;
+            }
+
+            case 3: {
+                if (!position.equalsIgnoreCase("technician")) {
+                    oldPosition = "Technician";
+                    if (position.equalsIgnoreCase("admin")) {
+                        setPositionCode(1);
+                        DocumentReference upDatePosition = db.collection("adminDetails").document("adminList")
+                                .collection("notificationPreference").document(mAuth.getCurrentUser().getUid());
+                        upDatePosition.set(notification);
+
+                    } else {
+                        setPositionCode(2);
+                        DocumentReference upDatePosition = db.collection("staffDetails").document("sales")
+                                .collection("sales").document(mAuth.getCurrentUser().getUid());
+                        upDatePosition.set(dummyData);
+                    }
+                    DocumentReference deletePosition = db.collection("staffDetails").document("technician")
+                            .collection("technician").document(mAuth.getCurrentUser().getUid());
+                    deletePosition.delete();
+
+                    CollectionReference adminEmails = db.collection("adminDetails").document("adminList").collection("notificationPreference");
+                    adminEmails.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                                if (documentSnapshot.getBoolean("positionChangeEmail")) {
+                                    positionChange(documentSnapshot.getString("email"));
+                                }
+                            }
+                        }
+                    });
+
+                }
+                break;
+            }
+        }
+
         DocumentReference staffDetailsDB = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid());
         staffDetailsDB.update(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -723,12 +853,15 @@ public class AccountDetails extends AppCompatActivity {
                             changePasswordDialog.show();
                             checkUserDialog.dismiss();
                         } else if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                            checkUserDialog.dismiss();
+                            passwordChangeFailed();
                             mAuth.signOut();
                             startActivity(new Intent(AccountDetails.this, LoginPage.class));
                             Toast.makeText(AccountDetails.this, "Wrong password, signed out", Toast.LENGTH_LONG).show();
                             finish();
                         } else if (task.getException() instanceof FirebaseAuthInvalidUserException) {
                             checkUserDialog.dismiss();
+                            passwordChangeFailed();
                             mAuth.signOut();
                             startActivity(new Intent(AccountDetails.this, LoginPage.class));
                             Toast.makeText(AccountDetails.this, "Invalid user, signed out", Toast.LENGTH_LONG).show();
@@ -829,6 +962,7 @@ public class AccountDetails extends AppCompatActivity {
                             user2.updatePassword(password).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
+                                    passwordChange();
                                     Toast.makeText(AccountDetails.this, "Password update successfully", Toast.LENGTH_LONG).show();
                                     changePasswordDialog.dismiss();
                                 }
@@ -886,5 +1020,55 @@ public class AccountDetails extends AppCompatActivity {
             InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    public void passwordChange() {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss ");
+        Date dt = new Date();
+        String message;
+
+        message = "Dear " + mFName.getText().toString().trim() + ",\n"
+                + "\tYour password has successfully being changed at " + formatter.format(dt) + ". If this is not an action that you recognize, please login "
+                + "to your account and change your password immediately.\n\n"
+                + "\tPlease report to the admin if there's any mistake. Thank you and have a nice day.\n\n"
+                + "Regards,\n"
+                + "Ashita";
+        JavaMailAPI javaMailAPI = new JavaMailAPI(this, mEmail.getText().toString().trim(),
+                "Password Changed", message);
+
+        javaMailAPI.execute();
+    }
+
+    public void passwordChangeFailed() {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss ");
+        Date dt = new Date();
+        String message;
+
+        message = "Dear " + mFName.getText().toString().trim() + ",\n"
+                + "\tSomeone attempted to change your password at" + formatter.format(dt) + ". If this is not an action that you recognize, please login "
+                + "to your account and change your password immediately.\n\n"
+                + "\tPlease report to the admin if there's any mistake. Thank you and have a nice day.\n\n"
+                + "Regards,\n"
+                + "Ashita";
+
+        JavaMailAPI javaMailAPI = new JavaMailAPI(this, mEmail.getText().toString().trim(),
+                "Attempt to change password", message);
+
+        javaMailAPI.execute();
+    }
+
+    public void positionChange(String email) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss ");
+        Date dt = new Date();
+        String message;
+
+        message = mFName.getText().toString().trim() + " " + mLName.getText().toString().trim() + " changed their position at" + formatter.format(dt) + ".\n\n"
+                + "\tFrom " + oldPosition + " -> " + mPosition.getText() + "\n\n"
+                + "Staff position can be updated directly from the admin pages.";
+
+        JavaMailAPI javaMailAPI = new JavaMailAPI(this, email,
+                "Position changed", message);
+
+        javaMailAPI.execute();
     }
 }
