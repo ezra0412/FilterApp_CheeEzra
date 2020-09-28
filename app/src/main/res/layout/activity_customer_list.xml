@@ -19,15 +19,11 @@
 
     <TextView
         android:id="@+id/tv_char_customerList"
-        style="@style/lable"
+        style="@style/label_big"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
-        android:fontFamily="@font/archivo_narrow_bold_italic"
         android:text="A"
-        android:textColor="@color/dark_green"
-        android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

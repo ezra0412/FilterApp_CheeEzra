@@ -42,5 +42,9 @@ public class StaffDetails extends UserDetails {
     public void setGoogle(boolean google) {
         Google = google;
     }
+
+    public String fullName() {
+        return getfName() + " " + getlName();
+    }
 }
 

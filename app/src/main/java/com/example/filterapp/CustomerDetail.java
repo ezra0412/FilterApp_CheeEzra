@@ -19,15 +19,24 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.Wave;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static com.example.filterapp.MainActivity.getPositionCode;
+import static com.example.filterapp.MainActivity.getStaffDetailsStatic;
 import static com.example.filterapp.MainActivity.isVerfiedAdmin;
 
 public class CustomerDetail extends AppCompatActivity {
@@ -39,7 +48,9 @@ public class CustomerDetail extends AppCompatActivity {
     boolean showPasswordPU = false;
     Boolean verified = false;
     Dialog loadingDialog;
-
+    CustomerDetails def = new CustomerDetails();
+    Address defAdd = new Address();
+    RequestQueue requestQueue;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +64,7 @@ public class CustomerDetail extends AppCompatActivity {
         customerID = getIntent().getStringExtra("customerID");
         adminDialog = new Dialog(this);
         loadingDialog = new Dialog(this);
+        requestQueue = Volley.newRequestQueue(this);
 
         if (getPositionCode() == 1)
             delete.setVisibility(View.VISIBLE);
@@ -69,6 +81,7 @@ public class CustomerDetail extends AppCompatActivity {
                 mEmail.setText(customerDetails.getEmail());
                 mMobile.setText(customerDetails.getMobile());
                 mNote.setText(customerDetails.getNote());
+                setCustomerDetails(customerDetails);
             }
         });
 
@@ -80,8 +93,28 @@ public class CustomerDetail extends AppCompatActivity {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Address address = documentSnapshot.toObject(Address.class);
                 mAddress.setText(address.formatedAddress());
+                setAddress(address);
             }
         });
+    }
+
+    private void setAddress(Address address) {
+        defAdd = address;
+    }
+
+    private void setCustomerDetails(CustomerDetails customerDetails) {
+        def = customerDetails;
+    }
+
+    public void locate(View view) {
+        Intent GpsPage = new Intent(CustomerDetail.this, GPS.class);
+        GpsPage.putExtra("lan", defAdd.getLan());
+        GpsPage.putExtra("lon", defAdd.getLon());
+        GpsPage.putExtra("name", def.fullName());
+        GpsPage.putExtra("mobile", def.getMobile());
+        GpsPage.putExtra("address", defAdd.formatedAddress());
+        GpsPage.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(GpsPage);
     }
 
     public void back(View view) {
@@ -97,7 +130,6 @@ public class CustomerDetail extends AppCompatActivity {
         intent.putExtra("customerID", customerID);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
-        finish();
     }
 
     public void delete(View view) {
@@ -122,6 +154,17 @@ public class CustomerDetail extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void aVoid) {
                             loadingDialog.dismiss();
+                            CollectionReference adminEmails = db.collection("adminDetails").document("adminList").collection("notificationPreference");
+                            adminEmails.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                @Override
+                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                    for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                                        if (documentSnapshot.getBoolean("positionChangeEmail")) {
+                                            deleteCustomerEmail(documentSnapshot.getString("email"));
+                                        }
+                                    }
+                                }
+                            });
                             Toast.makeText(CustomerDetail.this, "Customer details deleted", Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(CustomerDetail.this, CustomerList.class);
                             intent.putExtra("chosenOption", customerID.substring(0, 1));
@@ -136,12 +179,7 @@ public class CustomerDetail extends AppCompatActivity {
                             Toast.makeText(CustomerDetail.this, "Fail to delete customer details", Toast.LENGTH_LONG).show();
                         }
                     });
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    loadingDialog.dismiss();
-                    Toast.makeText(CustomerDetail.this, "Fail to delete customer details", Toast.LENGTH_LONG).show();
+
                 }
             });
         } else {
@@ -225,6 +263,14 @@ public class CustomerDetail extends AppCompatActivity {
                                             @Override
                                             public void onSuccess(Void aVoid) {
                                                 loadingDialog.dismiss();
+
+                                                getAdminEmail();
+
+                                                String title = "Customer Deleted";
+                                                String body = def.fullName() + " is being deleted by " + getStaffDetailsStatic().fullName() + ".";
+                                                AppNotification sendAppNotification = new AppNotification();
+                                                requestQueue.add(sendAppNotification.sendNotification("customerDeleted", title, body));
+
                                                 Toast.makeText(CustomerDetail.this, "Customer details deleted", Toast.LENGTH_LONG).show();
                                                 Intent intent = new Intent(CustomerDetail.this, CustomerList.class);
                                                 intent.putExtra("chosenOption", customerID.substring(0, 1));
@@ -258,6 +304,42 @@ public class CustomerDetail extends AppCompatActivity {
             });
             adminDialog.show();
         }
+
+    }
+
+    private void getAdminEmail() {
+        CollectionReference adminEmails = db.collection("adminDetails").document("adminList").collection("emailNotificationPreference");
+        adminEmails.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                    if (documentSnapshot.getBoolean("customerDeleted")) {
+                        deleteCustomerEmail(documentSnapshot.getString("email"));
+                    }
+                }
+            }
+        });
+    }
+
+    private void deleteCustomerEmail(String email) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss ");
+        Date dt = new Date();
+        String message;
+
+        message = def.fullName() + " is being deleted by admin " + getStaffDetailsStatic().fullName() + " at " + formatter.format(dt) + ".\n\n"
+                + "------Customer Details------\n"
+                + "Name: " + def.fullName() + "\n"
+                + "Mobile: " + def.getMobile() + "\n"
+                + "Email: " + def.getEmail() + "\n"
+                + "Address: \n"
+                + defAdd.formatedAddress() + "\n"
+                + "Note: \n"
+                + def.getNote();
+
+        JavaMailAPI javaMailAPI = new JavaMailAPI(this, email,
+                "Customer Deleted", message);
+
+        javaMailAPI.execute();
 
     }
 

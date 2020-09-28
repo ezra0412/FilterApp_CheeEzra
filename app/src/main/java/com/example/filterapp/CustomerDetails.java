@@ -6,6 +6,7 @@ public class CustomerDetails extends UserDetails {
     String email;
     String note;
 
+
     public CustomerDetails() {
         this("", "", "", "", "");
     }
@@ -35,7 +36,5 @@ public class CustomerDetails extends UserDetails {
     public String fullName() {
         return getfName() + " " + getlName();
     }
-
-
 
 }

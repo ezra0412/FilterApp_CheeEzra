@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -28,7 +29,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class AddCustomer extends AppCompatActivity {
     EditText mFName, mLName, mEmail, mMobile, mNote;
-    TextView mAddress;
+    TextView mAddress, title;
+    Button btAdd;
     ImageView addSign;
     static boolean addAddress = false;
     static Address sAddress = new Address();
@@ -37,6 +39,7 @@ public class AddCustomer extends AppCompatActivity {
     String documentCollection, documentID;
     String customerID = "";
     Dialog loadingDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +52,8 @@ public class AddCustomer extends AppCompatActivity {
         mNote = findViewById(R.id.et_note_addCustomer);
         mAddress = findViewById(R.id.tv_address_addCustomer);
         addSign = findViewById(R.id.img_addSign_addCustomer);
-
+        title = findViewById(R.id.tv_title_addCustomer);
+        btAdd = findViewById(R.id.bt_add_AddCustomer);
         loadingDialog = new Dialog(this);
 
         customerID = getIntent().getStringExtra("customerID");
@@ -60,12 +64,17 @@ public class AddCustomer extends AppCompatActivity {
             userDetails.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    title.setText("Customer Details");
+                    btAdd.setText("Update Customer Details");
                     CustomerDetails customerDetails = documentSnapshot.toObject(CustomerDetails.class);
                     mFName.setText(customerDetails.getfName());
                     mLName.setText(customerDetails.getlName());
                     mEmail.setText(customerDetails.getEmail());
                     mMobile.setText(customerDetails.getMobile());
                     mNote.setText(customerDetails.getNote());
+                    mFName.setEnabled(false);
+                    mLName.setEnabled(false);
+                    mMobile.setEnabled(false);
                 }
             });
 
@@ -193,7 +202,6 @@ public class AddCustomer extends AppCompatActivity {
                         else
                             Toast.makeText(AddCustomer.this, "Customer added", Toast.LENGTH_SHORT).show();
 
-                        sAddress = new Address();
                         Intent intent = new Intent(AddCustomer.this, CustomerDetail.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.putExtra("customerID", documentID);
@@ -284,5 +292,12 @@ public class AddCustomer extends AppCompatActivity {
     public void back(View view) {
         super.onBackPressed();
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        sAddress = new Address();
+        addAddress = false;
     }
 }

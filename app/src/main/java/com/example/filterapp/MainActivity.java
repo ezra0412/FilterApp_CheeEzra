@@ -86,11 +86,13 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private static final int account = 0;
     private static final int addCustomer = 1;
     private static final int customerDetails = 2;
-    private static final int stock = 3;
+    private static final int GPS = 3;
     private static final int commission = 4;
     private static final int faq = 5;
     private static final int tnc = 6;
     private static final int logout = 8;
+
+    public static StaffDetails staffDetailsStatic = new StaffDetails();
 
     GoogleSignInClient mGoogleSignInClient;
 
@@ -151,6 +153,8 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 name.setText(documentSnapshot.getString("fName"));
                 branch.setText(documentSnapshot.getString("branch"));
                 position.setText(documentSnapshot.getString("position"));
+                setPositionCodeDB(documentSnapshot.getString("position"));
+                setStaffDetailsStatic(documentSnapshot.toObject(StaffDetails.class));
             }
         });
 
@@ -183,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 createItemFor(account),
                 createItemFor(addCustomer),
                 createItemFor(customerDetails),
-                createItemFor(stock),
+                createItemFor(GPS),
                 createItemFor(commission),
                 createItemFor(faq),
                 createItemFor(tnc),
@@ -256,8 +260,16 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 customerDetailsPage.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(customerDetailsPage);
                 break;
-            case stock:
-                Toast.makeText(this, "Stock", Toast.LENGTH_LONG).show();
+            case GPS:
+                Intent GpsPage = new Intent(MainActivity.this, GPS.class);
+                GpsPage.putExtra("lan", "non");
+                GpsPage.putExtra("lon", "non");
+                GpsPage.putExtra("name", "non");
+                GpsPage.putExtra("mobile", "non");
+                GpsPage.putExtra("address", "non");
+                GpsPage.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(GpsPage);
+                break;
 
             case commission:
                 Toast.makeText(this, "Commission", Toast.LENGTH_LONG).show();
@@ -463,6 +475,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 branch.setText(documentSnapshot.getString("branch"));
                 position.setText(documentSnapshot.getString("position"));
                 setPositionCodeDB(documentSnapshot.getString("position"));
+                setStaffDetailsStatic(documentSnapshot.toObject(StaffDetails.class));
             }
         });
 
@@ -496,5 +509,13 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
     public static void setVerfiedAdmin(boolean verfiedAdmin) {
         MainActivity.verfiedAdmin = verfiedAdmin;
+    }
+
+    public static StaffDetails getStaffDetailsStatic() {
+        return staffDetailsStatic;
+    }
+
+    public static void setStaffDetailsStatic(StaffDetails staffDetailsStatic) {
+        MainActivity.staffDetailsStatic = staffDetailsStatic;
     }
 }

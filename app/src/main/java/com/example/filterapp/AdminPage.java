@@ -94,7 +94,8 @@ public class AdminPage extends AppCompatActivity implements DrawerAdapter.OnItem
     public void onItemSelected(int position) {
         switch (position) {
             case notification:
-                Toast.makeText(this, "notification", Toast.LENGTH_LONG).show();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fl_adminPage,
+                        new NotificationFragment()).commit();
                 break;
 
             case changePassword:
@@ -113,6 +114,7 @@ public class AdminPage extends AppCompatActivity implements DrawerAdapter.OnItem
                 Intent manageCus = new Intent(AdminPage.this, Abcd.class);
                 manageCus.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(manageCus);
+
                 break;
 
             case back:

@@ -38,7 +38,7 @@
                 app:srcCompat="@drawable/back_button" />
 
             <TextView
-                android:id="@+id/textView80"
+                android:id="@+id/tv_title_addCustomer"
                 style="@style/top_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
                 app:layout_constraintTop_toTopOf="@+id/toolbar7" />
 
             <Button
-                android:id="@+id/button7"
+                android:id="@+id/bt_add_AddCustomer"
                 style="@style/button_long"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -82,8 +82,8 @@
                 android:ems="10"
                 android:inputType="textMultiLine"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/button7"
-                app:layout_constraintStart_toStartOf="@+id/button7"
+                app:layout_constraintEnd_toEndOf="@+id/bt_add_AddCustomer"
+                app:layout_constraintStart_toStartOf="@+id/bt_add_AddCustomer"
                 app:layout_constraintTop_toBottomOf="@+id/textView81"
                 app:layout_constraintVertical_bias="0.0" />
 

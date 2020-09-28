@@ -1,7 +1,6 @@
 package com.example.filterapp;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,7 +9,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -25,6 +23,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.Wave;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -42,10 +42,13 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -66,7 +69,7 @@ public class LoginPage extends AppCompatActivity {
     GoogleSignInClient mGoogleSignInClient;
     final static int RC_SIGN_IN = 234;
     StaffDetails staffDetails;
-
+    RequestQueue requestQueue;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +83,8 @@ public class LoginPage extends AppCompatActivity {
         positionDialog = new Dialog(this);
         loadingDialog = new Dialog(this);
         adminDialog = new Dialog(this);
+        requestQueue = Volley.newRequestQueue(this);
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -118,7 +123,7 @@ public class LoginPage extends AppCompatActivity {
 
         //Check if the email format is correct
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            mEmail.setError("Wrong email format");
+            mEmail.setError("Invalid email format");
             mEmail.requestFocus();
             return;
         }
@@ -192,7 +197,7 @@ public class LoginPage extends AppCompatActivity {
                 + "\tMobile: " + staffDetails.getMobile() + "\n"
                 + "\tBranch: " + staffDetails.getBranch() + "\n"
                 + "\tPosition: " + staffDetails.getPosition() + "\n\n"
-                + "If not an staff that you recognize please remove it through the admin page.";
+                + "If it's not an staff that you recognize please remove it through the admin page.";
 
 
         JavaMailAPI javaMailAPI = new JavaMailAPI(this, adminEmail,
@@ -211,7 +216,7 @@ public class LoginPage extends AppCompatActivity {
         Date dt = new Date();
         String message;
 
-        message = "Dear " + staffDetails.getfName() + ",\n"
+        message = "Dear " + staffDetails.getfName() + ",\n\n"
                 + "\tYou had sign up as a Ashita's staff at during " + formatter.format(dt) + ". Here are all the details about your sign up:\n\n"
                 + "\t\tFirst Name: " + staffDetails.getfName() + "\n"
                 + "\t\tLast Name: " + staffDetails.getlName() + "\n"
@@ -411,25 +416,47 @@ public class LoginPage extends AppCompatActivity {
                 if (signUpAllow) {
                     closeKeyboard();
 
+                    CollectionReference getEmail = db.collection("adminDetails").document("adminList")
+                            .collection("emailNotificationPreference");
+                    getEmail.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                                if (documentSnapshot.getBoolean("staffSignUp")) {
+                                    sendMailToAdmin(documentSnapshot.getString("email"), sEmail);
+                                }
+                            }
+                        }
+                    });
+
                     Map<String, String> dummyData = new HashMap<>();
                     dummyData.put("placeHolder", "dummyData");
 
-                    Map<String, Object> notification = new HashMap<>();
-                    notification.put("newSignUpEmail", true);
-                    notification.put("adminPasswordChangeEmail", true);
-                    notification.put("verificationPasswordChangeEmail", true);
-                    notification.put("companyEmailDetailsChangeEmail", true);
-                    notification.put("startDriveEmailEmail", true);
-                    notification.put("moneyWithdrawEmail", true);
-                    notification.put("servicedEmail", true);
-                    notification.put("newFilterEmail", true);
-                    notification.put("positionChangeEmail", true);
-                    notification.put("email", sEmail);
-
+                    EmailNotification emailNotification = new EmailNotification();
+                    emailNotification.setEmail(sEmail);
+                    AppNotification appNotification = new AppNotification();
                     if (staffDetails.getPosition().equalsIgnoreCase("admin")) {
+
+                        FirebaseMessaging.getInstance().subscribeToTopic("staffSignUp");
+                        FirebaseMessaging.getInstance().subscribeToTopic("changeBranch");
+                        FirebaseMessaging.getInstance().subscribeToTopic("changePosition");
+                        FirebaseMessaging.getInstance().subscribeToTopic("customerDeleted");
+                        FirebaseMessaging.getInstance().subscribeToTopic("staffStartNavigation");
+                        FirebaseMessaging.getInstance().subscribeToTopic("soldNewFilter");
+                        FirebaseMessaging.getInstance().subscribeToTopic("serviceDone");
+                        FirebaseMessaging.getInstance().subscribeToTopic("companyEmailDetailsChanged");
+                        FirebaseMessaging.getInstance().subscribeToTopic("adminVerificationPassChange");
+                        FirebaseMessaging.getInstance().subscribeToTopic("identityVerificationPassChange");
+                        FirebaseMessaging.getInstance().subscribeToTopic("moneyWithdraw");
+
                         DocumentReference upDatePosition = db.collection("adminDetails").document("adminList")
-                                .collection("notificationPreference").document(mAuth.getCurrentUser().getUid());
-                        upDatePosition.set(notification);
+                                .collection("emailNotificationPreference").document(mAuth.getCurrentUser().getUid());
+                        upDatePosition.set(emailNotification);
+
+                        DocumentReference upDatePositionApp = db.collection("adminDetails").document("adminList")
+                                .collection("appNotificationPreference").document(mAuth.getCurrentUser().getUid());
+                        upDatePositionApp.set(appNotification);
+
                     } else if (staffDetails.getPosition().equalsIgnoreCase("sales")) {
                         DocumentReference upDatePosition = db.collection("staffDetails").document("sales")
                                 .collection("sales").document(mAuth.getCurrentUser().getUid());
@@ -445,14 +472,11 @@ public class LoginPage extends AppCompatActivity {
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    DocumentReference getEmail = db.collection("adminDetails").document("loginDetails");
 
-                                    getEmail.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                            sendMailToAdmin(documentSnapshot.getString("adminEmail"), sEmail);
-                                        }
-                                    });
+                                    String title = "New Staff Sign Up";
+                                    String body = staffDetails.fullName() + " had signed up as " + staffDetails.getPosition() + ".";
+                                    AppNotification appNotificationSend = new AppNotification();
+                                    requestQueue.add(appNotificationSend.sendNotification("staffSignUp", title, body));
 
                                     sendMailToStaff(sEmail);
                                     Toast.makeText(LoginPage.this, "Signed up successfully", Toast.LENGTH_SHORT).show();

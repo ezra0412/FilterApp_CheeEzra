@@ -55,7 +55,7 @@ public class AddAddress extends AppCompatActivity {
         if (isAddAddress()) {
             String houseNum, block, level, building, streetName,
                     area, postCode, state;
-
+            title.setText("Edit Address");
             houseNum = sAddress.getHouseNumber();
             block = sAddress.getBlock();
             level = sAddress.getLevel();

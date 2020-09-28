@@ -25,6 +25,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.Wave;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -45,6 +47,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -56,7 +59,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.example.filterapp.MainActivity.getPositionCode;
+import static com.example.filterapp.MainActivity.getStaffDetailsStatic;
 import static com.example.filterapp.MainActivity.setPositionCode;
+import static com.example.filterapp.MainActivity.setStaffDetailsStatic;
+import static com.example.filterapp.MainActivity.staffDetailsStatic;
 
 public class AccountDetails extends AppCompatActivity {
     boolean showPasswordPU = false;
@@ -77,6 +83,9 @@ public class AccountDetails extends AppCompatActivity {
     ImageView pi;
     Dialog loadingDialog, branchDialog, positionDialog, adminDialog, changePasswordDialog, checkUserDialog;
 
+    RequestQueue requestQueue1;
+    RequestQueue requestQueue2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +104,9 @@ public class AccountDetails extends AppCompatActivity {
         mBranch = findViewById(R.id.tv_branch_accountDetails);
         mPosition = findViewById(R.id.tv_position_accountDetails);
         verify = findViewById(R.id.tv_verify_accountDetails);
+
+        requestQueue1 = Volley.newRequestQueue(this);
+        requestQueue2 = Volley.newRequestQueue(this);
 
 
         mEmail.setOnClickListener(new View.OnClickListener() {
@@ -608,17 +620,9 @@ public class AccountDetails extends AppCompatActivity {
         Map<String, String> dummyData = new HashMap<>();
         dummyData.put("placeHolder", "dummyData");
 
-        Map<String, Object> notification = new HashMap<>();
-        notification.put("newSignUpEmail", true);
-        notification.put("adminPasswordChangeEmail", true);
-        notification.put("verificationPasswordChangeEmail", true);
-        notification.put("companyEmailDetailsChangeEmail", true);
-        notification.put("startDriveEmailEmail", true);
-        notification.put("moneyWithdrawEmail", true);
-        notification.put("servicedEmail", true);
-        notification.put("newFilterEmail", true);
-        notification.put("positionChangeEmail", true);
-        notification.put("email", mAuth.getCurrentUser().getEmail());
+        EmailNotification emailNotification = new EmailNotification();
+        emailNotification.setEmail(mAuth.getCurrentUser().getEmail());
+        AppNotification appNotification = new AppNotification();
 
         switch (getPositionCode()) {
             case 1: {
@@ -629,7 +633,7 @@ public class AccountDetails extends AppCompatActivity {
                         DocumentReference upDatePosition = db.collection("staffDetails").document("sales")
                                 .collection("sales").document(mAuth.getCurrentUser().getUid());
                         upDatePosition.set(dummyData);
-                    } else {
+                    } else if (position.equalsIgnoreCase("technician")) {
                         setPositionCode(3);
                         DocumentReference upDatePosition = db.collection("staffDetails").document("technician")
                                 .collection("technician").document(mAuth.getCurrentUser().getUid());
@@ -639,17 +643,34 @@ public class AccountDetails extends AppCompatActivity {
                             .collection("notificationPreference").document(mAuth.getCurrentUser().getUid());
                     deletePosition.delete();
 
-                    CollectionReference adminEmails = db.collection("adminDetails").document("adminList").collection("notificationPreference");
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic("staffSignUp");
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic("changeBranch");
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic("changePosition");
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic("customerDeleted");
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic("staffStartNavigation");
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic("soldNewFilter");
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic("serviceDone");
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic("companyEmailDetailsChanged");
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic("adminVerificationPassChange");
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic("identityVerificationPassChange");
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic("moneyWithdraw");
+
+                    CollectionReference adminEmails = db.collection("adminDetails").document("adminList").collection("emailNotificationPreference");
                     adminEmails.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                         @Override
                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                             for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                                if (documentSnapshot.getBoolean("positionChangeEmail")) {
+                                if (documentSnapshot.getBoolean("changePosition")) {
                                     positionChange(documentSnapshot.getString("email"));
                                 }
                             }
                         }
                     });
+
+                    String title = "Staff Changed Position";
+                    String body = user.get("fName") + " " + user.get("lName") + " From " + oldPosition + " -> " + user.get("position");
+                    AppNotification sendAppNotification = new AppNotification();
+                    requestQueue1.add(sendAppNotification.sendNotification("changePosition", title, body));
 
                 }
                 break;
@@ -660,11 +681,29 @@ public class AccountDetails extends AppCompatActivity {
                     oldPosition = "Sales";
                     if (position.equalsIgnoreCase("admin")) {
                         setPositionCode(1);
-                        DocumentReference upDatePosition = db.collection("adminDetails").document("adminList")
-                                .collection("notificationPreference").document(mAuth.getCurrentUser().getUid());
-                        upDatePosition.set(notification);
 
-                    } else {
+                        FirebaseMessaging.getInstance().subscribeToTopic("staffSignUp");
+                        FirebaseMessaging.getInstance().subscribeToTopic("changeBranch");
+                        FirebaseMessaging.getInstance().subscribeToTopic("changePosition");
+                        FirebaseMessaging.getInstance().subscribeToTopic("customerDeleted");
+                        FirebaseMessaging.getInstance().subscribeToTopic("staffStartNavigation");
+                        FirebaseMessaging.getInstance().subscribeToTopic("soldNewFilter");
+                        FirebaseMessaging.getInstance().subscribeToTopic("serviceDone");
+                        FirebaseMessaging.getInstance().subscribeToTopic("companyEmailDetailsChanged");
+                        FirebaseMessaging.getInstance().subscribeToTopic("adminVerificationPassChange");
+                        FirebaseMessaging.getInstance().subscribeToTopic("identityVerificationPassChange");
+                        FirebaseMessaging.getInstance().subscribeToTopic("moneyWithdraw");
+
+                        DocumentReference upDatePosition = db.collection("adminDetails").document("adminList")
+                                .collection("emailNotificationPreference").document(mAuth.getCurrentUser().getUid());
+                        upDatePosition.set(emailNotification);
+
+
+                        DocumentReference upDatePositionApp = db.collection("adminDetails").document("adminList")
+                                .collection("appNotificationPreference").document(mAuth.getCurrentUser().getUid());
+                        upDatePositionApp.set(appNotification);
+
+                    } else if (position.equalsIgnoreCase("technician")) {
                         setPositionCode(3);
                         DocumentReference upDatePosition = db.collection("staffDetails").document("technician")
                                 .collection("technician").document(mAuth.getCurrentUser().getUid());
@@ -674,17 +713,22 @@ public class AccountDetails extends AppCompatActivity {
                             .collection("sales").document(mAuth.getCurrentUser().getUid());
                     deletePosition.delete();
 
-                    CollectionReference adminEmails = db.collection("adminDetails").document("adminList").collection("notificationPreference");
+                    CollectionReference adminEmails = db.collection("adminDetails").document("adminList").collection("emailNotificationPreference");
                     adminEmails.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                         @Override
                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                             for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                                if (documentSnapshot.getBoolean("positionChangeEmail")) {
+                                if (documentSnapshot.getBoolean("changePosition")) {
                                     positionChange(documentSnapshot.getString("email"));
                                 }
                             }
                         }
                     });
+
+                    String title = "Staff Changed Position";
+                    String body = user.get("fName") + " " + user.get("lName") + " From " + oldPosition + " -> " + user.get("position");
+                    AppNotification sendAppNotification = new AppNotification();
+                    requestQueue1.add(sendAppNotification.sendNotification("changePosition", title, body));
                 }
                 break;
             }
@@ -694,11 +738,30 @@ public class AccountDetails extends AppCompatActivity {
                     oldPosition = "Technician";
                     if (position.equalsIgnoreCase("admin")) {
                         setPositionCode(1);
+
+                        FirebaseMessaging.getInstance().subscribeToTopic("staffSignUp");
+                        FirebaseMessaging.getInstance().subscribeToTopic("changeBranch");
+                        FirebaseMessaging.getInstance().subscribeToTopic("changePosition");
+                        FirebaseMessaging.getInstance().subscribeToTopic("customerDeleted");
+                        FirebaseMessaging.getInstance().subscribeToTopic("staffStartNavigation");
+                        FirebaseMessaging.getInstance().subscribeToTopic("soldNewFilter");
+                        FirebaseMessaging.getInstance().subscribeToTopic("serviceDone");
+                        FirebaseMessaging.getInstance().subscribeToTopic("companyEmailDetailsChanged");
+                        FirebaseMessaging.getInstance().subscribeToTopic("adminVerificationPassChange");
+                        FirebaseMessaging.getInstance().subscribeToTopic("identityVerificationPassChange");
+                        FirebaseMessaging.getInstance().subscribeToTopic("moneyWithdraw");
+
                         DocumentReference upDatePosition = db.collection("adminDetails").document("adminList")
                                 .collection("notificationPreference").document(mAuth.getCurrentUser().getUid());
-                        upDatePosition.set(notification);
+                        upDatePosition.set(emailNotification);
 
-                    } else {
+
+                        DocumentReference upDatePositionApp = db.collection("adminDetails").document("adminList")
+                                .collection("notificationPreference").document(mAuth.getCurrentUser().getUid())
+                                .collection("app").document("app");
+                        upDatePositionApp.set(appNotification);
+
+                    } else if (position.equalsIgnoreCase("sales")) {
                         setPositionCode(2);
                         DocumentReference upDatePosition = db.collection("staffDetails").document("sales")
                                 .collection("sales").document(mAuth.getCurrentUser().getUid());
@@ -708,22 +771,155 @@ public class AccountDetails extends AppCompatActivity {
                             .collection("technician").document(mAuth.getCurrentUser().getUid());
                     deletePosition.delete();
 
-                    CollectionReference adminEmails = db.collection("adminDetails").document("adminList").collection("notificationPreference");
+                    CollectionReference adminEmails = db.collection("adminDetails").document("adminList").collection("emailNotificationPreference");
                     adminEmails.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                         @Override
                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                             for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                                if (documentSnapshot.getBoolean("positionChangeEmail")) {
+                                if (documentSnapshot.getBoolean("changePosition")) {
                                     positionChange(documentSnapshot.getString("email"));
                                 }
                             }
                         }
                     });
 
+                    String title = "Staff Changed Position";
+                    String body = user.get("fName") + " " + user.get("lName") + " From " + oldPosition + " -> " + user.get("position");
+                    AppNotification sendAppNotification = new AppNotification();
+                    requestQueue1.add(sendAppNotification.sendNotification("changePosition", title, body));
+
                 }
                 break;
             }
         }
+
+        if (getStaffDetailsStatic().getBranch().equalsIgnoreCase("LG")) {
+            if (branch.equalsIgnoreCase("PB")) {
+                CollectionReference adminEmails = db.collection("adminDetails").document("adminList")
+                        .collection("emailNotificationPreference");
+                adminEmails.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            if (documentSnapshot.getBoolean("changeBranch")) {
+                                branchChange(documentSnapshot.getString("email"), "LG", "PB");
+                            }
+                        }
+                    }
+                });
+
+                getStaffDetailsStatic().setBranch("PB");
+
+                String title = "Staff Changed Branch";
+                String body = user.get("fName") + " " + user.get("lName") + " From LG -> PB";
+                AppNotification sendAppNotification = new AppNotification();
+                requestQueue2.add(sendAppNotification.sendNotification("changeBranch", title, body));
+            } else if (branch.equalsIgnoreCase("PT")) {
+                CollectionReference adminEmails = db.collection("adminDetails").document("adminList")
+                        .collection("emailNotificationPreference");
+                adminEmails.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            if (documentSnapshot.getBoolean("changeBranch")) {
+                                branchChange(documentSnapshot.getString("email"), "LG", "PT");
+                            }
+                        }
+                    }
+                });
+
+                getStaffDetailsStatic().setBranch("PT");
+                String title = "Staff Changed Branch";
+                String body = user.get("fName") + " " + user.get("lName") + " From LG -> PT";
+                AppNotification sendAppNotification = new AppNotification();
+                requestQueue2.add(sendAppNotification.sendNotification("changeBranch", title, body));
+            }
+
+        } else if (getStaffDetailsStatic().getBranch().equalsIgnoreCase("PB")) {
+            if (branch.equalsIgnoreCase("LG")) {
+                CollectionReference adminEmails = db.collection("adminDetails").document("adminList")
+                        .collection("emailNotificationPreference");
+                adminEmails.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            if (documentSnapshot.getBoolean("changeBranch")) {
+                                branchChange(documentSnapshot.getString("email"), "PB", "LG");
+                            }
+                        }
+                    }
+                });
+
+                getStaffDetailsStatic().setBranch("LG");
+                String title = "Staff Changed Branch";
+                String body = user.get("fName") + " " + user.get("lName") + " From PB -> LG";
+                AppNotification sendAppNotification = new AppNotification();
+                requestQueue2.add(sendAppNotification.sendNotification("changeBranch", title, body));
+
+            } else if (branch.equalsIgnoreCase("PT")) {
+                CollectionReference adminEmails = db.collection("adminDetails").document("adminList")
+                        .collection("emailNotificationPreference");
+                adminEmails.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            if (documentSnapshot.getBoolean("changeBranch")) {
+                                branchChange(documentSnapshot.getString("email"), "PB", "PT");
+                            }
+                        }
+                    }
+                });
+
+                getStaffDetailsStatic().setBranch("PT");
+                String title = "Staff Changed Branch";
+                String body = user.get("fName") + " " + user.get("lName") + " From PB -> PT";
+                AppNotification sendAppNotification = new AppNotification();
+                requestQueue2.add(sendAppNotification.sendNotification("changeBranch", title, body));
+            }
+        } else if (getStaffDetailsStatic().getBranch().equalsIgnoreCase("PT")) {
+            if (branch.equalsIgnoreCase("LG")) {
+                CollectionReference adminEmails = db.collection("adminDetails").document("adminList")
+                        .collection("emailNotificationPreference");
+                adminEmails.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            if (documentSnapshot.getBoolean("changeBranch")) {
+                                branchChange(documentSnapshot.getString("email"), "PT", "LG");
+                            }
+                        }
+                    }
+                });
+
+                getStaffDetailsStatic().setBranch("LG");
+                String title = "Staff Changed Branch";
+                String body = user.get("fName") + " " + user.get("lName") + " From PT -> LG";
+                AppNotification sendAppNotification = new AppNotification();
+                requestQueue2.add(sendAppNotification.sendNotification("changeBranch", title, body));
+            } else if (branch.equalsIgnoreCase("PB")) {
+                CollectionReference adminEmails = db.collection("adminDetails").document("adminList")
+                        .collection("emailNotificationPreference");
+                adminEmails.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            if (documentSnapshot.getBoolean("changeBranch")) {
+                                branchChange(documentSnapshot.getString("email"), "PT", "PB");
+                            }
+                        }
+                    }
+                });
+
+                getStaffDetailsStatic().setBranch("PB");
+                String title = "Staff Changed Branch";
+                String body = user.get("fName") + " " + user.get("lName") + " From PT -> PB";
+                AppNotification sendAppNotification = new AppNotification();
+                requestQueue2.add(sendAppNotification.sendNotification("changeBranch", title, body));
+            }
+        }
+
+
+
 
         DocumentReference staffDetailsDB = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid());
         staffDetailsDB.update(user).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -825,7 +1021,7 @@ public class AccountDetails extends AppCompatActivity {
 
                 //Check if the email format is correct
                 if (!Patterns.EMAIL_ADDRESS.matcher(emailCU).matches()) {
-                    etEmail.setError("Wrong email format");
+                    etEmail.setError("Invalid email format");
                     etEmail.requestFocus();
                     return;
                 }
@@ -858,7 +1054,7 @@ public class AccountDetails extends AppCompatActivity {
                             mAuth.signOut();
                             startActivity(new Intent(AccountDetails.this, LoginPage.class));
                             Toast.makeText(AccountDetails.this, "Wrong password, signed out", Toast.LENGTH_LONG).show();
-                            finish();
+
                         } else if (task.getException() instanceof FirebaseAuthInvalidUserException) {
                             checkUserDialog.dismiss();
                             passwordChangeFailed();
@@ -1052,7 +1248,7 @@ public class AccountDetails extends AppCompatActivity {
                 + "Ashita";
 
         JavaMailAPI javaMailAPI = new JavaMailAPI(this, mEmail.getText().toString().trim(),
-                "Attempt to change password", message);
+                "Attempt To Change Password", message);
 
         javaMailAPI.execute();
     }
@@ -1063,11 +1259,27 @@ public class AccountDetails extends AppCompatActivity {
         String message;
 
         message = mFName.getText().toString().trim() + " " + mLName.getText().toString().trim() + " changed their position at" + formatter.format(dt) + ".\n\n"
-                + "\tFrom " + oldPosition + " -> " + mPosition.getText() + "\n\n"
+                + "\tFrom " + oldPosition + " -> " + mPosition.getText().toString().trim() + "\n\n"
                 + "Staff position can be updated directly from the admin pages.";
 
         JavaMailAPI javaMailAPI = new JavaMailAPI(this, email,
-                "Position changed", message);
+                "Staff Position Changed", message);
+
+        javaMailAPI.execute();
+    }
+
+
+    private void branchChange(String email, String original, String changed) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss ");
+        Date dt = new Date();
+        String message;
+
+        message = mFName.getText().toString().trim() + " " + mLName.getText().toString().trim() + " changed their branch at " + formatter.format(dt) + ".\n\n"
+                + "\tFrom " + original + " -> " + changed + "\n\n"
+                + "Staff branch can be updated directly from the admin pages.";
+
+        JavaMailAPI javaMailAPI = new JavaMailAPI(this, email,
+                "Staff Branch Changed", message);
 
         javaMailAPI.execute();
     }

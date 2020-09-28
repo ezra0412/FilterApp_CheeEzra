@@ -75,12 +75,8 @@ public class CustomerList extends AppCompatActivity implements BtAdapterDouble.B
 
     public void storeObject(CustomerDetails customerDetails) {
         unsortedList.add(customerDetails);
-
-
         btLongDoubleItem = new BtLongDoubleItem(unsortedList.get(counter).getfName() + " " + unsortedList.get(counter).getlName(), unsortedList.get(counter).getMobile());
         btLongDoubleItemList.add(btLongDoubleItem);
-
-
     }
 
     public void storeAdapter() {
