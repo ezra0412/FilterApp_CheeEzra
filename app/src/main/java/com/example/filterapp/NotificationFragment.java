@@ -20,9 +20,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class NotificationFragment extends Fragment {
 
-    Switch signUp, branch, position, deleted, startNavigation, newFilter,
-            serviceDone, companyEmail, adminVerification,
-            identityVerification, moneyWithdraw;
+    Switch signUpEmail, branchEmail, positionEmail, deletedEmail, startNavigationEmail, newFilterEmail,
+            serviceDoneEmail, companyEmailEmail, adminVerificationEmail,
+            identityVerificationEmail, moneyWithdrawEmail;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     EmailNotification emailNotification = new EmailNotification();
@@ -31,19 +31,19 @@ public class NotificationFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_notification, container, false);
-        signUp = v.findViewById(R.id.s_signUp_Notification);
-        branch = v.findViewById(R.id.s_branch_Notification);
-        position = v.findViewById(R.id.s_position_Notification);
-        deleted = v.findViewById(R.id.s_deleted_Notification);
-        startNavigation = v.findViewById(R.id.s_navigation_Notification);
-        newFilter = v.findViewById(R.id.s_newFilter_Notification);
-        serviceDone = v.findViewById(R.id.s_serviceDone_Notification);
-        companyEmail = v.findViewById(R.id.s_companyEmail_Notification);
-        adminVerification = v.findViewById(R.id.s_adminVerification_Notification);
-        identityVerification = v.findViewById(R.id.s_identityVerification_Notification);
-        moneyWithdraw = v.findViewById(R.id.s_moneyWithDraw_Notification);
+        signUpEmail = v.findViewById(R.id.s_signUpEmail_Notification);
+        branchEmail = v.findViewById(R.id.s_branchEmail_Notification);
+        positionEmail = v.findViewById(R.id.s_positionEmail_Notification);
+        deletedEmail = v.findViewById(R.id.s_deletedEmail_Notification);
+        startNavigationEmail = v.findViewById(R.id.s_navigationEmail_Notification);
+        newFilterEmail = v.findViewById(R.id.s_newFilterEmail_Notification);
+        serviceDoneEmail = v.findViewById(R.id.s_serviceDoneEmail_Notification);
+        companyEmailEmail = v.findViewById(R.id.s_companyEmailEmail_Notification);
+        adminVerificationEmail = v.findViewById(R.id.s_adminVerificationEmail_Notification);
+        identityVerificationEmail = v.findViewById(R.id.s_identityVerificationEmail_Notification);
+        moneyWithdrawEmail = v.findViewById(R.id.s_moneyWithDrawEmail_Notification);
 
-        DocumentReference getPreference = db.collection("adminDetails").document("adminList").collection("notificationPreference")
+        DocumentReference getPreference = db.collection("adminDetails").document("adminList").collection("emailNotificationPreference")
                 .document(mAuth.getCurrentUser().getUid());
         getPreference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -60,7 +60,7 @@ public class NotificationFragment extends Fragment {
             }
         });
 
-        signUp.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        signUpEmail.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b)
@@ -70,7 +70,7 @@ public class NotificationFragment extends Fragment {
             }
         });
 
-        branch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        branchEmail.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b)
@@ -80,7 +80,7 @@ public class NotificationFragment extends Fragment {
             }
         });
 
-        position.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        positionEmail.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b)
@@ -96,59 +96,59 @@ public class NotificationFragment extends Fragment {
 
     private void setPreference(EmailNotification tempo) {
         if (tempo.isStaffSignUp())
-            signUp.setChecked(true);
+            signUpEmail.setChecked(true);
         else
-            signUp.setChecked(false);
+            signUpEmail.setChecked(false);
 
         if (tempo.isChangeBranch())
-            branch.setChecked(true);
+            branchEmail.setChecked(true);
         else
-            branch.setChecked(false);
+            branchEmail.setChecked(false);
 
         if (tempo.isChangePosition())
-            position.setChecked(true);
+            positionEmail.setChecked(true);
         else
-            position.setChecked(false);
+            positionEmail.setChecked(false);
 
         if (tempo.isCustomerDeleted())
-            deleted.setChecked(true);
+            deletedEmail.setChecked(true);
         else
-            deleted.setChecked(false);
+            deletedEmail.setChecked(false);
 
         if (tempo.isStaffStartNavigation())
-            startNavigation.setChecked(true);
+            startNavigationEmail.setChecked(true);
         else
-            startNavigation.setChecked(false);
+            startNavigationEmail.setChecked(false);
 
         if (tempo.isSoldNewFilter())
-            newFilter.setChecked(true);
+            newFilterEmail.setChecked(true);
         else
-            newFilter.setChecked(false);
+            newFilterEmail.setChecked(false);
 
         if (tempo.isServiceDone())
-            serviceDone.setChecked(true);
+            serviceDoneEmail.setChecked(true);
         else
-            serviceDone.setChecked(false);
+            serviceDoneEmail.setChecked(false);
 
         if (tempo.isCompanyEmailDetailsChanged())
-            companyEmail.setChecked(true);
+            companyEmailEmail.setChecked(true);
         else
-            companyEmail.setChecked(false);
+            companyEmailEmail.setChecked(false);
 
         if (tempo.isAdminVerificationPassChange())
-            adminVerification.setChecked(true);
+            adminVerificationEmail.setChecked(true);
         else
-            adminVerification.setChecked(false);
+            adminVerificationEmail.setChecked(false);
 
         if (tempo.isIdentityVerificationPassChange())
-            identityVerification.setChecked(true);
+            identityVerificationEmail.setChecked(true);
         else
-            identityVerification.setChecked(false);
+            identityVerificationEmail.setChecked(false);
 
         if (tempo.isMoneyWithdraw())
-            moneyWithdraw.setChecked(true);
+            moneyWithdrawEmail.setChecked(true);
         else
-            moneyWithdraw.setChecked(false);
+            moneyWithdrawEmail.setChecked(false);
     }
 
     private void storePreference(EmailNotification emailNotification) {

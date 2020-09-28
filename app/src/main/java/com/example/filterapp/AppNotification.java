@@ -1,5 +1,7 @@
 package com.example.filterapp;
 
+import android.graphics.Color;
+
 import androidx.annotation.Nullable;
 
 import com.android.volley.AuthFailureError;
@@ -147,8 +149,11 @@ public class AppNotification {
             JSONObject notificationObj = new JSONObject();
             notificationObj.put("title", title);
             notificationObj.put("body", body);
-            mainObj.put("notification", notificationObj);
-
+            notificationObj.put("sound", "default");
+            mainObj.put("data", notificationObj);
+            JSONObject priority = new JSONObject();
+            priority.put("priority", "high");
+            mainObj.put("android", priority);
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,
                     mainObj, new Response.Listener<JSONObject>() {
                 @Override
