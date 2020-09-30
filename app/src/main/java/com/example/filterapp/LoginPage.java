@@ -25,6 +25,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.example.filterapp.classes.EmailNotification;
+import com.example.filterapp.classes.JavaMailAPI;
+import com.example.filterapp.classes.StaffDetails;
+import com.example.filterapp.classes.UserDetails;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.Wave;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -434,7 +438,7 @@ public class LoginPage extends AppCompatActivity {
 
                     EmailNotification emailNotification = new EmailNotification();
                     emailNotification.setEmail(sEmail);
-                    AppNotification appNotification = new AppNotification();
+                    UserDetails.AppNotification appNotification = new UserDetails.AppNotification();
                     if (staffDetails.getPosition().equalsIgnoreCase("admin")) {
 
                         FirebaseMessaging.getInstance().subscribeToTopic("staffSignUp");
@@ -475,7 +479,7 @@ public class LoginPage extends AppCompatActivity {
 
                                     String title = "New Staff Sign Up";
                                     String body = staffDetails.fullName() + " had signed up as " + staffDetails.getPosition() + ".";
-                                    AppNotification appNotificationSend = new AppNotification();
+                                    UserDetails.AppNotification appNotificationSend = new UserDetails.AppNotification();
                                     requestQueue.add(appNotificationSend.sendNotification("staffSignUp", title, body));
 
                                     sendMailToStaff(sEmail);

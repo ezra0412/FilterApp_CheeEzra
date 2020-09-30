@@ -14,6 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import com.example.filterapp.classes.EmailNotification;
+import com.example.filterapp.classes.UserDetails;
 import com.github.aakira.expandablelayout.Utils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -42,7 +44,7 @@ public class NotificationFragment extends Fragment {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     EmailNotification emailNotification = new EmailNotification();
-    AppNotification appNotification = new AppNotification();
+    UserDetails.AppNotification appNotification = new UserDetails.AppNotification();
 
     FirebaseMessaging fm = FirebaseMessaging.getInstance();
 
@@ -435,8 +437,8 @@ public class NotificationFragment extends Fragment {
         getPreferenceApp.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                AppNotification tempo;
-                tempo = documentSnapshot.toObject(AppNotification.class);
+                UserDetails.AppNotification tempo;
+                tempo = documentSnapshot.toObject(UserDetails.AppNotification.class);
                 setPreferenceApp(tempo);
                 storePreferenceApp(tempo);
             }
@@ -458,12 +460,12 @@ public class NotificationFragment extends Fragment {
         return animator;
     }
 
-    private void storePreferenceApp(AppNotification tempo) {
+    private void storePreferenceApp(UserDetails.AppNotification tempo) {
         appNotification = tempo;
     }
 
 
-    private void setPreferenceApp(AppNotification tempo) {
+    private void setPreferenceApp(UserDetails.AppNotification tempo) {
         if (tempo.isStaffSignUp())
             signUpApp.setChecked(true);
         else

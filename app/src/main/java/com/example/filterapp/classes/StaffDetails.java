@@ -1,4 +1,6 @@
-package com.example.filterapp;
+package com.example.filterapp.classes;
+
+import com.example.filterapp.classes.UserDetails;
 
 public class StaffDetails extends UserDetails {
     String position;

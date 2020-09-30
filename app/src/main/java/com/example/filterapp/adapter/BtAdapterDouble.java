@@ -1,4 +1,4 @@
-package com.example.filterapp;
+package com.example.filterapp.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +8,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.filterapp.R;
+import com.example.filterapp.classes.BtLongDoubleItem;
 
 import java.util.List;
 

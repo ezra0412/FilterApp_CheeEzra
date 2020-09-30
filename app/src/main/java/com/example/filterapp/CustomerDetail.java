@@ -21,6 +21,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.example.filterapp.classes.Address;
+import com.example.filterapp.classes.CustomerDetails;
+import com.example.filterapp.classes.JavaMailAPI;
+import com.example.filterapp.classes.UserDetails;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.Wave;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -268,7 +272,7 @@ public class CustomerDetail extends AppCompatActivity {
 
                                                 String title = "Customer Deleted";
                                                 String body = def.fullName() + " is being deleted by " + getStaffDetailsStatic().fullName() + ".";
-                                                AppNotification sendAppNotification = new AppNotification();
+                                                UserDetails.AppNotification sendAppNotification = new UserDetails.AppNotification();
                                                 requestQueue.add(sendAppNotification.sendNotification("customerDeleted", title, body));
 
                                                 Toast.makeText(CustomerDetail.this, "Customer details deleted", Toast.LENGTH_LONG).show();

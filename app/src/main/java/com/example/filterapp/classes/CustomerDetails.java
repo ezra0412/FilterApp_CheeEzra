@@ -1,6 +1,4 @@
-package com.example.filterapp;
-
-import java.util.List;
+package com.example.filterapp.classes;
 
 public class CustomerDetails extends UserDetails {
     String email;

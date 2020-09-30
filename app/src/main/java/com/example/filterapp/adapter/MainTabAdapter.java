@@ -1,8 +1,11 @@
-package com.example.filterapp;
+package com.example.filterapp.adapter;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+
+import com.example.filterapp.GenerateQRFragment;
+import com.example.filterapp.ScanQRFragment;
 
 public class MainTabAdapter extends FragmentPagerAdapter {
     private int numOfTabs;

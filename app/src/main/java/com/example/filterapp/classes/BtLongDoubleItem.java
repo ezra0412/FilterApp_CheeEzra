@@ -1,4 +1,4 @@
-package com.example.filterapp;
+package com.example.filterapp.classes;
 
 public class BtLongDoubleItem implements Comparable<BtLongDoubleItem> {
     private String item1;

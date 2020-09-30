@@ -1,4 +1,4 @@
-package com.example.filterapp;
+package com.example.filterapp.classes;
 
 
 import android.content.Context;
