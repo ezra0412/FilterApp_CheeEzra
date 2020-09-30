@@ -447,7 +447,7 @@ public class LoginPage extends AppCompatActivity {
                         FirebaseMessaging.getInstance().subscribeToTopic("companyEmailDetailsChanged");
                         FirebaseMessaging.getInstance().subscribeToTopic("adminVerificationPassChange");
                         FirebaseMessaging.getInstance().subscribeToTopic("identityVerificationPassChange");
-                        FirebaseMessaging.getInstance().subscribeToTopic("moneyWithdraw");
+                        FirebaseMessaging.getInstance().subscribeToTopic("staffDeleted");
 
                         DocumentReference upDatePosition = db.collection("adminDetails").document("adminList")
                                 .collection("emailNotificationPreference").document(mAuth.getCurrentUser().getUid());
@@ -603,7 +603,7 @@ public class LoginPage extends AppCompatActivity {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
                 if (!sBranch.isEmpty()) {
-                    branch.setText("  Branch" + sBranch);
+                    branch.setText("  Branch " + sBranch);
                 }
                 branch.setBackgroundResource(R.drawable.spinner_close);
             }

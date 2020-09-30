@@ -1,15 +1,10 @@
 package com.example.filterapp;
 
-import android.graphics.Color;
-
-import androidx.annotation.Nullable;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.common.base.Optional;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,7 +23,7 @@ public class AppNotification {
     private boolean companyEmailDetailsChanged;
     private boolean adminVerificationPassChange;
     private boolean identityVerificationPassChange;
-    private boolean moneyWithdraw;
+    private boolean staffDeleted;
 
     public AppNotification() {
         this(true, true, true, true, true,
@@ -39,7 +34,7 @@ public class AppNotification {
     public AppNotification(boolean staffSignUp, boolean changeBranch, boolean changePosition, boolean customerDeleted,
                            boolean staffStartNavigation, boolean soldNewFilter, boolean serviceDone,
                            boolean companyEmailDetailsChanged, boolean adminVerificationPassChange,
-                           boolean identityVerificationPassChange, boolean moneyWithdraw) {
+                           boolean identityVerificationPassChange, boolean staffDeleted) {
         this.staffSignUp = staffSignUp;
         this.changeBranch = changeBranch;
         this.changePosition = changePosition;
@@ -50,7 +45,7 @@ public class AppNotification {
         this.companyEmailDetailsChanged = companyEmailDetailsChanged;
         this.adminVerificationPassChange = adminVerificationPassChange;
         this.identityVerificationPassChange = identityVerificationPassChange;
-        this.moneyWithdraw = moneyWithdraw;
+        this.staffDeleted = staffDeleted;
     }
 
     public boolean isStaffSignUp() {
@@ -133,12 +128,12 @@ public class AppNotification {
         this.identityVerificationPassChange = identityVerificationPassChange;
     }
 
-    public boolean isMoneyWithdraw() {
-        return moneyWithdraw;
+    public boolean isStaffDeleted() {
+        return staffDeleted;
     }
 
-    public void setMoneyWithdraw(boolean moneyWithdraw) {
-        this.moneyWithdraw = moneyWithdraw;
+    public void setStaffDeleted(boolean staffDeleted) {
+        this.staffDeleted = staffDeleted;
     }
 
     public JsonObjectRequest sendNotification(String topic, String title, String body) {

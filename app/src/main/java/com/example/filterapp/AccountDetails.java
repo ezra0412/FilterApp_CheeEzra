@@ -639,6 +639,7 @@ public class AccountDetails extends AppCompatActivity {
                                 .collection("technician").document(mAuth.getCurrentUser().getUid());
                         upDatePosition.set(dummyData);
                     }
+
                     DocumentReference deletePosition = db.collection("adminDetails").document("adminList")
                             .collection("notificationPreference").document(mAuth.getCurrentUser().getUid());
                     deletePosition.delete();
@@ -653,7 +654,7 @@ public class AccountDetails extends AppCompatActivity {
                     FirebaseMessaging.getInstance().unsubscribeFromTopic("companyEmailDetailsChanged");
                     FirebaseMessaging.getInstance().unsubscribeFromTopic("adminVerificationPassChange");
                     FirebaseMessaging.getInstance().unsubscribeFromTopic("identityVerificationPassChange");
-                    FirebaseMessaging.getInstance().unsubscribeFromTopic("moneyWithdraw");
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic("staffDeleted");
 
                     CollectionReference adminEmails = db.collection("adminDetails").document("adminList").collection("emailNotificationPreference");
                     adminEmails.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -692,7 +693,7 @@ public class AccountDetails extends AppCompatActivity {
                         FirebaseMessaging.getInstance().subscribeToTopic("companyEmailDetailsChanged");
                         FirebaseMessaging.getInstance().subscribeToTopic("adminVerificationPassChange");
                         FirebaseMessaging.getInstance().subscribeToTopic("identityVerificationPassChange");
-                        FirebaseMessaging.getInstance().subscribeToTopic("moneyWithdraw");
+                        FirebaseMessaging.getInstance().subscribeToTopic("staffDeleted");
 
                         DocumentReference upDatePosition = db.collection("adminDetails").document("adminList")
                                 .collection("emailNotificationPreference").document(mAuth.getCurrentUser().getUid());
@@ -749,7 +750,7 @@ public class AccountDetails extends AppCompatActivity {
                         FirebaseMessaging.getInstance().subscribeToTopic("companyEmailDetailsChanged");
                         FirebaseMessaging.getInstance().subscribeToTopic("adminVerificationPassChange");
                         FirebaseMessaging.getInstance().subscribeToTopic("identityVerificationPassChange");
-                        FirebaseMessaging.getInstance().subscribeToTopic("moneyWithdraw");
+                        FirebaseMessaging.getInstance().subscribeToTopic("staffDeleted");
 
                         DocumentReference upDatePosition = db.collection("adminDetails").document("adminList")
                                 .collection("notificationPreference").document(mAuth.getCurrentUser().getUid());

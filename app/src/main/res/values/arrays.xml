@@ -5,7 +5,6 @@
         <item>Add Customer</item>
         <item>Customer Details</item>
         <item>GPS</item>
-        <item>Commission</item>
         <item>FAQ</item>
         <item>About</item>
         <item>0</item>
@@ -17,7 +16,6 @@
         <item>@drawable/ic_add_customer</item>
         <item>@drawable/ic_customer_details</item>
         <item>@drawable/ic_gps</item>
-        <item>@drawable/ic_commission</item>
         <item>@drawable/ic_faq</item>
         <item>@drawable/ic_tnc</item>
         <item>0</item>
@@ -27,7 +25,6 @@
     <string-array name="adminMenu">
         <item>Notification</item>
         <item>Change Password</item>
-        <item>Cash In Store</item>
         <item>Manage Staff</item>
         <item>Mange Customer</item>
         <item>0</item>
@@ -37,7 +34,6 @@
     <array name="adminMenuIcons">
         <item>@drawable/ic_notifications</item>
         <item>@drawable/show_password_icon</item>
-        <item>@drawable/ic_commission</item>
         <item>@drawable/ic_staff</item>
         <item>@drawable/ic_customer_details</item>
         <item>0</item>

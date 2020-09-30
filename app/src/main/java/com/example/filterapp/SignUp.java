@@ -568,7 +568,7 @@ public class SignUp extends AppCompatActivity {
                                                 FirebaseMessaging.getInstance().subscribeToTopic("companyEmailDetailsChanged");
                                                 FirebaseMessaging.getInstance().subscribeToTopic("adminVerificationPassChange");
                                                 FirebaseMessaging.getInstance().subscribeToTopic("identityVerificationPassChange");
-                                                FirebaseMessaging.getInstance().subscribeToTopic("moneyWithdraw");
+                                                FirebaseMessaging.getInstance().subscribeToTopic("staffDeleted");
                                             }
 
                                             loadingScreen();
@@ -821,59 +821,63 @@ public class SignUp extends AppCompatActivity {
                 //User enter all the details correctly and is allowed to sign up
                 if (signUpAllow) {
                     closeKeyboard();
-
+                    String title = "New Staff Sign Up";
+                    String body = staffDetails.fullName() + " had signed up as " + staffDetails.getPosition() + ".";
+                    AppNotification appNotificationSend = new AppNotification();
+                    requestQueue.add(appNotificationSend.sendNotification("staffSignUp", title, body));
                     CollectionReference adminEmails = db.collection("adminDetails").document("adminList").
                             collection("emailNotificationPreference");
                     adminEmails.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                         @Override
                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+
                             for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                                 if (documentSnapshot.getBoolean("staffSignUp")) {
                                     sendMailToAdmin(documentSnapshot.getString("email"), sEmail);
                                 }
                             }
+                            Map<String, String> dummyData = new HashMap<>();
+                            dummyData.put("placeHolder", "dummyData");
+
+                            EmailNotification emailNotification = new EmailNotification();
+                            emailNotification.setEmail(sEmail);
+
+                            AppNotification appNotification = new AppNotification();
+
+                            if (staffDetails.getPosition().equalsIgnoreCase("admin")) {
+
+                                FirebaseMessaging.getInstance().subscribeToTopic("staffSignUp");
+                                FirebaseMessaging.getInstance().subscribeToTopic("changeBranch");
+                                FirebaseMessaging.getInstance().subscribeToTopic("changePosition");
+                                FirebaseMessaging.getInstance().subscribeToTopic("customerDeleted");
+                                FirebaseMessaging.getInstance().subscribeToTopic("staffStartNavigation");
+                                FirebaseMessaging.getInstance().subscribeToTopic("soldNewFilter");
+                                FirebaseMessaging.getInstance().subscribeToTopic("serviceDone");
+                                FirebaseMessaging.getInstance().subscribeToTopic("companyEmailDetailsChanged");
+                                FirebaseMessaging.getInstance().subscribeToTopic("adminVerificationPassChange");
+                                FirebaseMessaging.getInstance().subscribeToTopic("identityVerificationPassChange");
+                                FirebaseMessaging.getInstance().subscribeToTopic("staffDeleted");
+
+                                DocumentReference upDatePosition = db.collection("adminDetails").document("adminList")
+                                        .collection("emailNotificationPreference").document(mAuth.getCurrentUser().getUid());
+                                upDatePosition.set(emailNotification);
+
+                                DocumentReference upDatePositionApp = db.collection("adminDetails").document("adminList")
+                                        .collection("appNotificationPreference").document(mAuth.getCurrentUser().getUid());
+                                upDatePositionApp.set(appNotification);
+
+                            } else if (staffDetails.getPosition().equalsIgnoreCase("sales")) {
+                                DocumentReference upDatePosition = db.collection("staffDetails").document("sales")
+                                        .collection("sales").document(mAuth.getCurrentUser().getUid());
+                                upDatePosition.set(dummyData);
+                            } else {
+                                DocumentReference upDatePosition = db.collection("staffDetails").document("technician")
+                                        .collection("technician").document(mAuth.getCurrentUser().getUid());
+                                upDatePosition.set(dummyData);
+                            }
                         }
                     });
-
-                    Map<String, String> dummyData = new HashMap<>();
-                    dummyData.put("placeHolder", "dummyData");
-
-                    EmailNotification emailNotification = new EmailNotification();
-                    emailNotification.setEmail(sEmail);
-
-                    AppNotification appNotification = new AppNotification();
-
-                    if (staffDetails.getPosition().equalsIgnoreCase("admin")) {
-
-                        FirebaseMessaging.getInstance().subscribeToTopic("staffSignUp");
-                        FirebaseMessaging.getInstance().subscribeToTopic("changeBranch");
-                        FirebaseMessaging.getInstance().subscribeToTopic("changePosition");
-                        FirebaseMessaging.getInstance().subscribeToTopic("customerDeleted");
-                        FirebaseMessaging.getInstance().subscribeToTopic("staffStartNavigation");
-                        FirebaseMessaging.getInstance().subscribeToTopic("soldNewFilter");
-                        FirebaseMessaging.getInstance().subscribeToTopic("serviceDone");
-                        FirebaseMessaging.getInstance().subscribeToTopic("companyEmailDetailsChanged");
-                        FirebaseMessaging.getInstance().subscribeToTopic("adminVerificationPassChange");
-                        FirebaseMessaging.getInstance().subscribeToTopic("identityVerificationPassChange");
-                        FirebaseMessaging.getInstance().subscribeToTopic("moneyWithdraw");
-
-                        DocumentReference upDatePosition = db.collection("adminDetails").document("adminList")
-                                .collection("emailNotificationPreference").document(mAuth.getCurrentUser().getUid());
-                        upDatePosition.set(emailNotification);
-
-                        DocumentReference upDatePositionApp = db.collection("adminDetails").document("adminList")
-                                .collection("appNotificationPreference").document(mAuth.getCurrentUser().getUid());
-                        upDatePositionApp.set(appNotification);
-
-                    } else if (staffDetails.getPosition().equalsIgnoreCase("sales")) {
-                        DocumentReference upDatePosition = db.collection("staffDetails").document("sales")
-                                .collection("sales").document(mAuth.getCurrentUser().getUid());
-                        upDatePosition.set(dummyData);
-                    } else {
-                        DocumentReference upDatePosition = db.collection("staffDetails").document("technician")
-                                .collection("technician").document(mAuth.getCurrentUser().getUid());
-                        upDatePosition.set(dummyData);
-                    }
 
                     DocumentReference staffDetailsDB = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid());
                     staffDetailsDB.set(staffDetails)
@@ -881,10 +885,6 @@ public class SignUp extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Void aVoid) {
 
-                                    String title = "New Staff Sign Up";
-                                    String body = staffDetails.fullName() + " had signed up as " + staffDetails.getPosition() + ".";
-                                    AppNotification appNotificationSend = new AppNotification();
-                                    requestQueue.add(appNotificationSend.sendNotification("staffSignUp", title, body));
 
                                     //Get the admin email and then send the notice email to the admin
                                     sendMailToStaff(sEmail);
@@ -1012,7 +1012,7 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
                 if (!sBranch.isEmpty()) {
-                    branch.setText("  " + sBranch);
+                    branch.setText("  Branch " + sBranch);
                 }
                 branch.setBackgroundResource(R.drawable.spinner_close);
             }

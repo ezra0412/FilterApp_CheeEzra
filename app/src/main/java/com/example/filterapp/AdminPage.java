@@ -24,6 +24,7 @@ import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 
 import java.util.Arrays;
 
+import static com.example.filterapp.MainActivity.loadingDialogAdmin;
 import static com.example.filterapp.MainActivity.setVerfiedAdmin;
 
 public class AdminPage extends AppCompatActivity implements DrawerAdapter.OnItemSelectedListener {
@@ -32,10 +33,9 @@ public class AdminPage extends AppCompatActivity implements DrawerAdapter.OnItem
 
     private static final int notification = 0;
     private static final int changePassword = 1;
-    private static final int cash = 2;
-    private static final int manageStaff = 3;
-    private static final int manageCustomer = 4;
-    private static final int back = 6;
+    private static final int manageStaff = 2;
+    private static final int manageCustomer = 3;
+    private static final int back = 5;
 
 
     private SlidingRootNav slidingRootNav;
@@ -75,7 +75,6 @@ public class AdminPage extends AppCompatActivity implements DrawerAdapter.OnItem
         DrawerAdapter adapter = new DrawerAdapter(Arrays.asList(
                 createItemFor(notification).setChecked(true),
                 createItemFor(changePassword),
-                createItemFor(cash),
                 createItemFor(manageStaff),
                 createItemFor(manageCustomer),
                 new SpaceItem(48),
@@ -88,6 +87,7 @@ public class AdminPage extends AppCompatActivity implements DrawerAdapter.OnItem
         list.setAdapter(adapter);
 
         adapter.setSelected(notification);
+
     }
 
     @Override
@@ -102,9 +102,6 @@ public class AdminPage extends AppCompatActivity implements DrawerAdapter.OnItem
                 Toast.makeText(this, "changePassword", Toast.LENGTH_LONG).show();
                 break;
 
-            case cash:
-                Toast.makeText(this, "cash", Toast.LENGTH_LONG).show();
-                break;
 
             case manageStaff:
                 Toast.makeText(this, "Manage stuff", Toast.LENGTH_LONG).show();

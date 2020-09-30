@@ -11,7 +11,7 @@ public class EmailNotification {
     private boolean companyEmailDetailsChanged;
     private boolean adminVerificationPassChange;
     private boolean identityVerificationPassChange;
-    private boolean moneyWithdraw;
+    private boolean staffDeleted;
     private String email;
 
     public EmailNotification() {
@@ -22,7 +22,7 @@ public class EmailNotification {
 
     public EmailNotification(boolean staffSignUp, boolean changeBranch, boolean changePosition, boolean customerDeleted, boolean staffStartNavigation,
                              boolean soldNewFilter, boolean serviceDone, boolean companyEmailDetailsChanged, boolean adminVerificationPassChange,
-                             boolean identityVerificationPassChange, boolean moneyWithdraw, String email) {
+                             boolean identityVerificationPassChange, boolean staffDeleted, String email) {
         this.staffSignUp = staffSignUp;
         this.changeBranch = changeBranch;
         this.changePosition = changePosition;
@@ -33,7 +33,7 @@ public class EmailNotification {
         this.companyEmailDetailsChanged = companyEmailDetailsChanged;
         this.adminVerificationPassChange = adminVerificationPassChange;
         this.identityVerificationPassChange = identityVerificationPassChange;
-        this.moneyWithdraw = moneyWithdraw;
+        this.staffDeleted = staffDeleted;
         this.email = email;
     }
 
@@ -117,12 +117,12 @@ public class EmailNotification {
         this.identityVerificationPassChange = identityVerificationPassChange;
     }
 
-    public boolean isMoneyWithdraw() {
-        return moneyWithdraw;
+    public boolean isStaffDeleted() {
+        return staffDeleted;
     }
 
-    public void setMoneyWithdraw(boolean moneyWithdraw) {
-        this.moneyWithdraw = moneyWithdraw;
+    public void setStaffDeleted(boolean staffDeleted) {
+        this.staffDeleted = staffDeleted;
     }
 
     public String getEmail() {

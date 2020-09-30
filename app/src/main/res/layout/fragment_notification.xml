@@ -48,7 +48,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:cardBackgroundColor="@color/background"
                 app:cardElevation="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -281,7 +281,7 @@
                         app:layout_constraintTop_toTopOf="@+id/textView120" />
 
                     <Switch
-                        android:id="@+id/s_moneyWithDrawEmail_Notification"
+                        android:id="@+id/s_staffDeleteEmail_Notification"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:theme="@style/SwitchTheme"
@@ -551,9 +551,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="16dp"
-                        android:text="Money Withdraw"
+                        android:text="Staff Deleted"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/s_moneyWithDrawEmail_Notification"
+                        app:layout_constraintEnd_toStartOf="@+id/s_staffDeleteEmail_Notification"
                         app:layout_constraintStart_toStartOf="@+id/divider15"
                         app:layout_constraintTop_toBottomOf="@+id/divider15"
                         app:layout_constraintVertical_bias="0.0" />
@@ -563,7 +563,7 @@
                         style="@style/notification_description"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Receive email when money was withdrawed"
+                        android:text="Receive email when staff was being delete"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/textView122"
                         app:layout_constraintHorizontal_bias="0.6"
@@ -617,7 +617,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:cardBackgroundColor="@color/background"
                 app:cardElevation="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -630,7 +630,7 @@
                     android:layout_height="match_parent">
 
                     <Switch
-                        android:id="@+id/switch11"
+                        android:id="@+id/s_staffDeletedApp_notification"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:theme="@style/SwitchTheme"
@@ -639,7 +639,7 @@
                         app:layout_constraintTop_toTopOf="@+id/textView146" />
 
                     <Switch
-                        android:id="@+id/switch2"
+                        android:id="@+id/s_signUpApp_Notification"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:theme="@style/SwitchTheme"
@@ -658,7 +658,7 @@
                         android:text="New Staff Sign Up"
                         android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/switch2"
+                        app:layout_constraintEnd_toStartOf="@+id/s_signUpApp_Notification"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -691,7 +691,7 @@
                         app:layout_constraintVertical_bias="0.0" />
 
                     <Switch
-                        android:id="@+id/switch1"
+                        android:id="@+id/s_branchApp_notification"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:theme="@style/SwitchTheme"
@@ -701,7 +701,7 @@
                         app:layout_constraintTop_toTopOf="@+id/textView127" />
 
                     <Switch
-                        android:id="@+id/switch3"
+                        android:id="@+id/s_positionApp_notification"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:theme="@style/SwitchTheme"
@@ -711,7 +711,7 @@
                         app:layout_constraintTop_toTopOf="@+id/textView129" />
 
                     <Switch
-                        android:id="@+id/switch4"
+                        android:id="@+id/s_deleteApp_notification"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:theme="@style/SwitchTheme"
@@ -721,7 +721,7 @@
                         app:layout_constraintTop_toTopOf="@+id/textView131" />
 
                     <Switch
-                        android:id="@+id/switch5"
+                        android:id="@+id/s_navigationApp_notification"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:theme="@style/SwitchTheme"
@@ -731,7 +731,7 @@
                         app:layout_constraintTop_toTopOf="@+id/textView133" />
 
                     <Switch
-                        android:id="@+id/switch6"
+                        android:id="@+id/s_newFilterApp_notification"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:theme="@style/SwitchTheme"
@@ -740,7 +740,7 @@
                         app:layout_constraintTop_toTopOf="@+id/textView135" />
 
                     <Switch
-                        android:id="@+id/switch7"
+                        android:id="@+id/s_serviceDoneApp_notification"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:theme="@style/SwitchTheme"
@@ -749,7 +749,7 @@
                         app:layout_constraintTop_toTopOf="@+id/textView138" />
 
                     <Switch
-                        android:id="@+id/switch8"
+                        android:id="@+id/s_companyEmailApp_notification"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:theme="@style/SwitchTheme"
@@ -758,7 +758,7 @@
                         app:layout_constraintTop_toTopOf="@+id/textView140" />
 
                     <Switch
-                        android:id="@+id/switch9"
+                        android:id="@+id/s_adminVerificationApp_notification"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:theme="@style/SwitchTheme"
@@ -767,7 +767,7 @@
                         app:layout_constraintTop_toTopOf="@+id/textView142" />
 
                     <Switch
-                        android:id="@+id/switch10"
+                        android:id="@+id/s_identitiyVerificationApp_notification"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:theme="@style/SwitchTheme"
@@ -798,7 +798,7 @@
                         android:text="Staff Changed Branch"
                         android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/switch1"
+                        app:layout_constraintEnd_toStartOf="@+id/s_branchApp_notification"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/divider17"
                         app:layout_constraintVertical_bias="0.0" />
@@ -827,7 +827,7 @@
                         android:text="Staff Changed Position"
                         android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/switch3"
+                        app:layout_constraintEnd_toStartOf="@+id/s_positionApp_notification"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/divider18"
                         app:layout_constraintVertical_bias="0.0" />
@@ -868,7 +868,7 @@
                         android:text="Customer Deleted"
                         android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/switch4"
+                        app:layout_constraintEnd_toStartOf="@+id/s_deleteApp_notification"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/divider19"
                         app:layout_constraintVertical_bias="0.0" />
@@ -878,7 +878,7 @@
                         style="@style/notification_description"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Recieve notification when customer details is being deleted"
+                        android:text="Recieve notification when customer details was being delete"
                         android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/textView131"
@@ -910,7 +910,7 @@
                         android:text="Staff Start Navigation"
                         android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/switch5"
+                        app:layout_constraintEnd_toStartOf="@+id/s_navigationApp_notification"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/divider20"
                         app:layout_constraintVertical_bias="0.0" />
@@ -949,7 +949,7 @@
                         android:layout_marginEnd="16dp"
                         android:text="New Filter Sold"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/switch6"
+                        app:layout_constraintEnd_toStartOf="@+id/s_newFilterApp_notification"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/divider21"
                         app:layout_constraintVertical_bias="0.0" />
@@ -987,7 +987,7 @@
                         android:layout_marginEnd="16dp"
                         android:text="Service Done"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/switch7"
+                        app:layout_constraintEnd_toStartOf="@+id/s_serviceDoneApp_notification"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/divider22"
                         app:layout_constraintVertical_bias="0.0" />
@@ -1013,7 +1013,7 @@
                         android:layout_marginEnd="16dp"
                         android:text="Company Email Details Changed"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/switch8"
+                        app:layout_constraintEnd_toStartOf="@+id/s_companyEmailApp_notification"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/divider23"
                         app:layout_constraintVertical_bias="0.0" />
@@ -1063,7 +1063,7 @@
                         android:layout_marginEnd="16dp"
                         android:text="Admin Verification Password Changed"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/switch9"
+                        app:layout_constraintEnd_toStartOf="@+id/s_adminVerificationApp_notification"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/divider24"
                         app:layout_constraintVertical_bias="0.0" />
@@ -1089,7 +1089,7 @@
                         android:layout_marginEnd="16dp"
                         android:text="Identity Verification Password Changed"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/switch10"
+                        app:layout_constraintEnd_toStartOf="@+id/s_identitiyVerificationApp_notification"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/divider25"
                         app:layout_constraintVertical_bias="0.0" />
@@ -1137,25 +1137,25 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="16dp"
-                        android:text="Money Withdraw"
+                        android:text="Staff Deleted"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/switch11"
+                        app:layout_constraintEnd_toStartOf="@+id/s_staffDeletedApp_notification"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/divider26"
                         app:layout_constraintVertical_bias="0.0" />
 
                     <TextView
                         android:id="@+id/textView147"
+                        style="@style/notification_description"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="24dp"
-                        android:text="Recieve notification when money was withdrawed"
+                        android:text="Recieve notification when staff is being delete"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/textView146"
                         app:layout_constraintStart_toStartOf="@+id/textView146"
                         app:layout_constraintTop_toBottomOf="@+id/textView146"
-                        app:layout_constraintVertical_bias="0.0"
-                        style="@style/notification_description" />
+                        app:layout_constraintVertical_bias="0.0" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>

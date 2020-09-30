@@ -9,11 +9,17 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.provider.MediaStore;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +32,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
@@ -66,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     TabLayout tabLayout;
     TabItem generateQR, scanQR;
     ViewPager viewPager;
-
+    View view;
     public static boolean verfiedAdmin = false;
     public static int positionCode = 3;
 
@@ -82,15 +89,15 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     TextView name, position, branch;
     ImageView pi;
     Dialog loadingDialog, adminDialog;
+    public static Dialog loadingDialogAdmin;
 
     private static final int account = 0;
     private static final int addCustomer = 1;
     private static final int customerDetails = 2;
     private static final int GPS = 3;
-    private static final int commission = 4;
-    private static final int faq = 5;
-    private static final int tnc = 6;
-    private static final int logout = 8;
+    private static final int faq = 4;
+    private static final int tnc = 5;
+    private static final int logout = 7;
 
     public static StaffDetails staffDetailsStatic = new StaffDetails();
 
@@ -105,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         scanQR = findViewById(R.id.tab_item_scanQR_main);
         viewPager = findViewById(R.id.vp_main);
         loadingDialog = new Dialog(this);
+        loadingDialogAdmin = new Dialog(this);
         adminDialog = new Dialog(this);
 
         DocumentReference staffDB = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid());
@@ -113,8 +121,14 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 setPositionCodeDB(documentSnapshot.getString("position"));
             }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(MainActivity.this, "Error, please try again later", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(MainActivity.this, LoginPage.class));
+                finish();
+            }
         });
-
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -188,7 +202,6 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 createItemFor(addCustomer),
                 createItemFor(customerDetails),
                 createItemFor(GPS),
-                createItemFor(commission),
                 createItemFor(faq),
                 createItemFor(tnc),
                 new SpaceItem(35),
@@ -230,6 +243,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     }
 
     private void setPositionCodeDB(String position) {
+
         if (position.equalsIgnoreCase("admin"))
             positionCode = 1;
 
@@ -237,7 +251,9 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
             positionCode = 2;
         else
             positionCode = 3;
+
     }
+
 
     @Override
     public void onItemSelected(int position) {
@@ -249,16 +265,24 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 break;
 
             case addCustomer:
-                Intent addCustomerPage = new Intent(MainActivity.this, AddCustomer.class);
-                addCustomerPage.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                addCustomerPage.putExtra("customerID", "non");
-                startActivity(addCustomerPage);
+                if (positionCode != 3) {
+                    Intent addCustomerPage = new Intent(MainActivity.this, AddCustomer.class);
+                    addCustomerPage.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    addCustomerPage.putExtra("customerID", "non");
+                    startActivity(addCustomerPage);
+                } else
+                    Toast.makeText(MainActivity.this, "Sorry technician aren't allowed", Toast.LENGTH_LONG).show();
+
                 break;
 
             case customerDetails:
-                Intent customerDetailsPage = new Intent(MainActivity.this, Abcd.class);
-                customerDetailsPage.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(customerDetailsPage);
+                if (positionCode != 3) {
+                    Intent customerDetailsPage = new Intent(MainActivity.this, Abcd.class);
+                    customerDetailsPage.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(customerDetailsPage);
+                } else
+                    Toast.makeText(MainActivity.this, "Sorry technician aren't allowed", Toast.LENGTH_LONG).show();
+
                 break;
             case GPS:
                 Intent GpsPage = new Intent(MainActivity.this, GPS.class);
@@ -269,10 +293,6 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 GpsPage.putExtra("address", "non");
                 GpsPage.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(GpsPage);
-                break;
-
-            case commission:
-                Toast.makeText(this, "Commission", Toast.LENGTH_LONG).show();
                 break;
 
             case faq:
@@ -307,10 +327,14 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
 
     public void addCustomer(View view) {
-        Intent intent = new Intent(MainActivity.this, AddCustomer.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("customerID", "non");
-        startActivity(intent);
+        if (positionCode != 3) {
+            Intent intent = new Intent(MainActivity.this, AddCustomer.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("customerID", "non");
+            startActivity(intent);
+        } else
+            Toast.makeText(MainActivity.this, "Sorry technician aren't allowed", Toast.LENGTH_LONG).show();
+
     }
 
 
@@ -373,6 +397,14 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     }
 
     public void adminCheck() {
+        ProgressBar progressBar;
+        Sprite style = new Wave();
+        loadingDialogAdmin.setContentView(R.layout.pop_up_loading_screen);
+        loadingDialogAdmin.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        progressBar = loadingDialogAdmin.findViewById(R.id.sk_loadingPU);
+        progressBar.setIndeterminateDrawable(style);
+        loadingDialogAdmin.setCanceledOnTouchOutside(false);
+
         final ImageView close, showPassword;
         Button done;
         final EditText etPassword;
@@ -427,11 +459,12 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (password.equals(documentSnapshot.getString("verificationPassword"))) {
-                            Toast.makeText(MainActivity.this, "Admin verification successfully", Toast.LENGTH_SHORT).show();
                             adminDialog.dismiss();
+                            loadingDialogAdmin.show();
+                            Toast.makeText(MainActivity.this, "Admin verification successfully", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(MainActivity.this, AdminPage.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
+                            loadingDialogAdmin.dismiss();
                         } else {
                             Toast.makeText(MainActivity.this, "Admin verification failed", Toast.LENGTH_SHORT).show();
                             adminDialog.dismiss();
