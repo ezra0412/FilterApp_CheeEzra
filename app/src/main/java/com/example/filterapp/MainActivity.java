@@ -292,7 +292,9 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 break;
 
             case faq:
-                Toast.makeText(this, "FAQ", Toast.LENGTH_LONG).show();
+                Intent FAQ = new Intent(MainActivity.this, FAQ.class);
+                FAQ.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(FAQ);
                 break;
 
             case tnc:

@@ -9,14 +9,14 @@ public class Address {
     String area;
     String postCode;
     String state;
-    String lan;
-    String lon;
+    double lan;
+    double lon;
 
     public Address() {
-        this("", "", "", "", "", "", "", "", "", "");
+        this("", "", "", "", "", "", "", "", 0.0, 0.0);
     }
 
-    public Address(String houseNumber, String level, String block, String building, String streetName, String area, String postCode, String state, String lan, String lon) {
+    public Address(String houseNumber, String level, String block, String building, String streetName, String area, String postCode, String state, double lan, double lon) {
         this.houseNumber = houseNumber;
         this.level = level;
         this.block = block;
@@ -94,19 +94,19 @@ public class Address {
         this.state = state;
     }
 
-    public String getLan() {
+    public double getLan() {
         return lan;
     }
 
-    public void setLan(String lan) {
+    public void setLan(double lan) {
         this.lan = lan;
     }
 
-    public String getLon() {
+    public double getLon() {
         return lon;
     }
 
-    public void setLon(String lon) {
+    public void setLon(double lon) {
         this.lon = lon;
     }
 

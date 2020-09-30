@@ -36,7 +36,8 @@ import java.util.Date;
 import static com.example.filterapp.MainActivity.getStaffDetailsStatic;
 
 public class GPS extends AppCompatActivity {
-    String lan, lon, name, mobile, address;
+    String name, mobile, address;
+    Double lan, lon;
     String fName;
     CardView CVcustomerDetails;
     TextView mName, mPhone, mAddress, navigateBy, mFName, mMobile;
@@ -48,8 +49,8 @@ public class GPS extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_g_p_s);
-        lan = getIntent().getStringExtra("lan");
-        lon = getIntent().getStringExtra("lon");
+        lan = getIntent().getDoubleExtra("lan", 0);
+        lon = getIntent().getDoubleExtra("lon", 0);
         name = getIntent().getStringExtra("name");
         mobile = getIntent().getStringExtra("mobile");
         address = getIntent().getStringExtra("address");
@@ -68,7 +69,7 @@ public class GPS extends AppCompatActivity {
         etMobile = findViewById(R.id.et_mobile_gps);
         mSearch = findViewById(R.id.bt_search_gps);
 
-        if (lan.equalsIgnoreCase("non") && lon.equalsIgnoreCase("non") &&
+        if (lan == (0) && lon == (0) &&
                 name.equalsIgnoreCase("non") && mobile.equalsIgnoreCase("non")
                 && address.equalsIgnoreCase("non")) {
             mFName.setVisibility(View.VISIBLE);
@@ -190,7 +191,7 @@ public class GPS extends AppCompatActivity {
 
     public void waze(View view) {
 
-        String title = "Staff Start Navigation";
+        String title = "Staff Started Navigation";
         String body = getStaffDetailsStatic().fullName() + " started navigation to " + mName.getText().toString().trim() + " using Waze.";
         UserDetails.AppNotification sendAppNotification = new UserDetails.AppNotification();
         requestQueue.add(sendAppNotification.sendNotification("staffStartNavigation", title, body));

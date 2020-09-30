@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".GPS"></activity>
+        <activity android:name=".FAQ"></activity>
+        <activity android:name=".GPS" />
         <activity android:name=".AdminPage" />
         <activity android:name=".CustomerDetail" />
         <activity android:name=".AddAddress" />
@@ -49,8 +50,6 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
-
     </application>
 
 </manifest>

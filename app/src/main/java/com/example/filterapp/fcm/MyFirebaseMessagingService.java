@@ -25,9 +25,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, "Ashita")
                         .setContentTitle(title)
-                        .setContentText(body)
                         .setSmallIcon(R.mipmap.ic_launcher)
-                        .setAutoCancel(true);
+                        .setAutoCancel(true)
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                                .bigText(body));
 
         Intent intent = new Intent(this, LoginPage.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 10, intent, PendingIntent.FLAG_CANCEL_CURRENT);

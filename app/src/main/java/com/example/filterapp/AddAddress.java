@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,10 +17,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.filterapp.classes.Address;
+import com.example.filterapp.geocoding.GeocodingLocation;
 
 import static com.example.filterapp.AddCustomer.isAddAddress;
+import static com.example.filterapp.AddCustomer.madeChanges;
 import static com.example.filterapp.AddCustomer.sAddress;
 import static com.example.filterapp.AddCustomer.setAddAddress;
+import static com.example.filterapp.AddCustomer.setMadeChanges;
 import static com.example.filterapp.AddCustomer.setsAddress;
 
 public class AddAddress extends AppCompatActivity {
@@ -28,6 +33,7 @@ public class AddAddress extends AppCompatActivity {
             mArea, mPostCode;
     Button mDone;
     boolean stateSelected = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +79,30 @@ public class AddAddress extends AppCompatActivity {
             if (!building.equalsIgnoreCase("")) {
                 mBuilding.setText(building);
             }
-
         }
+
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                setMadeChanges(true);
+            }
+        };
+
+        mHouseNum.addTextChangedListener(textWatcher);
+        mStreetName.addTextChangedListener(textWatcher);
+        mArea.addTextChangedListener(textWatcher);
+        mPostCode.addTextChangedListener(textWatcher);
+        mState.addTextChangedListener(textWatcher);
 
     }
 
@@ -146,6 +174,7 @@ public class AddAddress extends AppCompatActivity {
         if (!building.isEmpty()) {
             address.setBuilding(capitalize(building));
         }
+
 
         setsAddress(address);
         setAddAddress(true);

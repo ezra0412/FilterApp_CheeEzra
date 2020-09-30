@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.filterapp.classes.Address;
 import com.example.filterapp.classes.CustomerDetails;
+import com.example.filterapp.geocoding.GeocodingLocation;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.Wave;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -35,6 +36,7 @@ public class AddCustomer extends AppCompatActivity {
     Button btAdd;
     ImageView addSign;
     static boolean addAddress = false;
+    static boolean madeChanges = false;
     static Address sAddress = new Address();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CustomerDetails customerDetails;
@@ -190,6 +192,18 @@ public class AddCustomer extends AppCompatActivity {
         documentCollection = fName.substring(0, 1).toLowerCase();
         documentID = documentCollection + mobile;
 
+        if (isMadeChanges()) {
+            GeocodingLocation geocodingLocation = new GeocodingLocation();
+            geocodingLocation.getAddressFromLocation(sAddress, getApplicationContext());
+            sAddress.setLan(geocodingLocation.getAl());
+            sAddress.setLon(geocodingLocation.getLon());
+        }
+
+        if (sAddress.getLan() == 0.0 || sAddress.getLon() == 0.0) {
+            Toast.makeText(AddCustomer.this, "Error please try again later", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         DocumentReference customerAddress = db.collection("customerDetails").document("sorted").collection(documentCollection).document(documentID).collection("address").document("address");
         customerAddress.set(sAddress).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -203,6 +217,7 @@ public class AddCustomer extends AppCompatActivity {
                             Toast.makeText(AddCustomer.this, "Customer detail updated", Toast.LENGTH_SHORT).show();
                         else
                             Toast.makeText(AddCustomer.this, "Customer added", Toast.LENGTH_SHORT).show();
+
 
                         Intent intent = new Intent(AddCustomer.this, CustomerDetail.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -301,5 +316,14 @@ public class AddCustomer extends AppCompatActivity {
         super.onDestroy();
         sAddress = new Address();
         addAddress = false;
+        madeChanges = false;
+    }
+
+    public static boolean isMadeChanges() {
+        return madeChanges;
+    }
+
+    public static void setMadeChanges(boolean madeChanges) {
+        AddCustomer.madeChanges = madeChanges;
     }
 }
