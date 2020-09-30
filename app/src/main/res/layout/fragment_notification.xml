@@ -9,12 +9,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/background"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout4"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/background">
 
             <TextView
                 android:id="@+id/textView80"
@@ -44,7 +46,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView80"
                 app:layout_constraintVertical_bias="0.0" />
 
+            <ImageView
+                android:id="@+id/img_emailClose_notification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@+id/textView80"
+                app:layout_constraintEnd_toEndOf="@+id/divider5"
+                app:layout_constraintTop_toTopOf="@+id/textView80"
+                app:srcCompat="@drawable/close_arrow" />
+
             <androidx.cardview.widget.CardView
+                android:id="@+id/cv_email_notification"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
@@ -584,7 +596,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/background">
 
             <TextView
                 android:id="@+id/textView124"
@@ -606,6 +619,7 @@
                 android:layout_height="3dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
+                android:layout_marginBottom="24dp"
                 android:background="@color/light_grey"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -614,6 +628,7 @@
                 app:layout_constraintVertical_bias="0.0" />
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cv_app_notification"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
@@ -1159,6 +1174,16 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
+
+            <ImageView
+                android:id="@+id/img_appClose_notification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@+id/textView124"
+                app:layout_constraintEnd_toEndOf="@+id/divider16"
+                app:layout_constraintTop_toTopOf="@+id/textView124"
+                app:layout_constraintVertical_bias="0.58000004"
+                app:srcCompat="@drawable/close_arrow" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

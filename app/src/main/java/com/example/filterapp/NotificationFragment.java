@@ -1,16 +1,20 @@
 package com.example.filterapp;
 
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import com.github.aakira.expandablelayout.Utils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,6 +33,10 @@ public class NotificationFragment extends Fragment {
             serviceDoneApp, companyEmailApp, adminVerificationApp,
             identityVerificationApp, staffDeletedApp;
 
+    ImageView appArrow, emailArrow;
+    boolean appClose = true, emailClose = true;
+
+
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -40,6 +48,8 @@ public class NotificationFragment extends Fragment {
 
     boolean updateEmail = false;
     boolean updateApp = false;
+
+    CardView app, email;
 
     @Nullable
     @Override
@@ -68,6 +78,40 @@ public class NotificationFragment extends Fragment {
         adminVerificationApp = v.findViewById(R.id.s_adminVerificationApp_notification);
         identityVerificationApp = v.findViewById(R.id.s_identitiyVerificationApp_notification);
         staffDeletedApp = v.findViewById(R.id.s_staffDeletedApp_notification);
+        appArrow = v.findViewById(R.id.img_appClose_notification);
+        email = v.findViewById(R.id.cv_email_notification);
+        app = v.findViewById(R.id.cv_app_notification);
+        emailArrow = v.findViewById(R.id.img_emailClose_notification);
+
+        emailArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (emailClose) {
+                    changeRotate(emailArrow, 180f, 0f).start();
+                    emailClose = false;
+                    email.setVisibility(View.VISIBLE);
+                } else {
+                    changeRotate(emailArrow, 0f, 180f).start();
+                    emailClose = true;
+                    email.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        appArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (appClose) {
+                    changeRotate(appArrow, 180f, 0f).start();
+                    appClose = false;
+                    app.setVisibility(View.VISIBLE);
+                } else {
+                    changeRotate(appArrow, 0f, 180f).start();
+                    appClose = true;
+                    app.setVisibility(View.GONE);
+                }
+            }
+        });
 
         DocumentReference getPreference = db.collection("adminDetails").document("adminList").collection("emailNotificationPreference")
                 .document(mAuth.getCurrentUser().getUid());
@@ -405,6 +449,13 @@ public class NotificationFragment extends Fragment {
 
 
         return v;
+    }
+
+
+    private ObjectAnimator changeRotate(ImageView button, float from, float to) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(button, "rotation", to, from);
+        animator.setInterpolator(Utils.createInterpolator(Utils.LINEAR_INTERPOLATOR));
+        return animator;
     }
 
     private void storePreferenceApp(AppNotification tempo) {
