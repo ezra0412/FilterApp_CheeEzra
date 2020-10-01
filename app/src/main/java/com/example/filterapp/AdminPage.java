@@ -1,5 +1,12 @@
 package com.example.filterapp;
 
+import android.content.Intent;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,13 +14,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
-import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Toast;
 
 import com.example.filterapp.menu.DrawerAdapter;
 import com.example.filterapp.menu.DrawerItem;
@@ -24,7 +24,6 @@ import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 
 import java.util.Arrays;
 
-import static com.example.filterapp.MainActivity.loadingDialogAdmin;
 import static com.example.filterapp.MainActivity.setVerfiedAdmin;
 
 public class AdminPage extends AppCompatActivity implements DrawerAdapter.OnItemSelectedListener {
@@ -44,6 +43,10 @@ public class AdminPage extends AppCompatActivity implements DrawerAdapter.OnItem
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setVerfiedAdmin(true);
+
+        //At here
+        getSupportFragmentManager().beginTransaction().replace(R.id.fl_adminPage,
+                new NotificationFragment()).commit();
 
         setContentView(R.layout.activity_admin_page);
         Toolbar toolbar = findViewById(R.id.tb_adminPage);
@@ -99,7 +102,8 @@ public class AdminPage extends AppCompatActivity implements DrawerAdapter.OnItem
                 break;
 
             case changePassword:
-                Toast.makeText(this, "changePassword", Toast.LENGTH_LONG).show();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fl_adminPage,
+                        new ChangePasswordFragment()).commit();
                 break;
 
 
