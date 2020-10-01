@@ -1,6 +1,8 @@
 package com.example.filterapp;
 
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Toast;
@@ -73,5 +75,17 @@ public class SplashScreen extends AppCompatActivity {
             }, 2000);
         }
 
+    }
+
+
+    @Override
+    public Resources getResources() {
+        Resources resources = super.getResources();
+        if (resources != null && resources.getConfiguration().fontScale != 1) {
+            Configuration configuration = resources.getConfiguration();
+            configuration.fontScale = 1;
+            resources.updateConfiguration(configuration, resources.getDisplayMetrics());
+        }
+        return resources;
     }
 }
