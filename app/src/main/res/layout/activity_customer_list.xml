@@ -85,7 +85,7 @@
         style="@style/lable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="(No Customer Details Found)"
+        android:text="(No Customer Found)"
         android:textColor="@color/red"
         android:textSize="18sp"
         android:visibility="invisible"

@@ -24,8 +24,8 @@ import androidx.fragment.app.Fragment;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.example.filterapp.fcm.AppNotification;
 import com.example.filterapp.classes.JavaMailAPI;
-import com.example.filterapp.classes.UserDetails;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
@@ -509,7 +509,7 @@ public class ChangePasswordFragment extends Fragment {
                 mAdmin.setText("  ******");
                 String title = "Admin Password Changed";
                 String body = getStaffDetailsStatic().fullName() + " changed admin verification password";
-                UserDetails.AppNotification sendAppNotification = new UserDetails.AppNotification();
+                AppNotification sendAppNotification = new AppNotification();
                 requestQueue1.add(sendAppNotification.sendNotification("adminVerificationPassChange", title, body));
             }
 
@@ -519,7 +519,7 @@ public class ChangePasswordFragment extends Fragment {
 
                 String title = "Company Email Changed";
                 String body = getStaffDetailsStatic().fullName() + " changed company email";
-                UserDetails.AppNotification sendAppNotification = new UserDetails.AppNotification();
+                AppNotification sendAppNotification = new AppNotification();
                 requestQueue2.add(sendAppNotification.sendNotification("companyEmailDetailsChanged", title, body));
             }
 
@@ -529,7 +529,7 @@ public class ChangePasswordFragment extends Fragment {
 
                 String title = "Company Email's Password Changed";
                 String body = getStaffDetailsStatic().fullName() + " changed company email's password";
-                UserDetails.AppNotification sendAppNotification = new UserDetails.AppNotification();
+                AppNotification sendAppNotification = new AppNotification();
                 requestQueue1.add(sendAppNotification.sendNotification("companyEmailDetailsChanged", title, body));
             }
             if (identityPasswordChangedBool) {
@@ -538,7 +538,7 @@ public class ChangePasswordFragment extends Fragment {
 
                 String title = "Identity verification Password Changed";
                 String body = getStaffDetailsStatic().fullName() + " changed identity verification password";
-                UserDetails.AppNotification sendAppNotification = new UserDetails.AppNotification();
+                AppNotification sendAppNotification = new AppNotification();
                 requestQueue1.add(sendAppNotification.sendNotification("identityVerificationPassChange", title, body));
             }
 

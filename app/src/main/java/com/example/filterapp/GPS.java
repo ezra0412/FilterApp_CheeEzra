@@ -17,9 +17,9 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.example.filterapp.classes.Address;
+import com.example.filterapp.fcm.AppNotification;
 import com.example.filterapp.classes.CustomerDetails;
 import com.example.filterapp.classes.JavaMailAPI;
-import com.example.filterapp.classes.UserDetails;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -179,7 +179,7 @@ public class GPS extends AppCompatActivity {
     public void google(View view) {
         String title = "Staff Start Navigation";
         String body = getStaffDetailsStatic().fullName() + " started navigation to " + mName.getText().toString().trim() + " using Google Map.";
-        UserDetails.AppNotification sendAppNotification = new UserDetails.AppNotification();
+        AppNotification sendAppNotification = new AppNotification();
         requestQueue.add(sendAppNotification.sendNotification("staffStartNavigation", title, body));
 
         getEmail("Google map");
@@ -193,7 +193,7 @@ public class GPS extends AppCompatActivity {
 
         String title = "Staff Started Navigation";
         String body = getStaffDetailsStatic().fullName() + " started navigation to " + mName.getText().toString().trim() + " using Waze.";
-        UserDetails.AppNotification sendAppNotification = new UserDetails.AppNotification();
+        AppNotification sendAppNotification = new AppNotification();
         requestQueue.add(sendAppNotification.sendNotification("staffStartNavigation", title, body));
 
         getEmail("Waze");

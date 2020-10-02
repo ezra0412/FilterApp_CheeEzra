@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     TabLayout tabLayout;
     TabItem generateQR, scanQR;
     ViewPager viewPager;
-    View view;
     public static boolean verfiedAdmin = false;
     public static int positionCode = 3;
 

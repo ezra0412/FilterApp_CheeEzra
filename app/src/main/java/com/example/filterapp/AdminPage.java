@@ -108,7 +108,10 @@ public class AdminPage extends AppCompatActivity implements DrawerAdapter.OnItem
 
 
             case manageStaff:
-                Toast.makeText(this, "Manage stuff", Toast.LENGTH_LONG).show();
+                Intent staff = new Intent(AdminPage.this, StaffPositionChoice.class);
+                staff.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(staff);
+
                 break;
 
             case manageCustomer:

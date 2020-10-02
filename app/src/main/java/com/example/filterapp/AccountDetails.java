@@ -27,10 +27,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.example.filterapp.fcm.AppNotification;
 import com.example.filterapp.classes.EmailNotification;
 import com.example.filterapp.classes.JavaMailAPI;
 import com.example.filterapp.classes.StaffDetails;
-import com.example.filterapp.classes.UserDetails;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.Wave;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -624,7 +624,7 @@ public class AccountDetails extends AppCompatActivity {
 
         EmailNotification emailNotification = new EmailNotification();
         emailNotification.setEmail(mAuth.getCurrentUser().getEmail());
-        UserDetails.AppNotification appNotification = new UserDetails.AppNotification();
+        AppNotification appNotification = new AppNotification();
 
         switch (getPositionCode()) {
             case 1: {
@@ -672,7 +672,7 @@ public class AccountDetails extends AppCompatActivity {
 
                     String title = "Staff Changed Position";
                     String body = user.get("fName") + " " + user.get("lName") + " From " + oldPosition + " -> " + user.get("position");
-                    UserDetails.AppNotification sendAppNotification = new UserDetails.AppNotification();
+                    AppNotification sendAppNotification = new AppNotification();
                     requestQueue1.add(sendAppNotification.sendNotification("changePosition", title, body));
 
                 }
@@ -730,7 +730,7 @@ public class AccountDetails extends AppCompatActivity {
 
                     String title = "Staff Changed Position";
                     String body = user.get("fName") + " " + user.get("lName") + " From " + oldPosition + " -> " + user.get("position");
-                    UserDetails.AppNotification sendAppNotification = new UserDetails.AppNotification();
+                    AppNotification sendAppNotification = new AppNotification();
                     requestQueue1.add(sendAppNotification.sendNotification("changePosition", title, body));
                 }
                 break;
@@ -788,7 +788,7 @@ public class AccountDetails extends AppCompatActivity {
 
                     String title = "Staff Changed Position";
                     String body = user.get("fName") + " " + user.get("lName") + " From " + oldPosition + " -> " + user.get("position");
-                    UserDetails.AppNotification sendAppNotification = new UserDetails.AppNotification();
+                    AppNotification sendAppNotification = new AppNotification();
                     requestQueue1.add(sendAppNotification.sendNotification("changePosition", title, body));
 
                 }
@@ -815,7 +815,7 @@ public class AccountDetails extends AppCompatActivity {
 
                 String title = "Staff Changed Branch";
                 String body = user.get("fName") + " " + user.get("lName") + " From LG -> PB";
-                UserDetails.AppNotification sendAppNotification = new UserDetails.AppNotification();
+                AppNotification sendAppNotification = new AppNotification();
                 requestQueue2.add(sendAppNotification.sendNotification("changeBranch", title, body));
             } else if (branch.equalsIgnoreCase("PT")) {
                 CollectionReference adminEmails = db.collection("adminDetails").document("adminList")
@@ -834,7 +834,7 @@ public class AccountDetails extends AppCompatActivity {
                 getStaffDetailsStatic().setBranch("PT");
                 String title = "Staff Changed Branch";
                 String body = user.get("fName") + " " + user.get("lName") + " From LG -> PT";
-                UserDetails.AppNotification sendAppNotification = new UserDetails.AppNotification();
+                AppNotification sendAppNotification = new AppNotification();
                 requestQueue2.add(sendAppNotification.sendNotification("changeBranch", title, body));
             }
 
@@ -856,7 +856,7 @@ public class AccountDetails extends AppCompatActivity {
                 getStaffDetailsStatic().setBranch("LG");
                 String title = "Staff Changed Branch";
                 String body = user.get("fName") + " " + user.get("lName") + " From PB -> LG";
-                UserDetails.AppNotification sendAppNotification = new UserDetails.AppNotification();
+                AppNotification sendAppNotification = new AppNotification();
                 requestQueue2.add(sendAppNotification.sendNotification("changeBranch", title, body));
 
             } else if (branch.equalsIgnoreCase("PT")) {
@@ -876,7 +876,7 @@ public class AccountDetails extends AppCompatActivity {
                 getStaffDetailsStatic().setBranch("PT");
                 String title = "Staff Changed Branch";
                 String body = user.get("fName") + " " + user.get("lName") + " From PB -> PT";
-                UserDetails.AppNotification sendAppNotification = new UserDetails.AppNotification();
+                AppNotification sendAppNotification = new AppNotification();
                 requestQueue2.add(sendAppNotification.sendNotification("changeBranch", title, body));
             }
         } else if (getStaffDetailsStatic().getBranch().equalsIgnoreCase("PT")) {
@@ -897,7 +897,7 @@ public class AccountDetails extends AppCompatActivity {
                 getStaffDetailsStatic().setBranch("LG");
                 String title = "Staff Changed Branch";
                 String body = user.get("fName") + " " + user.get("lName") + " From PT -> LG";
-                UserDetails.AppNotification sendAppNotification = new UserDetails.AppNotification();
+                AppNotification sendAppNotification = new AppNotification();
                 requestQueue2.add(sendAppNotification.sendNotification("changeBranch", title, body));
             } else if (branch.equalsIgnoreCase("PB")) {
                 CollectionReference adminEmails = db.collection("adminDetails").document("adminList")
@@ -916,7 +916,7 @@ public class AccountDetails extends AppCompatActivity {
                 getStaffDetailsStatic().setBranch("PB");
                 String title = "Staff Changed Branch";
                 String body = user.get("fName") + " " + user.get("lName") + " From PT -> PB";
-                UserDetails.AppNotification sendAppNotification = new UserDetails.AppNotification();
+                AppNotification sendAppNotification = new AppNotification();
                 requestQueue2.add(sendAppNotification.sendNotification("changeBranch", title, body));
             }
         }

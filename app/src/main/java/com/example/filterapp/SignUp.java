@@ -25,10 +25,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.example.filterapp.fcm.AppNotification;
 import com.example.filterapp.classes.EmailNotification;
 import com.example.filterapp.classes.JavaMailAPI;
 import com.example.filterapp.classes.StaffDetails;
-import com.example.filterapp.classes.UserDetails;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.Wave;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -503,7 +503,7 @@ public class SignUp extends AppCompatActivity {
 
                             EmailNotification emailNotification = new EmailNotification();
                             emailNotification.setEmail(email);
-                            UserDetails.AppNotification appNotification = new UserDetails.AppNotification();
+                            AppNotification appNotification = new AppNotification();
 
                             //Get the admin email and then send the notice email to the admin
                             CollectionReference adminEmails = db.collection("adminDetails").document("adminList").collection("emailNotificationPreference");
@@ -552,7 +552,7 @@ public class SignUp extends AppCompatActivity {
 
                                             String title = "New Staff Sign Up";
                                             String body = staffDetails.fullName() + " had signed up as " + staffDetails.getPosition() + ".";
-                                            UserDetails.AppNotification appNotificationSend = new UserDetails.AppNotification();
+                                            AppNotification appNotificationSend = new AppNotification();
                                             requestQueue.add(appNotificationSend.sendNotification("staffSignUp", title, body));
 
                                             if (staffDetails.getPosition().equalsIgnoreCase("admin")) {
@@ -822,7 +822,7 @@ public class SignUp extends AppCompatActivity {
                     closeKeyboard();
                     String title = "New Staff Sign Up";
                     String body = staffDetails.fullName() + " had signed up as " + staffDetails.getPosition() + ".";
-                    UserDetails.AppNotification appNotificationSend = new UserDetails.AppNotification();
+                    AppNotification appNotificationSend = new AppNotification();
                     requestQueue.add(appNotificationSend.sendNotification("staffSignUp", title, body));
                     CollectionReference adminEmails = db.collection("adminDetails").document("adminList").
                             collection("emailNotificationPreference");
@@ -842,7 +842,7 @@ public class SignUp extends AppCompatActivity {
                             EmailNotification emailNotification = new EmailNotification();
                             emailNotification.setEmail(sEmail);
 
-                            UserDetails.AppNotification appNotification = new UserDetails.AppNotification();
+                            AppNotification appNotification = new AppNotification();
 
                             if (staffDetails.getPosition().equalsIgnoreCase("admin")) {
 
