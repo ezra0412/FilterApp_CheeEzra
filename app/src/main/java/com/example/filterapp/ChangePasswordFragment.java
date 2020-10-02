@@ -94,7 +94,7 @@ public class ChangePasswordFragment extends Fragment {
         getDetails.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-                mEmail.setText(documentSnapshot.getString("email"));
+                mEmail.setText("  " + documentSnapshot.getString("email"));
                 String password = documentSnapshot.getString("password");
                 String changeDetailsPassword = documentSnapshot.getString("changeDetailsPassword");
                 String verificationPassword = documentSnapshot.getString("verificationPassword");

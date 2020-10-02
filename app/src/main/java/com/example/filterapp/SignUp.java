@@ -489,7 +489,7 @@ public class SignUp extends AppCompatActivity {
         else
             branch = "PT";
 
-        staffDetails = new StaffDetails(capitalize(fName), capitalize(lName), mobile, position, branch, false);
+        staffDetails = new StaffDetails(capitalize(fName), capitalize(lName), mobile, position, branch, email, false, false);
 
         //Create the staff account
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -877,6 +877,8 @@ public class SignUp extends AppCompatActivity {
                             }
                         }
                     });
+
+                    staffDetails.setEmail(sEmail);
 
                     DocumentReference staffDetailsDB = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid());
                     staffDetailsDB.set(staffDetails)

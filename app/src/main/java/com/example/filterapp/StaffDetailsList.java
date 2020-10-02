@@ -1,5 +1,6 @@
 package com.example.filterapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -25,8 +26,10 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class StaffDetailsList extends AppCompatActivity implements BtAdapterDouble.BtDoubleListener {
     String chosenOption;
@@ -36,6 +39,7 @@ public class StaffDetailsList extends AppCompatActivity implements BtAdapterDoub
     List<BtLongDoubleItem> btLongDoubleItemList = new LinkedList<>();
     RecyclerView.Adapter adapter;
     BtLongDoubleItem btLongDoubleItem;
+    HashMap<String, String> staffIDs = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,14 @@ public class StaffDetailsList extends AppCompatActivity implements BtAdapterDoub
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        if (chosenOption.equalsIgnoreCase("admin"))
+            topBar.setText("Admin List");
+        else if (chosenOption.equalsIgnoreCase("sales"))
+            topBar.setText("Sales List");
+        else {
+            topBar.setText("Technician List");
+        }
+
         if (chosenOption.equalsIgnoreCase("admin")) {
             CollectionReference getDetails = db.collection("adminDetails").document("adminList").collection("emailNotificationPreference");
             getDetails.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -62,10 +74,7 @@ public class StaffDetailsList extends AppCompatActivity implements BtAdapterDoub
                         if (collectionReference.isEmpty()) {
                             errorMessage.setVisibility(View.VISIBLE);
                             recyclerView.setVisibility(View.INVISIBLE);
-                            topBar.setText("Admin List");
-
                         } else {
-                            topBar.setText("Admin List");
                             errorMessage.setVisibility(View.INVISIBLE);
                             recyclerView.setVisibility(View.VISIBLE);
                             for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
@@ -86,18 +95,7 @@ public class StaffDetailsList extends AppCompatActivity implements BtAdapterDoub
                             errorMessage.setVisibility(View.VISIBLE);
                             recyclerView.setVisibility(View.INVISIBLE);
 
-                            if (chosenOption.equalsIgnoreCase("sales"))
-                                topBar.setText("Sales List");
-                            else {
-                                topBar.setText("Technician List");
-                            }
-
                         } else {
-                            if (chosenOption.equalsIgnoreCase("sales"))
-                                topBar.setText("Sales List");
-                            else {
-                                topBar.setText("Technician List");
-                            }
 
                             errorMessage.setVisibility(View.INVISIBLE);
                             recyclerView.setVisibility(View.VISIBLE);
@@ -119,15 +117,17 @@ public class StaffDetailsList extends AppCompatActivity implements BtAdapterDoub
         staffDetail.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-                storeObject(documentSnapshot.getString("fName"), documentSnapshot.getString("lName"), documentSnapshot.getString("mobile"));
+                storeObject(documentSnapshot.getString("fName"), documentSnapshot.getString("lName"), documentSnapshot.getString("mobile"), documentID);
             }
         });
     }
 
-    public void storeObject(String fName, String lName, String mobile) {
+    public void storeObject(String fName, String lName, String mobile, String id) {
         btLongDoubleItem = new BtLongDoubleItem(fName + " " + lName, mobile);
         btLongDoubleItemList.add(btLongDoubleItem);
+        staffIDs.put(fName.substring(0, 1) + mobile, id);
         storeAdapter();
+
     }
 
     public void storeAdapter() {
@@ -139,7 +139,11 @@ public class StaffDetailsList extends AppCompatActivity implements BtAdapterDoub
 
     @Override
     public void btDoubleListener(int position) {
-        Toast.makeText(StaffDetailsList.this, position + "", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, StaffDetail.class);
+        intent.putExtra("staffID", staffIDs.get(btLongDoubleItemList.get(position).getItem1().substring(0, 1) +
+                btLongDoubleItemList.get(position).getItem2()));
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     public void back(View view) {

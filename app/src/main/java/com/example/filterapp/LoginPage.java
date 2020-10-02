@@ -471,6 +471,8 @@ public class LoginPage extends AppCompatActivity {
                         upDatePosition.set(dummyData);
                     }
 
+                    staffDetails.setEmail(sEmail);
+
                     DocumentReference staffDetailsDB = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid());
                     staffDetailsDB.set(staffDetails)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {

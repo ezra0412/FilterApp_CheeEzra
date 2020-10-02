@@ -1,7 +1,6 @@
 package com.example.filterapp.classes;
 
 public class CustomerDetails extends UserDetails {
-    String email;
     String note;
 
 
@@ -9,19 +8,11 @@ public class CustomerDetails extends UserDetails {
         this("", "", "", "", "");
     }
 
-    public CustomerDetails(String fName, String lName, String email, String mobile, String note) {
-        super(fName, lName, mobile);
-        this.email=email;
+    public CustomerDetails(String fName, String lName, String mobile, String email, String note) {
+        super(fName, lName, mobile, email);
         this.note = note;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getNote() {
         return note;
@@ -31,8 +22,5 @@ public class CustomerDetails extends UserDetails {
         this.note = note;
     }
 
-    public String fullName() {
-        return getfName() + " " + getlName();
-    }
 
 }

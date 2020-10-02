@@ -16,11 +16,14 @@ public class UserDetails {
     String fName;
     String lName;
     String mobile;
+    String email;
 
-    public UserDetails(String fName, String lName, String mobile) {
+    public UserDetails(String fName, String lName, String mobile, String email) {
         this.fName = fName;
         this.lName = lName;
         this.mobile = mobile;
+        this.email = email;
+
     }
 
     public String getfName() {
@@ -48,5 +51,16 @@ public class UserDetails {
         this.mobile = mobile;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String fullName() {
+        return getfName() + " " + getlName();
+    }
 
 }
