@@ -1,5 +1,9 @@
 package com.example.filterapp.fcm;
 
+import android.provider.ContactsContract;
+import android.util.Log;
+import android.widget.Toast;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -141,6 +145,50 @@ public class AppNotification {
         String URL = "https://fcm.googleapis.com/fcm/send";
         try {
             mainObj.put("to", "/topics/" + topic);
+            JSONObject notificationObj = new JSONObject();
+            notificationObj.put("title", title);
+            notificationObj.put("body", body);
+            notificationObj.put("sound", "default");
+            mainObj.put("data", notificationObj);
+            JSONObject priority = new JSONObject();
+            priority.put("priority", "high");
+            mainObj.put("android", priority);
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,
+                    mainObj, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            }
+            ) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> header = new HashMap<>();
+                    header.put("content-type", "application/json");
+                    header.put("authorization", "key=AAAAW3G6BnI:APA91bG8PXt8-aauFEFyh9OYbbVVed-HqZj87nxqkrx2mMt14I4WV4xpWaulQTL0SGfEjEpkV4wkFDpCdF7W_peu7pWuNJefoFvPq-CpavfAEf0mmy-Igwf3brVYkm9K2TeZzrlCsi4Q");
+                    return header;
+                }
+            };
+
+            return request;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public JsonObjectRequest specifUser(String id, String title, String body) {
+        JSONObject mainObj = new JSONObject();
+        String URL = "https://fcm.googleapis.com/fcm/send";
+        try {
+            mainObj.put("to", id);
             JSONObject notificationObj = new JSONObject();
             notificationObj.put("title", title);
             notificationObj.put("body", body);

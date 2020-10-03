@@ -25,10 +25,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.example.filterapp.fcm.AppNotification;
 import com.example.filterapp.classes.EmailNotification;
 import com.example.filterapp.classes.JavaMailAPI;
 import com.example.filterapp.classes.StaffDetails;
+import com.example.filterapp.fcm.AppNotification;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.Wave;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -50,10 +50,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -77,8 +76,10 @@ public class SignUp extends AppCompatActivity {
     final static int RC_SIGN_IN = 234;
     String userID = "", sBranch = "", sPosition = "", sMobile = "", sEmail = "";
     boolean signUpAllow = false;
+    String token;
 
     RequestQueue requestQueue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -489,8 +490,17 @@ public class SignUp extends AppCompatActivity {
         else
             branch = "PT";
 
-        staffDetails = new StaffDetails(capitalize(fName), capitalize(lName), mobile, position, branch, email, false, false);
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (task.isSuccessful()) {
+                            token = task.getResult().getToken();
+                        }
+                    }
+                });
 
+        staffDetails = new StaffDetails(capitalize(fName), capitalize(lName), mobile, position, branch, email, false, false, token);
         //Create the staff account
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -820,10 +830,12 @@ public class SignUp extends AppCompatActivity {
                 //User enter all the details correctly and is allowed to sign up
                 if (signUpAllow) {
                     closeKeyboard();
+
                     String title = "New Staff Sign Up";
                     String body = staffDetails.fullName() + " had signed up as " + staffDetails.getPosition() + ".";
                     AppNotification appNotificationSend = new AppNotification();
                     requestQueue.add(appNotificationSend.sendNotification("staffSignUp", title, body));
+
                     CollectionReference adminEmails = db.collection("adminDetails").document("adminList").
                             collection("emailNotificationPreference");
                     adminEmails.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -878,6 +890,17 @@ public class SignUp extends AppCompatActivity {
                         }
                     });
 
+                    FirebaseInstanceId.getInstance().getInstanceId()
+                            .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                    if (task.isSuccessful()) {
+                                        token = task.getResult().getToken();
+                                    }
+                                }
+                            });
+
+                    staffDetails.setToken(token);
                     staffDetails.setEmail(sEmail);
 
                     DocumentReference staffDetailsDB = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid());
@@ -1241,15 +1264,4 @@ public class SignUp extends AppCompatActivity {
         }
     }
 
-    public void sendNotification() {
-        JSONObject mainObj = new JSONObject();
-        try {
-            mainObj.put("to", "/topic/" + "newStaffSignUp");
-            //   JSONObject notificationObj = new
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-    }
 }

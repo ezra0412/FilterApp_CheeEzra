@@ -7,6 +7,7 @@ public class StaffDetails extends UserDetails {
     String branch;
     boolean Google;
     boolean deleted;
+    String token;
 
     public StaffDetails(){
         super("", "", "", "");
@@ -14,14 +15,16 @@ public class StaffDetails extends UserDetails {
         branch="";
         Google = false;
         deleted = false;
+        token = "";
     }
 
-    public StaffDetails(String fName, String lName, String mobile, String position, String branch, String email, boolean google, boolean deleted) {
+    public StaffDetails(String fName, String lName, String mobile, String position, String branch, String email, boolean google, boolean deleted, String token) {
         super(fName, lName, mobile, email);
         this.position = position;
         this.branch = branch;
         Google = google;
         this.deleted = deleted;
+        this.token = token;
     }
 
     public String getPosition() {
@@ -56,5 +59,12 @@ public class StaffDetails extends UserDetails {
         this.deleted = deleted;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 }
 

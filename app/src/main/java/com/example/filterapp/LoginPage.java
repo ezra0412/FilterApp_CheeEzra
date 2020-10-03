@@ -52,6 +52,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.text.SimpleDateFormat;
@@ -74,6 +76,7 @@ public class LoginPage extends AppCompatActivity {
     final static int RC_SIGN_IN = 234;
     StaffDetails staffDetails;
     RequestQueue requestQueue;
+    String token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -471,6 +474,17 @@ public class LoginPage extends AppCompatActivity {
                         upDatePosition.set(dummyData);
                     }
 
+                    FirebaseInstanceId.getInstance().getInstanceId()
+                            .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                    if (task.isSuccessful()) {
+                                        token = task.getResult().getToken();
+                                    }
+                                }
+                            });
+
+                    staffDetails.setToken(token);
                     staffDetails.setEmail(sEmail);
 
                     DocumentReference staffDetailsDB = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid());
