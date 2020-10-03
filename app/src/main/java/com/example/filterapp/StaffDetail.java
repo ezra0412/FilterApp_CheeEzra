@@ -1,15 +1,16 @@
 package com.example.filterapp;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.filterapp.classes.StaffDetails;
 import com.google.firebase.firestore.DocumentReference;
@@ -56,31 +57,51 @@ public class StaffDetail extends AppCompatActivity {
     }
 
     public void update(View view) {
-        Toast.makeText(StaffDetail.this, "update", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this, EditStaffDetails.class);
+        intent.putExtra("staffID", staffID);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     public void delete(View view) {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        final AlertDialog dialog = builder.setMessage("Are you sure you wanna delete this staff")
-                .setTitle("Confirmation")
+        final AlertDialog dialog = builder.setMessage("Are you sure you wanna delete this staff?")
+                .setTitle(Html.fromHtml("<font color='#E53935'>Delete Confirmation</font>"))
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // CONFIRM
+                        Toast.makeText(StaffDetail.this, "Yes", Toast.LENGTH_SHORT).show();
 
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // CANCEL
+                        Toast.makeText(StaffDetail.this, "Canceled", Toast.LENGTH_SHORT).show();
                     }
                 }).setIcon(getDrawable(R.drawable.ic_warning))
+
+                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+                        Toast.makeText(StaffDetail.this, "Canceled", Toast.LENGTH_SHORT).show();
+                    }
+                })
                 .create();
+
 
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialogInterface) {
+
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.red));
-                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.light_grey));
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.cancel_grey));
+
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setAllCaps(false);
+
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextSize(17);
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextSize(17);
+
             }
         });
 

@@ -24,6 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
+        android:onClick="back"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar17"
         app:layout_constraintEnd_toStartOf="@+id/textView159"
         app:layout_constraintHorizontal_bias="0.0"
@@ -63,17 +64,17 @@
                 android:background="@color/background">
 
                 <TextView
-                    android:id="@+id/textView168"
+                    android:id="@+id/tv_lName_editSD"
                     style="@style/edit_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="150dp"
                     android:fontFamily="@font/archivo_narrow"
                     android:gravity="center_vertical"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/textView167"
-                    app:layout_constraintEnd_toEndOf="@+id/textView166"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/tv_fName_editSD"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_email_editSD"
                     app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="@+id/textView166" />
+                    app:layout_constraintStart_toStartOf="@+id/tv_email_editSD" />
 
                 <TextView
                     android:id="@+id/textView160"
@@ -83,7 +84,7 @@
                     android:layout_marginTop="16dp"
                     android:text="First Name"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/textView167"
+                    app:layout_constraintStart_toStartOf="@+id/tv_fName_editSD"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.0" />
 
@@ -94,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:text="Last Name"
                     app:layout_constraintBaseline_toBaselineOf="@+id/textView160"
-                    app:layout_constraintStart_toStartOf="@+id/textView168" />
+                    app:layout_constraintStart_toStartOf="@+id/tv_lName_editSD" />
 
                 <TextView
                     android:id="@+id/textView162"
@@ -104,8 +105,8 @@
                     android:layout_marginTop="16dp"
                     android:text="Email"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/textView166"
-                    app:layout_constraintTop_toBottomOf="@+id/textView167"
+                    app:layout_constraintStart_toStartOf="@+id/tv_email_editSD"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_fName_editSD"
                     app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
@@ -116,8 +117,8 @@
                     android:layout_marginTop="16dp"
                     android:text="Mobile"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/editText"
-                    app:layout_constraintTop_toBottomOf="@+id/textView166"
+                    app:layout_constraintStart_toStartOf="@+id/et_mobile_editSE"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_email_editSD"
                     app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
@@ -128,8 +129,8 @@
                     android:layout_marginTop="16dp"
                     android:text="Branch"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/textView169"
-                    app:layout_constraintTop_toBottomOf="@+id/editText"
+                    app:layout_constraintStart_toStartOf="@+id/tv_branch_editSD"
+                    app:layout_constraintTop_toBottomOf="@+id/et_mobile_editSE"
                     app:layout_constraintVertical_bias="0.0" />
 
                 <Button
@@ -139,11 +140,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="24dp"
+                    android:onClick="update"
                     android:text="Update"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView170"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_position_editSD"
                     app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
@@ -154,25 +156,25 @@
                     android:layout_marginTop="16dp"
                     android:text="Position"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/textView170"
-                    app:layout_constraintTop_toBottomOf="@+id/textView169"
+                    app:layout_constraintStart_toStartOf="@+id/tv_position_editSD"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_branch_editSD"
                     app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
-                    android:id="@+id/textView166"
+                    android:id="@+id/tv_email_editSD"
                     style="@style/edit_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/archivo_narrow"
                     android:gravity="center_vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/editText"
-                    app:layout_constraintStart_toStartOf="@+id/editText"
+                    app:layout_constraintEnd_toEndOf="@+id/et_mobile_editSE"
+                    app:layout_constraintStart_toStartOf="@+id/et_mobile_editSE"
                     app:layout_constraintTop_toBottomOf="@+id/textView162"
                     app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
-                    android:id="@+id/textView167"
+                    android:id="@+id/tv_fName_editSD"
                     style="@style/edit_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -180,14 +182,14 @@
                     android:fontFamily="@font/archivo_narrow"
                     android:gravity="center_vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/textView168"
+                    app:layout_constraintEnd_toStartOf="@+id/tv_lName_editSD"
                     app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/textView166"
+                    app:layout_constraintStart_toStartOf="@+id/tv_email_editSD"
                     app:layout_constraintTop_toBottomOf="@+id/textView160"
                     app:layout_constraintVertical_bias="0.0" />
 
                 <EditText
-                    android:id="@+id/editText"
+                    android:id="@+id/et_mobile_editSE"
                     style="@style/edit_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -196,36 +198,49 @@
                     android:hint="  Enter Mobile"
                     android:inputType="phone"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/textView169"
-                    app:layout_constraintStart_toStartOf="@+id/textView169"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_branch_editSD"
+                    app:layout_constraintStart_toStartOf="@+id/tv_branch_editSD"
                     app:layout_constraintTop_toBottomOf="@+id/textView163"
                     app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
-                    android:id="@+id/textView169"
+                    android:id="@+id/tv_branch_editSD"
                     style="@style/tv_dropDown"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/archivo_narrow"
                     android:gravity="center_vertical"
+                    android:onClick="branchPopUp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/textView170"
-                    app:layout_constraintStart_toStartOf="@+id/textView170"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_position_editSD"
+                    app:layout_constraintStart_toStartOf="@+id/tv_position_editSD"
                     app:layout_constraintTop_toBottomOf="@+id/textView164"
                     app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
-                    android:id="@+id/textView170"
+                    android:id="@+id/tv_position_editSD"
                     style="@style/tv_dropDown"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/archivo_narrow"
                     android:gravity="center_vertical"
+                    android:onClick="positionPopUp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/button10"
                     app:layout_constraintStart_toStartOf="@+id/button10"
                     app:layout_constraintTop_toBottomOf="@+id/textView165"
                     app:layout_constraintVertical_bias="0.0" />
+
+                <TextView
+                    android:id="@+id/tv_verifiy_staffED"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="(Not yet verified)"
+                    android:textColor="@color/red"
+                    android:visibility="invisible"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/textView165"
+                    app:layout_constraintStart_toEndOf="@+id/textView165" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>

@@ -27,10 +27,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.example.filterapp.fcm.AppNotification;
 import com.example.filterapp.classes.EmailNotification;
 import com.example.filterapp.classes.JavaMailAPI;
 import com.example.filterapp.classes.StaffDetails;
+import com.example.filterapp.fcm.AppNotification;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.Wave;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -643,8 +643,12 @@ public class AccountDetails extends AppCompatActivity {
                     }
 
                     DocumentReference deletePosition = db.collection("adminDetails").document("adminList")
-                            .collection("notificationPreference").document(mAuth.getCurrentUser().getUid());
+                            .collection("appNotificationPreference").document(mAuth.getCurrentUser().getUid());
                     deletePosition.delete();
+
+                    DocumentReference deletePositionApp = db.collection("adminDetails").document("adminList")
+                            .collection("emailNotificationPreference").document(mAuth.getCurrentUser().getUid());
+                    deletePositionApp.delete();
 
                     FirebaseMessaging.getInstance().unsubscribeFromTopic("staffSignUp");
                     FirebaseMessaging.getInstance().unsubscribeFromTopic("changeBranch");
@@ -755,12 +759,12 @@ public class AccountDetails extends AppCompatActivity {
                         FirebaseMessaging.getInstance().subscribeToTopic("staffDeleted");
 
                         DocumentReference upDatePosition = db.collection("adminDetails").document("adminList")
-                                .collection("notificationPreference").document(mAuth.getCurrentUser().getUid());
+                                .collection("emailNotificationPreference").document(mAuth.getCurrentUser().getUid());
                         upDatePosition.set(emailNotification);
 
 
                         DocumentReference upDatePositionApp = db.collection("adminDetails").document("adminList")
-                                .collection("notificationPreference").document(mAuth.getCurrentUser().getUid())
+                                .collection("appNotificationPreference").document(mAuth.getCurrentUser().getUid())
                                 .collection("app").document("app");
                         upDatePositionApp.set(appNotification);
 
@@ -920,8 +924,6 @@ public class AccountDetails extends AppCompatActivity {
                 requestQueue2.add(sendAppNotification.sendNotification("changeBranch", title, body));
             }
         }
-
-
 
 
         DocumentReference staffDetailsDB = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid());

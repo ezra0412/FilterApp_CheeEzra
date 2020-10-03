@@ -45,8 +45,10 @@ import com.github.ybq.android.spinkit.style.Wave;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -55,6 +57,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -109,6 +113,19 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         loadingDialog = new Dialog(this);
         loadingDialogAdmin = new Dialog(this);
         adminDialog = new Dialog(this);
+
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (task.isSuccessful()) {
+                            String token = task.getResult().getToken();
+                            DocumentReference store = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid());
+                            store.update("token", token);
+                        }
+                    }
+                });
+
 
         DocumentReference staffDB = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid());
         staffDB.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {

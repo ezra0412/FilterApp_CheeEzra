@@ -24,8 +24,8 @@ import androidx.fragment.app.Fragment;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.example.filterapp.fcm.AppNotification;
 import com.example.filterapp.classes.JavaMailAPI;
+import com.example.filterapp.fcm.AppNotification;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
@@ -46,10 +46,10 @@ import static com.example.filterapp.MainActivity.getStaffDetailsStatic;
 
 public class ChangePasswordFragment extends Fragment {
     EditText mEmail;
-    String emailPassword, identityPassword, adminPassword;
+    String emailPassword, identityPassword, adminPassword, email = "";
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    String changedEmail, changedEmailPassword, changedIdentity, changedAdmin;
+    String changedEmail = "old", changedEmailPassword, changedIdentity, changedAdmin;
 
     boolean emailPasswordChangedBool = false;
     boolean identityPasswordChangedBool = false;
@@ -98,7 +98,8 @@ public class ChangePasswordFragment extends Fragment {
                 String password = documentSnapshot.getString("password");
                 String changeDetailsPassword = documentSnapshot.getString("changeDetailsPassword");
                 String verificationPassword = documentSnapshot.getString("verificationPassword");
-                storePassword(password, changeDetailsPassword, verificationPassword);
+                String emailOld = documentSnapshot.getString("email");
+                storePassword(password, changeDetailsPassword, verificationPassword, emailOld);
             }
         });
 
@@ -122,6 +123,14 @@ public class ChangePasswordFragment extends Fragment {
                 popUpAdmin();
             }
         });
+
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateDetails();
+            }
+        });
+
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -135,20 +144,14 @@ public class ChangePasswordFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                emailChangedBool = true;
                 changedEmail = mEmail.getText().toString().trim();
+                if (!email.equalsIgnoreCase(changedEmail)) {
+                    emailChangedBool = true;
+                }
             }
         };
 
         mEmail.addTextChangedListener(textWatcher);
-
-        update.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                updateDetails();
-            }
-        });
-
         return v;
     }
 
@@ -471,10 +474,11 @@ public class ChangePasswordFragment extends Fragment {
 
     }
 
-    private void storePassword(String password, String changeDetailsPassword, String verificationPassword) {
+    private void storePassword(String password, String changeDetailsPassword, String verificationPassword, String emailOld) {
         emailPassword = password;
         identityPassword = changeDetailsPassword;
         adminPassword = verificationPassword;
+        email = emailOld;
     }
 
     public void updateDetails() {
@@ -542,21 +546,28 @@ public class ChangePasswordFragment extends Fragment {
                 requestQueue1.add(sendAppNotification.sendNotification("identityVerificationPassChange", title, body));
             }
 
-        }
-        DocumentReference getDetails = db.collection("adminDetails").document("loginDetails");
-        getDetails.update(newDetails).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Toast.makeText(getActivity(), "Nothing Changed", Toast.LENGTH_LONG).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getActivity(), "Error, fail to update details", Toast.LENGTH_LONG).show();
-            }
-        });
-    }
 
+            DocumentReference getDetails = db.collection("adminDetails").document("loginDetails");
+            getDetails.update(newDetails).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(getActivity(), "Details Updated Successfully", Toast.LENGTH_LONG).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getActivity(), "Error, fail to update details", Toast.LENGTH_LONG).show();
+                }
+            });
+
+            emailPasswordChangedBool = false;
+            identityPasswordChangedBool = false;
+            adminPasswordChangedBool = false;
+            emailChangedBool = false;
+
+            email = mEmail.getText().toString().trim();
+        }
+    }
     private void identityPasswordChangedEmail(String email) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss ");
         Date dt = new Date();
@@ -614,5 +625,53 @@ public class ChangePasswordFragment extends Fragment {
         javaMailAPI.execute();
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        emailPasswordChangedBool = false;
+        identityPasswordChangedBool = false;
+        adminPasswordChangedBool = false;
+        emailChangedBool = false;
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        emailPasswordChangedBool = false;
+        identityPasswordChangedBool = false;
+        adminPasswordChangedBool = false;
+        emailChangedBool = false;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        emailPasswordChangedBool = false;
+        identityPasswordChangedBool = false;
+        adminPasswordChangedBool = false;
+        emailChangedBool = false;
+
+        DocumentReference getDetails = db.collection("adminDetails").document("loginDetails");
+        getDetails.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                mEmail.setText("  " + documentSnapshot.getString("email"));
+                String password = documentSnapshot.getString("password");
+                String changeDetailsPassword = documentSnapshot.getString("changeDetailsPassword");
+                String verificationPassword = documentSnapshot.getString("verificationPassword");
+                String emailOld = documentSnapshot.getString("email");
+
+                storePassword(password, changeDetailsPassword, verificationPassword, emailOld);
+            }
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        emailPasswordChangedBool = false;
+        identityPasswordChangedBool = false;
+        adminPasswordChangedBool = false;
+        emailChangedBool = false;
+    }
 }

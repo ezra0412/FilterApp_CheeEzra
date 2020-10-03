@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,7 +28,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class StaffDetailsList extends AppCompatActivity implements BtAdapterDouble.BtDoubleListener {
     String chosenOption;
@@ -101,6 +99,7 @@ public class StaffDetailsList extends AppCompatActivity implements BtAdapterDoub
                             recyclerView.setVisibility(View.VISIBLE);
                             for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                                 searchDetails(documentSnapshot.getId());
+
                             }
 
                         }
