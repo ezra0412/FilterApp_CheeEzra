@@ -13,17 +13,19 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.filterapp.classes.StaffDetails;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class StaffDetail extends AppCompatActivity {
     TextView name, email, phone, branch, position;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String staffID;
-
+    StaffDetails staffDetailsThis = new StaffDetails();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,10 +48,14 @@ public class StaffDetail extends AppCompatActivity {
                 phone.setText(staffDetails.getMobile());
                 branch.setText(staffDetails.getBranch());
                 position.setText(staffDetails.getPosition());
-
+                storeDetails(staffDetails);
             }
         });
 
+    }
+
+    private void storeDetails(StaffDetails staffDetails) {
+        staffDetailsThis = staffDetails;
     }
 
     public void history(View view) {
@@ -70,8 +76,50 @@ public class StaffDetail extends AppCompatActivity {
                 .setTitle(Html.fromHtml("<font color='#E53935'>Delete Confirmation</font>"))
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Toast.makeText(StaffDetail.this, "Yes", Toast.LENGTH_SHORT).show();
+                        if (position.getText().toString().trim().equalsIgnoreCase("admin")) {
+                            FirebaseMessaging.getInstance().unsubscribeFromTopic("staffSignUp");
+                            FirebaseMessaging.getInstance().unsubscribeFromTopic("changeBranch");
+                            FirebaseMessaging.getInstance().unsubscribeFromTopic("changePosition");
+                            FirebaseMessaging.getInstance().unsubscribeFromTopic("customerDeleted");
+                            FirebaseMessaging.getInstance().unsubscribeFromTopic("staffStartNavigation");
+                            FirebaseMessaging.getInstance().unsubscribeFromTopic("soldNewFilter");
+                            FirebaseMessaging.getInstance().unsubscribeFromTopic("serviceDone");
+                            FirebaseMessaging.getInstance().unsubscribeFromTopic("companyEmailDetailsChanged");
+                            FirebaseMessaging.getInstance().unsubscribeFromTopic("adminVerificationPassChange");
+                            FirebaseMessaging.getInstance().unsubscribeFromTopic("identityVerificationPassChange");
+                            FirebaseMessaging.getInstance().unsubscribeFromTopic("staffDeleted");
 
+
+                            DocumentReference upDatePosition = db.collection("adminDetails").document("adminList")
+                                    .collection("emailNotificationPreference").document(staffID);
+                            upDatePosition.delete();
+
+
+                            DocumentReference upDatePositionApp = db.collection("adminDetails").document("adminList")
+                                    .collection("appNotificationPreference").document(staffID);
+                            upDatePositionApp.delete();
+
+
+                        } else if (position.getText().toString().trim().equalsIgnoreCase("sales")) {
+                            DocumentReference deletePosition = db.collection("staffDetails").document("sales")
+                                    .collection("sales").document(staffID);
+                            deletePosition.delete();
+
+                        } else {
+                            DocumentReference deletePosition = db.collection("staffDetails").document("technician")
+                                    .collection("technician").document(staffID);
+                            deletePosition.delete();
+                        }
+
+                        DocumentReference changeStatus = db.collection("staffDetails").document("staffID");
+                        changeStatus.update("deleted", true).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(StaffDetail.this, "Staff Deleted", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        //TODO::Delete history
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

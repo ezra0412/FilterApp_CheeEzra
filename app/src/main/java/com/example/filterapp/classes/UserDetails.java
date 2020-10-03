@@ -1,28 +1,18 @@
 package com.example.filterapp.classes;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
-
 public class UserDetails {
     String fName;
     String lName;
     String mobile;
     String email;
+    boolean deleted;
 
-    public UserDetails(String fName, String lName, String mobile, String email) {
+    public UserDetails(String fName, String lName, String mobile, String email, boolean deleted) {
         this.fName = fName;
         this.lName = lName;
         this.mobile = mobile;
         this.email = email;
+        this.deleted = deleted;
 
     }
 
@@ -57,6 +47,14 @@ public class UserDetails {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     public String fullName() {

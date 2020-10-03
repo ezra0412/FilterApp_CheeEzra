@@ -1,16 +1,13 @@
 package com.example.filterapp.classes;
 
-import com.example.filterapp.classes.UserDetails;
-
 public class StaffDetails extends UserDetails {
     String position;
     String branch;
     boolean Google;
-    boolean deleted;
     String token;
 
     public StaffDetails(){
-        super("", "", "", "");
+        super("", "", "", "", false);
         position="";
         branch="";
         Google = false;
@@ -19,11 +16,10 @@ public class StaffDetails extends UserDetails {
     }
 
     public StaffDetails(String fName, String lName, String mobile, String position, String branch, String email, boolean google, boolean deleted, String token) {
-        super(fName, lName, mobile, email);
+        super(fName, lName, mobile, email, deleted);
         this.position = position;
         this.branch = branch;
         Google = google;
-        this.deleted = deleted;
         this.token = token;
     }
 
@@ -49,14 +45,6 @@ public class StaffDetails extends UserDetails {
 
     public void setGoogle(boolean google) {
         Google = google;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
     }
 
     public String getToken() {

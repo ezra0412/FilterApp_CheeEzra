@@ -31,7 +31,7 @@ public class SplashScreen extends AppCompatActivity {
             staffDB.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    if (documentSnapshot.getString("position") == null) {
+                    if (documentSnapshot.getBoolean("deleted") == true) {
                         Toast.makeText(SplashScreen.this, "Sorry you're being removed", Toast.LENGTH_LONG).show();
                         Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
@@ -57,14 +57,15 @@ public class SplashScreen extends AppCompatActivity {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(SplashScreen.this, "Error please try again later", Toast.LENGTH_LONG).show();
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            startActivity(new Intent(SplashScreen.this, LoginPage.class));
-                            finish();
+                            finishAffinity();
+                            System.exit(0);
                         }
-                    }, 2000);
+                    }, 3000);
                 }
             });
         } else {

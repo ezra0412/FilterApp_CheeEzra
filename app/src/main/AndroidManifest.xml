@@ -62,9 +62,6 @@
             android:name=".QRcode"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".FQA"
-            android:screenOrientation="nosensor" />
-        <activity
             android:name=".TermNCondition"
             android:screenOrientation="nosensor" />
         <activity
