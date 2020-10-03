@@ -11,10 +11,22 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.filterapp.LoginPage;
 import com.example.filterapp.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
+
+    public void onTokenRefresh() {
+        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+
+        sendRegistrationToServer(refreshedToken);
+    }
+
+
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
@@ -44,7 +56,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
         notificationManager.notify(id, notificationBuilder.build());
-
-
     }
+
+    private void sendRegistrationToServer(String token) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        DocumentReference updateToken = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid());
+        updateToken.update("token", token);
+    }
+
+
 }
