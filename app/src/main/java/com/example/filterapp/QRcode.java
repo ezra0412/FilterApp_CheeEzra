@@ -2,6 +2,7 @@ package com.example.filterapp;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -28,6 +29,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 
 import androidmads.library.qrgenearator.QRGContents;
@@ -36,7 +38,7 @@ import androidmads.library.qrgenearator.QRGEncoder;
 public class QRcode extends AppCompatActivity {
     ImageView qr;
     Bitmap qrBits;
-    OutputStream outputStream;
+    FileOutputStream outputStream;
     String documentID;
 
     @Override
@@ -63,17 +65,41 @@ public class QRcode extends AppCompatActivity {
         Dexter.withContext(this).withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE).withListener(new PermissionListener() {
             @Override
             public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                File filepath = Environment.getExternalStorageDirectory();
-                File dir = new File(filepath.getAbsolutePath() + "/QrCodes/");
-                dir.mkdir();
-                File file = new File(dir, documentID + ".jpg");
+
+                ContextWrapper dir = new ContextWrapper(getApplicationContext());
+                File directory = dir.getDir("Qr_Codes", Context.MODE_PRIVATE);
+
+                File file = new File(directory, documentID + ".jpg");
+
                 try {
+                    directory.mkdirs();
                     outputStream = new FileOutputStream(file);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+
+                    qrBits.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                    outputStream.close();
+
                 }
-                qrBits.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+
+                catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        outputStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
                 Toast.makeText(QRcode.this, "Qr code saved!", Toast.LENGTH_SHORT).show();
+                Intent shareImage = new Intent(Intent.ACTION_SEND);
+                shareImage.setType("image/jpeg");
+                ByteArrayOutputStream byts = new ByteArrayOutputStream();
+                qrBits.compress(Bitmap.CompressFormat.JPEG, 100, byts);
+                String path = MediaStore.Images.Media.insertImage(getContentResolver(),
+                        qrBits, documentID, documentID);
+                Uri imageUri = Uri.parse(path);
+                shareImage.putExtra(Intent.EXTRA_STREAM, imageUri);
             }
 
             @Override
