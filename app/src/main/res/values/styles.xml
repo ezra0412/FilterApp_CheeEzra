@@ -52,7 +52,7 @@
 
     <style name="top_bar">
         <item name="android:fontFamily">@font/archivo_narrow</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/medium_green</item>
         <item name="android:textSize">24dp</item>
         <item name="android:textStyle">bold</item>
     </style>

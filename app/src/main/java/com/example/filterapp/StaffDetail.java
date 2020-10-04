@@ -59,7 +59,10 @@ public class StaffDetail extends AppCompatActivity {
     }
 
     public void history(View view) {
-        Toast.makeText(StaffDetail.this, "History", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(StaffDetail.this, HistoryType.class);
+        intent.putExtra("staffID", staffID);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     public void update(View view) {

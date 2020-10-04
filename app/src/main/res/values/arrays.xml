@@ -4,7 +4,9 @@
         <item>My Account</item>
         <item>Add Customer</item>
         <item>Customer Details</item>
+        <item>Service List</item>
         <item>GPS</item>
+        <item>Work History</item>
         <item>FAQ</item>
         <item>About</item>
         <item>0</item>
@@ -15,7 +17,9 @@
         <item>@drawable/ic_account</item>
         <item>@drawable/ic_add_customer</item>
         <item>@drawable/ic_customer_details</item>
+        <item>@drawable/ic_stock</item>
         <item>@drawable/ic_gps</item>
+        <item>@drawable/ic_history_black_24dp</item>
         <item>@drawable/ic_faq</item>
         <item>@drawable/ic_tnc</item>
         <item>0</item>

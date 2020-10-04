@@ -5,11 +5,11 @@ public class CustomerDetails extends UserDetails {
 
 
     public CustomerDetails() {
-        this("", "", "", "", "");
+        this("", "", "", "", "", false);
     }
 
-    public CustomerDetails(String fName, String lName, String mobile, String email, String note) {
-        super(fName, lName, mobile, email);
+    public CustomerDetails(String fName, String lName, String mobile, String email, String note, boolean deleted) {
+        super(fName, lName, mobile, email, deleted);
         this.note = note;
     }
 

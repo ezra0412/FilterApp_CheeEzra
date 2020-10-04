@@ -93,10 +93,12 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private static final int account = 0;
     private static final int addCustomer = 1;
     private static final int customerDetails = 2;
-    private static final int GPS = 3;
-    private static final int faq = 4;
-    private static final int tnc = 5;
-    private static final int logout = 7;
+    private static final int serviceList = 3;
+    private static final int GPS = 4;
+    private static final int history = 5;
+    private static final int faq = 6;
+    private static final int tnc = 7;
+    private static final int logout = 9;
 
     public static StaffDetails staffDetailsStatic = new StaffDetails();
 
@@ -213,7 +215,9 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 createItemFor(account),
                 createItemFor(addCustomer),
                 createItemFor(customerDetails),
+                createItemFor(serviceList),
                 createItemFor(GPS),
+                createItemFor(history),
                 createItemFor(faq),
                 createItemFor(tnc),
                 new SpaceItem(35),
@@ -296,6 +300,14 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                     Toast.makeText(MainActivity.this, "Sorry technician aren't allowed", Toast.LENGTH_LONG).show();
 
                 break;
+
+            case serviceList:
+                Intent YearService = new Intent(MainActivity.this, YearList.class);
+                YearService.putExtra("fromActivity", "mainService");
+                YearService.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(YearService);
+                break;
+
             case GPS:
                 Intent GpsPage = new Intent(MainActivity.this, GPS.class);
                 GpsPage.putExtra("lan", "non");

@@ -187,7 +187,7 @@ public class AddCustomer extends AppCompatActivity {
             }
         });
 
-        customerDetails = new CustomerDetails(capitalize(fName), capitalize(lName), email, mobile, note);
+        customerDetails = new CustomerDetails(capitalize(fName), capitalize(lName), email, mobile, note, false);
 
         documentCollection = fName.substring(0, 1).toLowerCase();
         documentID = documentCollection + mobile;

@@ -31,7 +31,6 @@ public class CustomerList extends AppCompatActivity implements BtAdapterDouble.B
     RecyclerView recyclerView;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     List<BtLongDoubleItem> btLongDoubleItemList = new LinkedList<>();
-    List<CustomerDetails> unsortedList = new LinkedList<>();
     RecyclerView.Adapter adapter;
     BtLongDoubleItem btLongDoubleItem;
     int counter = 0;
