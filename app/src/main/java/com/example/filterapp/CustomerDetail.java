@@ -22,9 +22,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.example.filterapp.classes.Address;
-import com.example.filterapp.fcm.AppNotification;
 import com.example.filterapp.classes.CustomerDetails;
 import com.example.filterapp.classes.JavaMailAPI;
+import com.example.filterapp.fcm.AppNotification;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.Wave;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -122,11 +122,7 @@ public class CustomerDetail extends AppCompatActivity {
     }
 
     public void back(View view) {
-        Intent intent = new Intent(CustomerDetail.this, CustomerList.class);
-        intent.putExtra("chosenOption", customerID.substring(0, 1));
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-        finish();
+        super.onBackPressed();
     }
 
     public void edit(View view) {

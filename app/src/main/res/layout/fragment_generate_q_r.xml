@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/background">
@@ -31,254 +30,248 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
+                    app:layout_constraintTop_toBottomOf="@+id/et_note_generateQR" />
 
                 <EditText
                     android:id="@+id/et_note_generateQR"
                     style="@style/edit_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
                     android:background="@drawable/et_medium_bg"
                     android:ems="10"
                     android:inputType="textMultiLine"
-                    app:layout_constraintBottom_toTopOf="@+id/bt_generate_fQR"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/bt_generate_fQR"
-                    app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="@+id/bt_generate_fQR"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView33"
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
                     android:id="@+id/textView33"
                     style="@style/lable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:text="Note: "
-                    app:layout_constraintBottom_toTopOf="@+id/et_note_generateQR"
-                    app:layout_constraintStart_toStartOf="@+id/et_note_generateQR" />
+                    app:layout_constraintStart_toStartOf="@+id/et_note_generateQR"
+                    app:layout_constraintTop_toBottomOf="@+id/et_salesPrice_generateQR" />
 
                 <EditText
                     android:id="@+id/et_salesPrice_generateQR"
                     style="@style/edit_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
                     android:ems="10"
                     android:hint="  Enter Sales price"
                     android:inputType="numberDecimal"
-                    app:layout_constraintBottom_toTopOf="@+id/textView33"
-                    app:layout_constraintEnd_toEndOf="@+id/bt_generate_fQR"
-                    app:layout_constraintStart_toStartOf="@+id/bt_generate_fQR"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/et_note_generateQR"
+                    app:layout_constraintStart_toStartOf="@+id/et_note_generateQR"
+                    app:layout_constraintTop_toBottomOf="@+id/textView35"
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
                     android:id="@+id/textView35"
                     style="@style/lable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:text="Sales Price (RM)  "
-                    app:layout_constraintBottom_toTopOf="@+id/et_salesPrice_generateQR"
-                    app:layout_constraintStart_toStartOf="@+id/et_salesPrice_generateQR" />
+                    app:layout_constraintStart_toStartOf="@+id/et_salesPrice_generateQR"
+                    app:layout_constraintTop_toBottomOf="@+id/et_comission_generateQR" />
 
                 <EditText
                     android:id="@+id/et_comission_generateQR"
                     style="@style/edit_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
                     android:ems="10"
                     android:hint="  Enter Commission"
                     android:inputType="numberDecimal"
-                    app:layout_constraintBottom_toTopOf="@+id/textView35"
-                    app:layout_constraintEnd_toEndOf="@+id/bt_generate_fQR"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/bt_generate_fQR"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.998" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/et_salesPrice_generateQR"
+                    app:layout_constraintStart_toStartOf="@+id/et_salesPrice_generateQR"
+                    app:layout_constraintTop_toBottomOf="@+id/textView36"
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
                     android:id="@+id/tv_filter5_generateQR"
                     style="@style/tv_dropDown"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
                     android:ems="10"
                     android:hint="  Please Select Filter 5"
-                    app:layout_constraintBottom_toTopOf="@+id/textView36"
-                    app:layout_constraintEnd_toEndOf="@+id/bt_generate_fQR"
-                    app:layout_constraintStart_toStartOf="@+id/bt_generate_fQR"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/et_comission_generateQR"
+                    app:layout_constraintStart_toStartOf="@+id/et_comission_generateQR"
+                    app:layout_constraintTop_toBottomOf="@+id/textView37"
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
                     android:id="@+id/textView36"
                     style="@style/lable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:text="Commission (RM)  "
-                    app:layout_constraintBottom_toTopOf="@+id/et_comission_generateQR"
-                    app:layout_constraintStart_toStartOf="@+id/et_comission_generateQR" />
+                    app:layout_constraintStart_toStartOf="@+id/et_comission_generateQR"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_filter5_generateQR" />
 
                 <TextView
                     android:id="@+id/textView37"
                     style="@style/lable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:text="Filter 5 "
-                    app:layout_constraintBottom_toTopOf="@+id/tv_filter5_generateQR"
-                    app:layout_constraintStart_toStartOf="@+id/tv_filter5_generateQR" />
+                    app:layout_constraintStart_toStartOf="@+id/tv_filter5_generateQR"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_filter4_generateQR" />
 
                 <TextView
                     android:id="@+id/tv_filter4_generateQR"
                     style="@style/tv_dropDown"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
                     android:hint="  Please Select Filter 4"
-                    app:layout_constraintBottom_toTopOf="@+id/textView37"
-                    app:layout_constraintEnd_toEndOf="@+id/bt_generate_fQR"
-                    app:layout_constraintStart_toStartOf="@+id/bt_generate_fQR"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_filter5_generateQR"
+                    app:layout_constraintStart_toStartOf="@+id/tv_filter5_generateQR"
+                    app:layout_constraintTop_toBottomOf="@+id/textView39"
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
                     android:id="@+id/textView39"
                     style="@style/lable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:text="Filter 4 "
-                    app:layout_constraintBottom_toTopOf="@+id/tv_filter4_generateQR"
-                    app:layout_constraintStart_toStartOf="@+id/tv_filter4_generateQR" />
+                    app:layout_constraintStart_toStartOf="@+id/tv_filter4_generateQR"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_filter3_generateQR" />
 
                 <TextView
                     android:id="@+id/tv_filter3_generateQR"
                     style="@style/tv_dropDown"
-                    android:layout_width="0dp"
+                    android:layout_width="333dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
                     android:hint="  Please Select Filter 3"
-                    app:layout_constraintBottom_toTopOf="@+id/textView39"
-                    app:layout_constraintEnd_toEndOf="@+id/et_note_generateQR"
-                    app:layout_constraintStart_toStartOf="@+id/et_note_generateQR"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_filter4_generateQR"
+                    app:layout_constraintStart_toStartOf="@+id/tv_filter4_generateQR"
+                    app:layout_constraintTop_toBottomOf="@+id/textView41"
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
                     android:id="@+id/textView41"
                     style="@style/lable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:text="Filter 3 "
-                    app:layout_constraintBottom_toTopOf="@+id/tv_filter3_generateQR"
-                    app:layout_constraintStart_toStartOf="@+id/tv_filter3_generateQR" />
+                    app:layout_constraintStart_toStartOf="@+id/tv_filter3_generateQR"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_filter2_generateQR" />
 
                 <TextView
                     android:id="@+id/tv_filter2_generateQR"
                     style="@style/tv_dropDown"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
                     android:autofillHints=" "
                     android:hint="  Please Select Filter 2"
-                    app:layout_constraintBottom_toTopOf="@+id/textView41"
-                    app:layout_constraintEnd_toEndOf="@+id/bt_generate_fQR"
-                    app:layout_constraintStart_toStartOf="@+id/bt_generate_fQR"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_filter3_generateQR"
+                    app:layout_constraintStart_toStartOf="@+id/tv_filter3_generateQR"
+                    app:layout_constraintTop_toBottomOf="@+id/textView43"
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
                     android:id="@+id/textView43"
                     style="@style/lable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:text="Filter 2 "
-                    app:layout_constraintBottom_toTopOf="@+id/tv_filter2_generateQR"
-                    app:layout_constraintStart_toStartOf="@+id/tv_filter2_generateQR" />
+                    app:layout_constraintStart_toStartOf="@+id/tv_filter2_generateQR"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_filter1_generateQR" />
 
                 <TextView
                     android:id="@+id/tv_filter1_generateQR"
                     style="@style/tv_dropDown"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
                     android:hint="  Please Select Filter 1"
                     android:textColorHint="@color/text_hint"
-                    app:layout_constraintBottom_toTopOf="@+id/textView43"
-                    app:layout_constraintEnd_toEndOf="@+id/bt_generate_fQR"
-                    app:layout_constraintStart_toStartOf="@+id/bt_generate_fQR"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
+                    app:layout_constraintEnd_toEndOf="@+id/tv_filter2_generateQR"
+                    app:layout_constraintStart_toStartOf="@+id/tv_filter2_generateQR"
+                    app:layout_constraintTop_toBottomOf="@+id/textView45" />
 
                 <TextView
                     android:id="@+id/textView45"
                     style="@style/lable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:text="Filter 1 "
-                    app:layout_constraintBottom_toTopOf="@+id/tv_filter1_generateQR"
-                    app:layout_constraintStart_toStartOf="@+id/tv_filter1_generateQR" />
+                    app:layout_constraintStart_toStartOf="@+id/tv_filter1_generateQR"
+                    app:layout_constraintTop_toBottomOf="@+id/et_filterModel_generateQR" />
 
                 <TextView
                     android:id="@+id/textView46"
                     style="@style/lable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:text="Filter Model "
-                    app:layout_constraintBottom_toTopOf="@+id/et_filterModel_generateQR"
-                    app:layout_constraintStart_toStartOf="@+id/et_filterModel_generateQR" />
+                    app:layout_constraintStart_toStartOf="@+id/et_filterModel_generateQR"
+                    app:layout_constraintTop_toBottomOf="@+id/et_fName_generateQR" />
 
                 <TextView
                     android:id="@+id/tv_mobile_generateQR"
                     style="@style/lable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:text="Customer Mobile  "
-                    app:layout_constraintBottom_toTopOf="@+id/et_mobile_generateQR"
-                    app:layout_constraintStart_toStartOf="@+id/et_mobile_generateQR" />
+                    app:layout_constraintStart_toStartOf="@+id/et_mobile_generateQR"
+                    app:layout_constraintTop_toBottomOf="@+id/et_invNum_generateQR" />
 
                 <EditText
                     android:id="@+id/et_mobile_generateQR"
                     style="@style/edit_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
                     android:ems="10"
                     android:fontFamily="@font/archivo_narrow"
                     android:hint="  Enter Customer Mobile"
                     android:inputType="phone"
-                    app:layout_constraintBottom_toTopOf="@+id/textView"
-                    app:layout_constraintEnd_toEndOf="@+id/bt_generate_fQR"
-                    app:layout_constraintStart_toStartOf="@+id/bt_generate_fQR"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/et_fName_generateQR"
+                    app:layout_constraintStart_toStartOf="@+id/et_fName_generateQR"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_mobile_generateQR"
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <EditText
                     android:id="@+id/et_invNum_generateQR"
                     style="@style/edit_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
                     android:ems="10"
                     android:fontFamily="@font/archivo_narrow"
                     android:hint="  Enter Invoice Number"
                     android:inputType="text"
-                    app:layout_constraintBottom_toTopOf="@+id/tv_mobile_generateQR"
-                    app:layout_constraintEnd_toEndOf="@+id/bt_generate_fQR"
-                    app:layout_constraintStart_toStartOf="@+id/bt_generate_fQR"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/et_mobile_generateQR"
+                    app:layout_constraintStart_toStartOf="@+id/et_mobile_generateQR"
+                    app:layout_constraintTop_toBottomOf="@+id/textView48"
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
                     android:id="@+id/textView48"
                     style="@style/lable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="16dp"
                     android:text="Invoice Number  "
-                    app:layout_constraintBottom_toTopOf="@+id/et_invNum_generateQR"
                     app:layout_constraintStart_toStartOf="@+id/et_invNum_generateQR"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -287,41 +280,38 @@
                     style="@style/edit_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
                     android:ems="10"
                     android:hint="  Enter Filter Model"
                     android:inputType="textPersonName"
-                    app:layout_constraintBottom_toTopOf="@+id/textView45"
-                    app:layout_constraintEnd_toEndOf="@+id/bt_generate_fQR"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="@+id/bt_generate_fQR"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_filter1_generateQR"
+                    app:layout_constraintStart_toStartOf="@+id/tv_filter1_generateQR"
+                    app:layout_constraintTop_toBottomOf="@+id/textView46"
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
                     android:id="@+id/textView"
                     style="@style/lable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:text="Customer First Name   "
-                    app:layout_constraintBottom_toTopOf="@+id/et_fName_generateQR"
-                    app:layout_constraintStart_toStartOf="@+id/et_fName_generateQR" />
+                    app:layout_constraintStart_toStartOf="@+id/et_fName_generateQR"
+                    app:layout_constraintTop_toBottomOf="@+id/et_mobile_generateQR" />
 
                 <EditText
                     android:id="@+id/et_fName_generateQR"
                     style="@style/edit_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
                     android:ems="10"
                     android:hint="  Enter Customer First Name"
                     android:inputType="textPersonName"
-                    app:layout_constraintBottom_toTopOf="@+id/textView46"
-                    app:layout_constraintEnd_toEndOf="@+id/bt_generate_fQR"
-                    app:layout_constraintHorizontal_bias="0.35"
-                    app:layout_constraintStart_toStartOf="@+id/bt_generate_fQR"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/et_filterModel_generateQR"
+                    app:layout_constraintStart_toStartOf="@+id/et_filterModel_generateQR"
+                    app:layout_constraintTop_toBottomOf="@+id/textView"
+                    app:layout_constraintVertical_bias="0.0" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

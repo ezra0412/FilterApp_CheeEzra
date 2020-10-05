@@ -1,6 +1,9 @@
 package com.example.filterapp;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,10 +17,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class FilterDetail extends AppCompatActivity {
-    String documentID;
+    String documentID, customerID;
     TextView name, invoiceNum, fModel, f1, f2, f3, f4, f5, f1LC, f2LC,
             f3LC, f4LC, f5LC, part1, part2, part3, part1LC, part2LC, part3LC, note;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    ImageView filterPic;
+    TextView errorMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +49,8 @@ public class FilterDetail extends AppCompatActivity {
         part2LC = findViewById(R.id.tv_part2LC_filterDetails);
         part3LC = findViewById(R.id.tv_part3LC_filterDetails);
         note = findViewById(R.id.tv_note_filterDetails);
+        filterPic = findViewById(R.id.img_filterPic_filterDetails);
+        errorMessage = findViewById(R.id.tv_errorMessage_filterDetails);
         setFilterDetails();
     }
 
@@ -75,19 +82,26 @@ public class FilterDetail extends AppCompatActivity {
                 part3LC.setText(filterDetails.getFC_DLC());
                 note.setText(filterDetails.getNote());
                 setName(filterDetails.getfName(), filterDetails.getMobile());
+                if (!filterDetails.isImg()) {
+                    errorMessage.setText("No image provided");
+                    filterPic.setImageDrawable(getDrawable(R.drawable.white_image));
+                } else
+                    setImage();
             }
         });
     }
 
-    public void setName(String fName, String mobile) {
-        String documentID2 = fName.substring(0, 1).toLowerCase() + mobile;
+    private void setImage() {
+    }
 
+    public void setName(String fName, String mobile) {
+        customerID = fName.substring(0, 1).toLowerCase() + mobile;
         DocumentReference customerDetails = db.collection("customerDetails").document("sorted").
-                collection(fName.substring(0, 1).toLowerCase()).document(documentID2);
+                collection(fName.substring(0, 1).toLowerCase()).document(customerID);
         customerDetails.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                name.setText(documentSnapshot.getString("lName") + " " + documentSnapshot.getString("fName"));
+                name.setText(documentSnapshot.getString("fName") + " " + documentSnapshot.getString("lName"));
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -95,5 +109,30 @@ public class FilterDetail extends AppCompatActivity {
                 name.setText("Customer Deleted");
             }
         });
+    }
+
+    public void openCustomerDetails(View view) {
+        Intent intent = new Intent(FilterDetail.this, CustomerDetail.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("customerID", customerID);
+        startActivity(intent);
+    }
+
+    public void generateQRCode(View view) {
+        Intent intent = new Intent(FilterDetail.this, QRcode.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("documentID", documentID);
+        startActivity(intent);
+    }
+
+    public void serviceFilter(View view) {
+        Intent intent = new Intent(FilterDetail.this, ServiceFilter.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("documentID", documentID);
+        startActivity(intent);
+    }
+
+    public void history(View view) {
+
     }
 }

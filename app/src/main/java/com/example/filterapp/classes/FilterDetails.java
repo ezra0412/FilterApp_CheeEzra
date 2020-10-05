@@ -32,7 +32,7 @@ public class FilterDetails {
     public FilterDetails() {
         this("", "", "", "", "-", "-", "-", "-", "-", "",
                 "", "", "", "No Record", "No Record", "No Record", "No Record", "No Record",
-                "-", "-", "-", "No Record", "No Record", "No Record", false);
+                "WT", "WT-S", "FC-D", "No Record", "No Record", "No Record", false);
     }
 
     public FilterDetails(String invoiceNumber, String mobile, String fName, String fModel, String filter1, String filter2, String filter3,

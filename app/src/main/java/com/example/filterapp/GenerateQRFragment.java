@@ -29,12 +29,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 
 /**
@@ -55,8 +58,7 @@ public class GenerateQRFragment extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     String documentID;
-    boolean exist = true;
-
+    String invoiceNum, mobile, fName, fModel, commission, price, note;
     Dialog loadingDialog;
 
     @Override
@@ -514,7 +516,6 @@ public class GenerateQRFragment extends Fragment {
     }
 
     public void generate() {
-        String invoiceNum, mobile, fName, fModel, commission, price, note;
         invoiceNum = mInvoiceNum.getText().toString().trim();
         mobile = mMobile.getText().toString().trim();
         fName = mFName.getText().toString().trim();
@@ -556,9 +557,7 @@ public class GenerateQRFragment extends Fragment {
         }
 
         if (commission.isEmpty()) {
-            mCommission.setError("Commission cannot be empty");
-            mCommission.requestFocus();
-            return;
+            commission = "0";
         }
 
         if (price.isEmpty()) {
@@ -566,13 +565,6 @@ public class GenerateQRFragment extends Fragment {
             mPrice.requestFocus();
             return;
         }
-
-        if (price.equalsIgnoreCase("0")) {
-            mPrice.setError("Price cannot be less than 0");
-            mPrice.requestFocus();
-            return;
-        }
-
 
         if (filters.size() < 1) {
             Toast.makeText(getActivity(), "Need to have at least one filter.", Toast.LENGTH_SHORT).show();
@@ -604,122 +596,144 @@ public class GenerateQRFragment extends Fragment {
                         mFName.requestFocus();
                         return;
                     } else {
-                        loadingDialog.dismiss();
-                        storeData();
+
+                        FilterDetails filterDetails = new FilterDetails();
+                        documentID = createID();
+
+                        String year = documentID.substring(0, 4);
+                        String month = documentID.substring(4, 7);
+
+                        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                        LocalDateTime now = LocalDateTime.now();
+                        String date = dtf.format(now);
+
+                        filterDetails.setInvoiceNumber(invoiceNum.toUpperCase());
+                        filterDetails.setMobile(mobile);
+                        filterDetails.setfName(fName);
+                        filterDetails.setfModel(fModel.toUpperCase());
+                        filterDetails.setSalesID(mAuth.getCurrentUser().getUid());
+
+                        if (note.isEmpty()) {
+                            note = "No note provided";
+                        }
+
+                        switch (filters.size()) {
+                            case 1: {
+                                filterDetails.setFilter1(filters.get(0));
+
+                                filterDetails.setFilter1LC(date);
+                                break;
+                            }
+
+                            case 2: {
+                                filterDetails.setFilter1(filters.get(0));
+                                filterDetails.setFilter2(filters.get(1));
+
+                                filterDetails.setFilter1LC(date);
+                                filterDetails.setFilter2LC(date);
+                                break;
+                            }
+
+                            case 3: {
+                                filterDetails.setFilter1(filters.get(0));
+                                filterDetails.setFilter2(filters.get(1));
+                                filterDetails.setFilter3(filters.get(2));
+
+                                filterDetails.setFilter1LC(date);
+                                filterDetails.setFilter2LC(date);
+                                filterDetails.setFilter3LC(date);
+                                break;
+                            }
+
+                            case 4: {
+                                filterDetails.setFilter1(filters.get(0));
+                                filterDetails.setFilter2(filters.get(1));
+                                filterDetails.setFilter3(filters.get(2));
+                                filterDetails.setFilter4(filters.get(3));
+
+                                filterDetails.setFilter1LC(date);
+                                filterDetails.setFilter2LC(date);
+                                filterDetails.setFilter3LC(date);
+                                filterDetails.setFilter4LC(date);
+                                break;
+                            }
+
+                            case 5: {
+                                filterDetails.setFilter1(filters.get(0));
+                                filterDetails.setFilter2(filters.get(1));
+                                filterDetails.setFilter3(filters.get(2));
+                                filterDetails.setFilter4(filters.get(3));
+                                filterDetails.setFilter5(filters.get(4));
+
+                                filterDetails.setFilter1LC(date);
+                                filterDetails.setFilter2LC(date);
+                                filterDetails.setFilter3LC(date);
+                                filterDetails.setFilter4LC(date);
+                                filterDetails.setFilter5LC(date);
+                                break;
+                            }
+                        }
+
+                        filterDetails.setCommission(commission);
+                        filterDetails.setPrice(price);
+                        filterDetails.setNote(note);
+                        Map<String, String> dummyData = new HashMap<>();
+                        dummyData.put("placeHolder", "dummyData");
+                        final DocumentReference staffDB = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid()).
+                                collection("sales").document(year);
+                        staffDB.set(dummyData);
+                        DocumentReference staffDB2 = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid()).
+                                collection("sales").document(year).collection(month).document(documentID);
+                        staffDB2.set(dummyData);
+
+                        staffDB.update("placeHolder", FieldValue.delete());
+
+                        DocumentReference customerDB = db.collection("customerDetails").document("sorted")
+                                .collection(fName.substring(0, 1)).document(fName.substring(0, 1) + mobile)
+                                .collection("purchaseHistory").document("purchaseHistory");
+                        customerDB.set(dummyData);
+
+                        DocumentReference customerDB2 = db.collection("customerDetails").document("sorted")
+                                .collection(fName.substring(0, 1)).document(fName.substring(0, 1) + mobile)
+                                .collection("purchaseHistory").document("purchaseHistory").collection(year).document(documentID);
+                        customerDB2.set(dummyData);
+
+                        customerDB.update("placeHolder", FieldValue.delete());
+
+                        final DocumentReference filterDetailsDB = db.collection("sales").document(year);
+                        filterDetailsDB.set(dummyData);
+
+                        mCommission.setText("");
+                        mFModel.setText("");
+                        mFilter1.setText("");
+                        mFilter2.setText("");
+                        mFilter3.setText("");
+                        mFilter4.setText("");
+                        mFilter5.setText("");
+                        mCommission.setText("");
+                        mPrice.setText("");
+                        mNote.setText("");
+
+
+                        DocumentReference filterDetailsDB2 = db.collection("sales").document(year).collection(month).document(documentID);
+                        filterDetailsDB2.set(filterDetails).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                filterDetailsDB.update("placeHolder", FieldValue.delete());
+
+                                loadingDialog.dismiss();
+                                Intent intent = new Intent(getActivity(), QRcode.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                intent.putExtra("documentID", documentID);
+                                startActivity(intent);
+                            }
+                        });
                     }
                 }
             }
         });
     }
 
-    public void storeData() {
-
-        String invoiceNum, mobile, fName, fModel, commission, price, note;
-        invoiceNum = mInvoiceNum.getText().toString().trim();
-        mobile = mMobile.getText().toString().trim();
-        fName = mFName.getText().toString().trim();
-        fModel = mFModel.getText().toString().trim();
-        commission = mCommission.getText().toString().trim();
-        price = mPrice.getText().toString().trim();
-        note = mNote.getText().toString().trim();
-        FilterDetails filterDetails = new FilterDetails();
-        documentID = createID();
-
-        String year = documentID.substring(0, 4);
-        String month = documentID.substring(4, 7);
-
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDateTime now = LocalDateTime.now();
-        String date = dtf.format(now);
-
-        filterDetails.setInvoiceNumber(invoiceNum);
-        filterDetails.setMobile(mobile);
-        filterDetails.setfName(fName);
-        filterDetails.setfModel(fModel);
-        filterDetails.setSalesID(mAuth.getCurrentUser().getUid());
-
-        if (note.isEmpty()) {
-            note = "No note provided";
-        }
-
-        switch (filters.size()) {
-            case 1: {
-                filterDetails.setFilter1(filters.get(0));
-
-                filterDetails.setFilter1LC(date);
-                break;
-            }
-
-            case 2: {
-                filterDetails.setFilter1(filters.get(0));
-                filterDetails.setFilter2(filters.get(1));
-
-                filterDetails.setFilter1LC(date);
-                filterDetails.setFilter2LC(date);
-                break;
-            }
-
-            case 3: {
-                filterDetails.setFilter1(filters.get(0));
-                filterDetails.setFilter2(filters.get(1));
-                filterDetails.setFilter3(filters.get(2));
-
-                filterDetails.setFilter1LC(date);
-                filterDetails.setFilter2LC(date);
-                filterDetails.setFilter3LC(date);
-                break;
-            }
-
-            case 4: {
-                filterDetails.setFilter1(filters.get(0));
-                filterDetails.setFilter2(filters.get(1));
-                filterDetails.setFilter3(filters.get(2));
-                filterDetails.setFilter4(filters.get(3));
-
-                filterDetails.setFilter1LC(date);
-                filterDetails.setFilter2LC(date);
-                filterDetails.setFilter3LC(date);
-                filterDetails.setFilter4LC(date);
-                break;
-            }
-
-            case 5: {
-                filterDetails.setFilter1(filters.get(0));
-                filterDetails.setFilter2(filters.get(1));
-                filterDetails.setFilter3(filters.get(2));
-                filterDetails.setFilter4(filters.get(3));
-                filterDetails.setFilter5(filters.get(4));
-
-                filterDetails.setFilter1LC(date);
-                filterDetails.setFilter2LC(date);
-                filterDetails.setFilter3LC(date);
-                filterDetails.setFilter4LC(date);
-                filterDetails.setFilter5LC(date);
-                break;
-            }
-        }
-
-        filterDetails.setCommission(commission);
-        filterDetails.setPrice(price);
-        filterDetails.setNote(note);
-
-        DocumentReference filterDetailsDB = db.collection("sales").document(year).collection(month).document(documentID);
-        filterDetailsDB.set(filterDetails).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Intent intent = new Intent(getActivity(), QRcode.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("documentID", documentID);
-                startActivity(intent);
-            }
-        });
-    }
-
-    public void checkCustomer() {
-        String fName = mFName.getText().toString().trim();
-        String mobile = mMobile.getText().toString().trim();
-
-    }
 
     public String createID() {
         LocalDateTime timeNow = LocalDateTime.now();
@@ -773,6 +787,5 @@ public class GenerateQRFragment extends Fragment {
         }
 
     }
-
 
 }

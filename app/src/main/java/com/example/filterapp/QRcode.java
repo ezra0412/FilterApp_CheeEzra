@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.view.View;
@@ -30,7 +29,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
@@ -48,17 +46,14 @@ public class QRcode extends AppCompatActivity {
         documentID = getIntent().getStringExtra("documentID");
         qr = findViewById(R.id.img_qr_qrCode);
 
-        QRGEncoder qrgEncoder = new QRGEncoder(documentID, null, QRGContents.Type.TEXT, 800);
+        QRGEncoder qrgEncoder = new QRGEncoder(documentID, null, QRGContents.Type.TEXT, 1000);
         qrBits = qrgEncoder.getBitmap();
         qr.setImageBitmap(qrBits);
 
     }
 
     public void back(View view) {
-        Intent intent = new Intent(QRcode.this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-        finish();
+        super.onBackPressed();
     }
 
     public void saveImage(View view) {
@@ -67,7 +62,7 @@ public class QRcode extends AppCompatActivity {
             public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
 
                 ContextWrapper dir = new ContextWrapper(getApplicationContext());
-                File directory = dir.getDir("Qr_Codes", Context.MODE_PRIVATE);
+                File directory = dir.getDir("Ashita_QrCodes", Context.MODE_PRIVATE);
 
                 File file = new File(directory, documentID + ".jpg");
 
