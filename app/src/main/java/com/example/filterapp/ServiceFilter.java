@@ -1,10 +1,18 @@
 package com.example.filterapp;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,15 +22,27 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.FileProvider;
 
 import com.example.filterapp.classes.FilterDetails;
 import com.example.filterapp.classes.ServiceDetails;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
@@ -30,8 +50,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ServiceFilter extends AppCompatActivity {
-
+    public static final int SELECT_PICTURE = 1;
+    String currentPhotoPath;
+    ImageView filterImg;
     TextView mFilter1, mFilter2, mFilter3, mFilter4, mFilter5;
+    TextView message;
     EditText mWT, mWTS, mFCD, mServicePrice, mNote;
     boolean changedFilter = true, changeSparePart = true;
     String documentID;
@@ -42,17 +65,22 @@ public class ServiceFilter extends AppCompatActivity {
     Dialog filterDialog, filterCDialog, filterMDialog, filterPDialog;
     String chosenFilter = "";
     int counter = 5;
+    ConstraintLayout constrainLayout;
+    Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service_filter);
 
+        filterImg = findViewById(R.id.img_filter_serviceFilter);
         mFilter1 = findViewById(R.id.tv_changedFilter1_serviceFIlter);
         mFilter2 = findViewById(R.id.tv_changedFilter2_serviceFIlter);
         mFilter3 = findViewById(R.id.tv_changedFilter3_serviceFIlter);
         mFilter4 = findViewById(R.id.tv_changedFilter4_serviceFIlter);
         mFilter5 = findViewById(R.id.tv_changedFilter5_serviceFIlter);
+
+        message = findViewById(R.id.tv_message_serviceFilter);
 
         mWT = findViewById(R.id.et_wt_filterService);
         mWTS = findViewById(R.id.et_wts_filterService);
@@ -67,6 +95,9 @@ public class ServiceFilter extends AppCompatActivity {
         documentID = getIntent().getStringExtra("documentID");
         String year = documentID.substring(0, 4);
         String month = documentID.substring(4, 7);
+
+        constrainLayout = findViewById(R.id.cl_serviceFilter);
+
         DocumentReference getFilterDetails = db.collection("sales").document(year).collection(month).document(documentID);
         getFilterDetails.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -677,5 +708,108 @@ public class ServiceFilter extends AppCompatActivity {
                 return "";
         }
 
+    }
+
+    public void takePictures(View view) {
+        permissionRequest();
+    }
+
+    public void permissionRequest() {
+        Dexter.withContext(this).withPermission(Manifest.permission.CAMERA).withListener(new PermissionListener() {
+            @Override
+            public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
+                message.setText("(Upload Image)");
+                message.setTextColor(getColor(R.color.green));
+                message.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        takePicturesPermissionGet();
+                    }
+                });
+                filterImg.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        takePicturesPermissionGet();
+                    }
+                });
+            }
+
+            @Override
+            public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
+                message.setText("Camera permission not granted");
+                message.setTextColor(getColor(R.color.red));
+                message.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        Uri uri = Uri.fromParts("package", getPackageName(), null);
+                        intent.setData(uri);
+                        startActivity(intent);
+                        permissionRequest();
+                    }
+                });
+
+                final Snackbar snackbar = Snackbar.make(constrainLayout, "Camera permission is needed in order to take pictures", Snackbar.LENGTH_LONG);
+                snackbar.setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE);
+                snackbar.setDuration(10000);
+                snackbar.setActionTextColor(getResources().getColor(R.color.red));
+                snackbar.setAction("Setting", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        snackbar.dismiss();
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        Uri uri = Uri.fromParts("package", getPackageName(), null);
+                        intent.setData(uri);
+                        startActivity(intent);
+                        permissionRequest();
+                    }
+                });
+                snackbar.show();
+            }
+
+            @Override
+            public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
+                permissionToken.continuePermissionRequest();
+            }
+        }).check();
+    }
+
+    private void takePicturesPermissionGet() {
+        String fileName = "photo";
+        File storageDirectory = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        try {
+            File imageFiles = File.createTempFile(fileName, ".jpg", storageDirectory);
+            currentPhotoPath = imageFiles.getAbsolutePath();
+            Uri imageUri = FileProvider.getUriForFile(ServiceFilter.this, "com.example.filterapp.fileprovider", imageFiles);
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+            startActivityForResult(intent, SELECT_PICTURE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SELECT_PICTURE) {
+            bitmap = BitmapFactory.decodeFile(currentPhotoPath);
+            filterImg.setImageBitmap(bitmap);
+            message.setVisibility(View.GONE);
+
+            if (bitmap == null) {
+                message.setVisibility(View.VISIBLE);
+                filterImg.setImageDrawable(getDrawable(R.drawable.white_image));
+            }
+        }
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        permissionRequest();
     }
 }
