@@ -539,6 +539,7 @@
                 android:layout_height="wrap_content"
                 android:text="(No Photo Provided)  "
                 android:textColor="@color/red"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/img_filterPic_filterDetails"
                 app:layout_constraintEnd_toEndOf="@+id/img_filterPic_filterDetails"
                 app:layout_constraintStart_toStartOf="@+id/img_filterPic_filterDetails"

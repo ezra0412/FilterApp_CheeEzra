@@ -34,6 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
+        android:onClick="back"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar21"
         app:layout_constraintEnd_toStartOf="@+id/textView178"
         app:layout_constraintHorizontal_bias="0.0"
@@ -65,8 +66,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/textView181"
-                    app:layout_constraintStart_toStartOf="@+id/textView181"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_changedFilter1_serviceFIlter"
+                    app:layout_constraintStart_toStartOf="@+id/tv_changedFilter1_serviceFIlter"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.0"
                     app:srcCompat="@drawable/white_image" />
@@ -81,19 +82,20 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/textView181"
+                    app:layout_constraintStart_toStartOf="@+id/tv_changedFilter1_serviceFIlter"
                     app:layout_constraintTop_toBottomOf="@+id/imageView34"
                     app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
-                    android:id="@+id/textView181"
+                    android:id="@+id/tv_changedFilter1_serviceFIlter"
                     style="@style/tv_dropDown"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:hint="    Leave Blank If Non"
+                    android:hint="  Leave Blank If Non"
+                    android:onClick="filter1"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/textView185"
-                    app:layout_constraintStart_toStartOf="@+id/textView185"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_changedFilter2_serviceFIlter"
+                    app:layout_constraintStart_toStartOf="@+id/tv_changedFilter2_serviceFIlter"
                     app:layout_constraintTop_toBottomOf="@+id/textView180"
                     app:layout_constraintVertical_bias="0.0" />
 
@@ -104,22 +106,22 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="24dp"
+                    android:onClick="service"
                     android:text="Service"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editText"
+                    app:layout_constraintTop_toBottomOf="@+id/et_note_serviceFilter"
                     app:layout_constraintVertical_bias="0.0" />
 
                 <EditText
-                    android:id="@+id/editText"
+                    android:id="@+id/et_note_serviceFilter"
                     style="@style/edit_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/et_medium_bg"
                     android:ems="10"
                     android:inputType="textPersonName"
-                    android:text="Name"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/button11"
                     app:layout_constraintStart_toStartOf="@+id/button11"
@@ -132,21 +134,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="Note"
+                    android:text="Note "
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/editText"
-                    app:layout_constraintTop_toBottomOf="@+id/editText3"
+                    app:layout_constraintStart_toStartOf="@+id/et_note_serviceFilter"
+                    app:layout_constraintTop_toBottomOf="@+id/et_servicePrice_servicePrice"
                     app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
-                    android:id="@+id/textView183"
+                    android:id="@+id/tv_changedFilter3_serviceFIlter"
                     style="@style/tv_dropDown"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:hint="    Leave Blank If Non"
+                    android:hint="  Leave Blank If Non"
+                    android:onClick="filter3"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/textView189"
-                    app:layout_constraintStart_toStartOf="@+id/textView189"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_changedFilter4_serviceFIlter"
+                    app:layout_constraintStart_toStartOf="@+id/tv_changedFilter4_serviceFIlter"
                     app:layout_constraintTop_toBottomOf="@+id/textView186"
                     app:layout_constraintVertical_bias="0.0" />
 
@@ -157,18 +160,19 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Changed Filter 2 "
-                    app:layout_constraintStart_toStartOf="@+id/textView185"
-                    app:layout_constraintTop_toBottomOf="@+id/textView181" />
+                    app:layout_constraintStart_toStartOf="@+id/tv_changedFilter2_serviceFIlter"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_changedFilter1_serviceFIlter" />
 
                 <TextView
-                    android:id="@+id/textView185"
+                    android:id="@+id/tv_changedFilter2_serviceFIlter"
                     style="@style/tv_dropDown"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:hint="    Leave Blank If Non"
+                    android:hint="  Leave Blank If Non"
+                    android:onClick="filter2"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/textView183"
-                    app:layout_constraintStart_toStartOf="@+id/textView183"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_changedFilter3_serviceFIlter"
+                    app:layout_constraintStart_toStartOf="@+id/tv_changedFilter3_serviceFIlter"
                     app:layout_constraintTop_toBottomOf="@+id/textView184"
                     app:layout_constraintVertical_bias="0.0" />
 
@@ -180,8 +184,8 @@
                     android:layout_marginTop="16dp"
                     android:text="Changed Filter 3 "
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/textView183"
-                    app:layout_constraintTop_toBottomOf="@+id/textView185"
+                    app:layout_constraintStart_toStartOf="@+id/tv_changedFilter3_serviceFIlter"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_changedFilter2_serviceFIlter"
                     app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
@@ -192,8 +196,8 @@
                     android:layout_marginTop="16dp"
                     android:text="Changed Filter 4 "
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/textView189"
-                    app:layout_constraintTop_toBottomOf="@+id/textView183"
+                    app:layout_constraintStart_toStartOf="@+id/tv_changedFilter4_serviceFIlter"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_changedFilter3_serviceFIlter"
                     app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
@@ -203,30 +207,32 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Changed Filter 5 "
-                    app:layout_constraintStart_toStartOf="@+id/textView190"
-                    app:layout_constraintTop_toBottomOf="@+id/textView189" />
+                    app:layout_constraintStart_toStartOf="@+id/tv_changedFilter5_serviceFIlter"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_changedFilter4_serviceFIlter" />
 
                 <TextView
-                    android:id="@+id/textView189"
+                    android:id="@+id/tv_changedFilter4_serviceFIlter"
                     style="@style/tv_dropDown"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:hint="    Leave Blank If Non"
+                    android:hint="  Leave Blank If Non"
+                    android:onClick="filter4"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/textView190"
-                    app:layout_constraintStart_toStartOf="@+id/textView190"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_changedFilter5_serviceFIlter"
+                    app:layout_constraintStart_toStartOf="@+id/tv_changedFilter5_serviceFIlter"
                     app:layout_constraintTop_toBottomOf="@+id/textView187"
                     app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
-                    android:id="@+id/textView190"
+                    android:id="@+id/tv_changedFilter5_serviceFIlter"
                     style="@style/tv_dropDown"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:hint="    Leave Blank If Non"
+                    android:hint="  Leave Blank If Non"
+                    android:onClick="filter5"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/textView194"
-                    app:layout_constraintStart_toStartOf="@+id/textView194"
+                    app:layout_constraintEnd_toEndOf="@+id/et_wt_filterService"
+                    app:layout_constraintStart_toStartOf="@+id/et_wt_filterService"
                     app:layout_constraintTop_toBottomOf="@+id/textView188"
                     app:layout_constraintVertical_bias="0.0" />
 
@@ -236,9 +242,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="Changed WT Quantity"
-                    app:layout_constraintStart_toStartOf="@+id/textView194"
-                    app:layout_constraintTop_toBottomOf="@+id/textView190" />
+                    android:text="Changed WT Quantity "
+                    app:layout_constraintStart_toStartOf="@+id/et_wt_filterService"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_changedFilter5_serviceFIlter" />
 
                 <TextView
                     android:id="@+id/textView192"
@@ -246,9 +252,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="Changed WT-S Quantity"
-                    app:layout_constraintStart_toStartOf="@+id/textView195"
-                    app:layout_constraintTop_toBottomOf="@+id/textView194" />
+                    android:text="Changed WT-S Quantity "
+                    app:layout_constraintStart_toStartOf="@+id/et_wts_filterService"
+                    app:layout_constraintTop_toBottomOf="@+id/et_wt_filterService" />
 
                 <TextView
                     android:id="@+id/textView193"
@@ -256,43 +262,46 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="Changed FC-D Quantity"
-                    app:layout_constraintStart_toStartOf="@+id/textView196"
-                    app:layout_constraintTop_toBottomOf="@+id/textView195" />
+                    android:text="Changed FC-D Quantity "
+                    app:layout_constraintStart_toStartOf="@+id/et_fcd_filterService"
+                    app:layout_constraintTop_toBottomOf="@+id/et_wts_filterService" />
 
                 <EditText
-                    android:id="@+id/textView194"
+                    android:id="@+id/et_wt_filterService"
                     style="@style/edit_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:hint="  Leave Blank If Non"
+                    android:inputType="number"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/textView195"
-                    app:layout_constraintStart_toStartOf="@+id/textView195"
+                    app:layout_constraintEnd_toEndOf="@+id/et_wts_filterService"
+                    app:layout_constraintStart_toStartOf="@+id/et_wts_filterService"
                     app:layout_constraintTop_toBottomOf="@+id/textView191"
                     app:layout_constraintVertical_bias="0.0" />
 
                 <EditText
-                    android:id="@+id/textView195"
+                    android:id="@+id/et_wts_filterService"
                     style="@style/edit_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:hint="  Leave Blank If Non"
+                    android:inputType="number"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/textView196"
-                    app:layout_constraintStart_toStartOf="@+id/textView196"
+                    app:layout_constraintEnd_toEndOf="@+id/et_fcd_filterService"
+                    app:layout_constraintStart_toStartOf="@+id/et_fcd_filterService"
                     app:layout_constraintTop_toBottomOf="@+id/textView192"
                     app:layout_constraintVertical_bias="0.0" />
 
                 <EditText
-                    android:id="@+id/textView196"
+                    android:id="@+id/et_fcd_filterService"
                     style="@style/edit_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:hint="  Leave Blank If Non"
+                    android:inputType="number"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/editText3"
-                    app:layout_constraintStart_toStartOf="@+id/editText3"
+                    app:layout_constraintEnd_toEndOf="@+id/et_servicePrice_servicePrice"
+                    app:layout_constraintStart_toStartOf="@+id/et_servicePrice_servicePrice"
                     app:layout_constraintTop_toBottomOf="@+id/textView193"
                     app:layout_constraintVertical_bias="0.0" />
 
@@ -303,19 +312,20 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Service Price "
-                    app:layout_constraintStart_toStartOf="@+id/editText3"
-                    app:layout_constraintTop_toBottomOf="@+id/textView196" />
+                    app:layout_constraintStart_toStartOf="@+id/et_servicePrice_servicePrice"
+                    app:layout_constraintTop_toBottomOf="@+id/et_fcd_filterService" />
 
                 <EditText
-                    android:id="@+id/editText3"
+                    android:id="@+id/et_servicePrice_servicePrice"
                     style="@style/edit_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:inputType="number"
+                    android:hint="  Enter Service Price"
+                    android:inputType="numberDecimal"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/editText"
-                    app:layout_constraintStart_toStartOf="@+id/editText"
+                    app:layout_constraintEnd_toEndOf="@+id/et_note_serviceFilter"
+                    app:layout_constraintStart_toStartOf="@+id/et_note_serviceFilter"
                     app:layout_constraintTop_toBottomOf="@+id/textView197"
                     app:layout_constraintVertical_bias="0.0" />
 

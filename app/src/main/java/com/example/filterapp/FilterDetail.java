@@ -83,7 +83,8 @@ public class FilterDetail extends AppCompatActivity {
                 note.setText(filterDetails.getNote());
                 setName(filterDetails.getfName(), filterDetails.getMobile());
                 if (!filterDetails.isImg()) {
-                    errorMessage.setText("No image provided");
+                    errorMessage.setText("No Image Provided");
+                    errorMessage.setVisibility(View.VISIBLE);
                     filterPic.setImageDrawable(getDrawable(R.drawable.white_image));
                 } else
                     setImage();
