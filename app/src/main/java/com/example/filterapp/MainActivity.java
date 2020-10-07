@@ -303,7 +303,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
             case serviceList:
                 Intent YearService = new Intent(MainActivity.this, YearList.class);
-                YearService.putExtra("fromActivity", "mainService");
+                YearService.putExtra("fromActivity", "filterList");
                 YearService.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(YearService);
                 break;

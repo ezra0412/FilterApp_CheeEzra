@@ -60,6 +60,7 @@ public class GenerateQRFragment extends Fragment {
     String documentID;
     String invoiceNum, mobile, fName, fModel, commission, price, note;
     Dialog loadingDialog;
+    String date, time;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -677,6 +678,10 @@ public class GenerateQRFragment extends Fragment {
                         filterDetails.setCommission(commission);
                         filterDetails.setPrice(price);
                         filterDetails.setNote(note);
+
+                        filterDetails.setDayBrought(date);
+                        filterDetails.setTimeBrought(time);
+
                         Map<String, String> dummyData = new HashMap<>();
                         dummyData.put("placeHolder", "dummyData");
                         final DocumentReference staffDB = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid()).
@@ -744,6 +749,9 @@ public class GenerateQRFragment extends Fragment {
         int minute = timeNow.getMinute();
         int second = timeNow.getSecond();
         int millis = timeNow.get(ChronoField.MILLI_OF_SECOND);
+
+        date = day + "/" + month + "/" + year;
+        time = hour + ":" + minute;
 
         switch (month) {
             case 1:

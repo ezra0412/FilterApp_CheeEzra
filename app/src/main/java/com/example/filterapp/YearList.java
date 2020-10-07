@@ -44,20 +44,11 @@ public class YearList extends AppCompatActivity implements BtAdapterSingle.BtSin
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        /*
-        if (getIntent().getStringExtra("staffID") != null)
-            staffID = getIntent().getStringExtra("staffID");
 
-        if (getIntent().getStringExtra("chosenOption") != null)
-            chosenOption = getIntent().getStringExtra("chosenOption");
 
-        if (getIntent().getStringExtra("filterID") != null)
-            filterID = getIntent().getStringExtra("filterID");
-
-         */
         fromActivity = getIntent().getStringExtra("fromActivity");
 
-        if (fromActivity.equalsIgnoreCase("mainService")) {
+        if (fromActivity.equalsIgnoreCase("filterList")) {
             CollectionReference year = db.collection("sales");
             year.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
@@ -102,6 +93,15 @@ public class YearList extends AppCompatActivity implements BtAdapterSingle.BtSin
 
     @Override
     public void btSingleListener(int position) {
-        startActivity(new Intent(this, MonthList.class));
+        Intent intent;
+
+        if (fromActivity.equalsIgnoreCase("filterDetails "))
+            intent = new Intent(YearList.this, serviceHistoryList.class);
+        else
+            intent = new Intent(YearList.this, MonthList.class);
+
+        intent.putExtra("year", dataList.get(position));
+        intent.putExtra("fromActivity", fromActivity);
+        startActivity(intent);
     }
 }

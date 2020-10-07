@@ -1,7 +1,9 @@
 package com.example.filterapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.filterapp.adapter.BtAdapterSingle;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,11 +20,16 @@ public class MonthList extends AppCompatActivity implements BtAdapterSingle.BtSi
     RecyclerView.Adapter adapter;
     List<String> dataList = new ArrayList<>();
     String chosenOption;
+    String fromActivity;
+    String year;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_month_list);
+
+        fromActivity = getIntent().getStringExtra("fromActivity");
+        year = getIntent().getStringExtra("year");
 
         recyclerView = findViewById(R.id.rv_month);
         recyclerView.setHasFixedSize(true);
@@ -51,59 +59,67 @@ public class MonthList extends AppCompatActivity implements BtAdapterSingle.BtSi
 
     @Override
     public void btSingleListener(int position) {
-        convertInt(position);
+        LocalDateTime timeNow = LocalDateTime.now();
+        int month = timeNow.getMonthValue();
+
+        if (month - 1 != position)
+            Toast.makeText(MonthList.this, "Currectly is only " + convertInt(month - 1), Toast.LENGTH_SHORT).show();
+        else {
+            Intent intent;
+            chosenOption = convertInt(position);
+
+            if (fromActivity.equalsIgnoreCase("filterList"))
+                intent = new Intent(MonthList.this, FilterList.class);
+            else
+                intent = new Intent(MonthList.this, Abcd.class);
+
+            intent.putExtra("year", year);
+            intent.putExtra("month", chosenOption);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            startActivity(intent);
+        }
     }
 
-    public void convertInt(int position) {
+    public String convertInt(int position) {
         switch (position) {
             case 0:
-                chosenOption = "Jan";
-                break;
+                return "Jan";
 
             case 1:
-                chosenOption = "Feb";
-                break;
+                return "Feb";
 
             case 2:
-                chosenOption = "Mar";
-                break;
+                return "Mar";
 
             case 3:
-                chosenOption = "Apr";
-                break;
+                return "Apr";
 
             case 4:
-                chosenOption = "May";
-                break;
+                return "May";
 
             case 5:
-                chosenOption = "Jun";
-                break;
+                return "Jun";
 
             case 6:
-                chosenOption = "Jul";
-                break;
+                return "Jul";
 
             case 7:
-                chosenOption = "Aug";
-                break;
+                return "Aug";
 
             case 8:
-                chosenOption = "Sep";
-                break;
+                return "Sep";
 
             case 9:
-                chosenOption = "Oct";
-                break;
+                return "Oct";
 
             case 10:
-                chosenOption = "Nov";
-                break;
+                return "Nov";
 
             case 11:
-                chosenOption = "Dec";
-                break;
+                return "Dec";
         }
 
+        return null;
     }
 }

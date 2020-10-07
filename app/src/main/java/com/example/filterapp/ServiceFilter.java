@@ -708,10 +708,14 @@ public class ServiceFilter extends AppCompatActivity {
         final String month = documentID.substring(4, 7);
 
 
+
         final DocumentReference updateFilterDetails = db.collection("sales").document(year).collection(month).document(documentID);
 
         Map<String, Object> placeHolder = new HashMap<>();
         placeHolder.put("dummyData", "dummyData");
+        DocumentReference staffHistory = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid()).collection("service").document(year);
+
+
         final DocumentReference filterDetails = db.collection("sales").document(year).collection(month).document(documentID).collection("serviceDetails").document("serviceDetails");
         filterDetails.set(placeHolder);
 

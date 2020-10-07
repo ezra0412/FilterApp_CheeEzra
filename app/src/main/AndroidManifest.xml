@@ -15,7 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ServiceFilter"></activity>
+        <activity android:name=".FilterList"></activity>
+        <activity android:name=".serviceHistoryList" />
+        <activity android:name=".ServiceFilter" />
         <activity android:name=".MonthList" />
         <activity android:name=".YearList" />
         <activity android:name=".HistoryList" />
@@ -100,8 +102,8 @@
         </activity>
 
         <provider
-            android:authorities="com.example.filterapp.fileprovider"
             android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.filterapp.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

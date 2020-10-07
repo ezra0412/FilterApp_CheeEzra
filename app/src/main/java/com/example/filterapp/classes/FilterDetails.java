@@ -27,17 +27,20 @@ public class FilterDetails {
     private String wt_sLC;
     private String fc_DLC;
     private String imageLocation;
+    private String dayBrought;
+    private String timeBrought;
 
 
     public FilterDetails() {
         this("", "", "", "", "-", "-", "-", "-", "-", "",
                 "", "", "", "No Record", "No Record", "No Record", "No Record", "No Record",
-                "0", "0", "0", "No Record", "No Record", "No Record", "");
+                "0", "0", "0", "No Record", "No Record", "No Record", "", "", ""/*bae i loveee u*/);
     }
 
     public FilterDetails(String invoiceNumber, String mobile, String fName, String fModel, String filter1, String filter2, String filter3,
                          String filter4, String filter5, String commission, String price, String note, String salesID, String filter1LC, String filter2LC,
-                         String filter3LC, String filter4LC, String filter5LC, String wt, String wt_s, String fc_D, String wtLC, String wt_sLC, String fc_DLC, String imageLocation) {
+                         String filter3LC, String filter4LC, String filter5LC, String wt, String wt_s, String fc_D, String wtLC, String wt_sLC, String fc_DLC,
+                         String imageLocation, String dayBrought, String timeBrought) {
         this.invoiceNumber = invoiceNumber;
         this.mobile = mobile;
         this.fName = fName;
@@ -63,6 +66,8 @@ public class FilterDetails {
         this.wt_sLC = wt_sLC;
         this.fc_DLC = fc_DLC;
         this.imageLocation = imageLocation;
+        this.dayBrought = dayBrought;
+        this.timeBrought = timeBrought;
     }
 
     public String getInvoiceNumber() {
@@ -263,5 +268,21 @@ public class FilterDetails {
 
     public void setImageLocation(String imageLocation) {
         this.imageLocation = imageLocation;
+    }
+
+    public String getDayBrought() {
+        return dayBrought;
+    }
+
+    public void setDayBrought(String dayBrought) {
+        this.dayBrought = dayBrought;
+    }
+
+    public String getTimeBrought() {
+        return timeBrought;
+    }
+
+    public void setTimeBrought(String timeBrought) {
+        this.timeBrought = timeBrought;
     }
 }

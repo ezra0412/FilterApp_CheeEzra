@@ -93,7 +93,7 @@ public class FAQAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
         });
 
-        viewHolder.button.setRotation(expandState.get(position) ? 0f : 180f);
+        viewHolder.button.setRotation(expandState.get(position) ? 180f : 0f);
 
         viewHolder.button.setOnClickListener(new View.OnClickListener() {
             @Override
