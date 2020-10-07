@@ -2,6 +2,7 @@ package com.example.filterapp;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,9 +18,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -27,13 +30,19 @@ import androidx.core.content.FileProvider;
 
 import com.example.filterapp.classes.FilterDetails;
 import com.example.filterapp.classes.ServiceDetails;
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.Wave;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -41,6 +50,7 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -49,6 +59,7 @@ import java.time.temporal.ChronoField;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class ServiceFilter extends AppCompatActivity {
     public static final int SELECT_PICTURE = 1;
     String currentPhotoPath;
@@ -56,7 +67,7 @@ public class ServiceFilter extends AppCompatActivity {
     TextView mFilter1, mFilter2, mFilter3, mFilter4, mFilter5;
     TextView message;
     EditText mWT, mWTS, mFCD, mServicePrice, mNote;
-    boolean changedFilter = true, changeSparePart = true;
+    boolean changedFilter = true, changeSparePart = true, uploadPicture = false;
     String documentID;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -67,12 +78,14 @@ public class ServiceFilter extends AppCompatActivity {
     int counter = 5;
     ConstraintLayout constrainLayout;
     Bitmap bitmap;
+    StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+    Dialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service_filter);
-
+        loadingDialog = new Dialog(this);
         filterImg = findViewById(R.id.img_filter_serviceFilter);
         mFilter1 = findViewById(R.id.tv_changedFilter1_serviceFIlter);
         mFilter2 = findViewById(R.id.tv_changedFilter2_serviceFIlter);
@@ -181,8 +194,7 @@ public class ServiceFilter extends AppCompatActivity {
             changeSparePart = false;
         }
 
-
-        if (changedFilter || changeSparePart) {
+        if (changedFilter || changeSparePart || uploadPicture) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             final AlertDialog dialog = builder.setMessage("Details will not be saved, are you sure you want to go back?")
                     .setTitle("Confirmation")
@@ -190,6 +202,7 @@ public class ServiceFilter extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             ServiceFilter.super.onBackPressed();
+                            finish();
                         }
                     }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override
@@ -576,7 +589,31 @@ public class ServiceFilter extends AppCompatActivity {
     }
 
     public void service(View view) {
-        Map<String, Object> serviceDetailsMap = new HashMap<>();
+        if (!filter1Bool && !filter2Bool && !filter3Bool && !filter4Bool && !filter5Bool) {
+            changedFilter = false;
+        }
+
+        if (mWT.getText().toString().trim().isEmpty() && mWTS.getText().toString().isEmpty() && mFCD.getText().toString().trim().isEmpty()) {
+            changeSparePart = false;
+        }
+
+        if (!changedFilter && !changeSparePart) {
+            Toast.makeText(ServiceFilter.this, "No changes made", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        ProgressBar progressBar;
+        final Sprite style = new Wave();
+        loadingDialog.setContentView(R.layout.pop_up_loading_screen);
+        loadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        progressBar = loadingDialog.findViewById(R.id.sk_loadingPU);
+        progressBar.setIndeterminateDrawable(style);
+
+        loadingDialog.setCanceledOnTouchOutside(false);
+
+        loadingDialog.show();
+
+
+        final Map<String, Object> serviceDetailsMap = new HashMap<>();
         String servicePrice = mServicePrice.getText().toString().trim();
         String note = mNote.getText().toString().trim();
 
@@ -588,9 +625,18 @@ public class ServiceFilter extends AppCompatActivity {
         int minute = timeNow.getMinute();
 
         ServiceDetails serviceDetails = new ServiceDetails();
+
+        if (!uploadPicture) {
+            loadingDialog.dismiss();
+            Toast.makeText(ServiceFilter.this, "No image uploaded yet", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (servicePrice.isEmpty()) {
+            loadingDialog.dismiss();
             mServicePrice.setError("Service price cannot be empty");
             mServicePrice.requestFocus();
+            return;
         }
 
         if (note.isEmpty()) {
@@ -600,12 +646,13 @@ public class ServiceFilter extends AppCompatActivity {
         serviceDetails.setServiceID(createID());
         serviceDetails.setTechnicianID(mAuth.getCurrentUser().getUid());
         serviceDetails.setCommission(String.format("%.02f", (Double.parseDouble(servicePrice) * 0.01)));
-        serviceDetails.setServicePrice(String.format("%.02f", servicePrice));
+        serviceDetails.setServicePrice(String.format("%.02f", (Double.parseDouble(servicePrice))));
         serviceDetails.setServiceDate(date);
         serviceDetails.setServiceTime(hour + ":" + minute);
         serviceDetails.setNote(note);
 
         serviceDetailsMap.put("note", note);
+        serviceDetailsMap.put("imageLocation", serviceDetails.getServiceID());
 
         if (filter1Bool) {
             serviceDetails.setChangedFilter1(mFilter1.getText().toString().trim());
@@ -637,24 +684,57 @@ public class ServiceFilter extends AppCompatActivity {
             serviceDetailsMap.put("filter5LC", date);
         }
 
-        if (mWT.getText().toString().trim().isEmpty()) {
+        if (!mWT.getText().toString().trim().isEmpty()) {
             serviceDetails.setChangedWt(mWT.getText().toString().trim());
             serviceDetailsMap.put("wt", mWT.getText().toString().trim());
             serviceDetailsMap.put("wtLC", date);
         }
 
-        if (mWTS.getText().toString().trim().isEmpty()) {
+        if (!mWTS.getText().toString().trim().isEmpty()) {
             serviceDetails.setChangedWt_s(mWTS.getText().toString().trim());
             serviceDetailsMap.put("wt_s", mWT.getText().toString().trim());
             serviceDetailsMap.put("wt_sLC", date);
         }
 
-        if (mFCD.getText().toString().trim().isEmpty()) {
+        if (!mFCD.getText().toString().trim().isEmpty()) {
             serviceDetails.setChangedFC_D(mFCD.getText().toString().trim());
-            serviceDetailsMap.put("FC_D", mFCD.getText().toString().trim());
-            serviceDetailsMap.put("FC_DLC", date);
+            serviceDetailsMap.put("fc_D", mFCD.getText().toString().trim());
+            serviceDetailsMap.put("fc_DLC", date);
         }
 
+        final StorageReference imageReference = storageReference.child("filterPictures/" + documentID + "/" + serviceDetails.getServiceID() + "/filterPictures.jpg");
+        imageReference.putFile(getImageUri(this, bitmap));
+        String year = documentID.substring(0, 4);
+        final String month = documentID.substring(4, 7);
+
+
+        final DocumentReference updateFilterDetails = db.collection("sales").document(year).collection(month).document(documentID);
+
+        Map<String, Object> placeHolder = new HashMap<>();
+        placeHolder.put("dummyData", "dummyData");
+        final DocumentReference filterDetails = db.collection("sales").document(year).collection(month).document(documentID).collection("serviceDetails").document("serviceDetails");
+        filterDetails.set(placeHolder);
+
+        DocumentReference filterDetails2 = db.collection("sales").document(year).collection(month)
+                .document(documentID).collection("serviceDetails").document("serviceDetails").collection(year).document(serviceDetails.getServiceID());
+
+        filterDetails2.set(serviceDetails).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                updateFilterDetails.update(serviceDetailsMap);
+                filterDetails.update("dummyData", FieldValue.delete());
+                loadingDialog.dismiss();
+                Toast.makeText(ServiceFilter.this, "Service done, thank you", Toast.LENGTH_SHORT).show();
+                ServiceFilter.super.onBackPressed();
+                finish();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                loadingDialog.dismiss();
+                Toast.makeText(ServiceFilter.this, "Error happened, please try again later", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public String createID() {
@@ -795,21 +875,31 @@ public class ServiceFilter extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SELECT_PICTURE) {
-            bitmap = BitmapFactory.decodeFile(currentPhotoPath);
-            filterImg.setImageBitmap(bitmap);
-            message.setVisibility(View.GONE);
-
-            if (bitmap == null) {
+            if (currentPhotoPath == null) {
                 message.setVisibility(View.VISIBLE);
                 filterImg.setImageDrawable(getDrawable(R.drawable.white_image));
+                uploadPicture = false;
+            } else {
+                bitmap = BitmapFactory.decodeFile(currentPhotoPath);
+                filterImg.setImageBitmap(bitmap);
+                message.setVisibility(View.GONE);
+                uploadPicture = true;
             }
         }
     }
 
+    private Uri getImageUri(Context context, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), inImage, "filterImage", null);
+        return Uri.parse(path);
+    }
 
     @Override
     protected void onStart() {
         super.onStart();
+
         permissionRequest();
     }
+
 }

@@ -2,14 +2,18 @@ package com.example.filterapp;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +22,8 @@ import androidx.fragment.app.Fragment;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.Wave;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
@@ -49,6 +55,7 @@ public class ScanQRFragment extends Fragment {
     TextView message;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     View v;
+    Dialog loadingDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,7 +63,7 @@ public class ScanQRFragment extends Fragment {
         // Inflate the layout for this fragment
          v = inflater.inflate(R.layout.fragment_scan_q_r, container, false);
          activity = getActivity();
-
+        loadingDialog = new Dialog(getContext());
         codeScannerView = v.findViewById(R.id.scannerCam);
         message = v.findViewById(R.id.tv_message_scanQR);
 
@@ -133,6 +140,17 @@ public class ScanQRFragment extends Fragment {
                         final String scanResult = result.getText();
                         String year = scanResult.substring(0, 4);
                         String month = scanResult.substring(4, 7);
+                        ProgressBar progressBar;
+                        final Sprite style = new Wave();
+                        loadingDialog.setContentView(R.layout.pop_up_loading_screen);
+                        loadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        progressBar = loadingDialog.findViewById(R.id.sk_loadingPU);
+                        progressBar.setIndeterminateDrawable(style);
+
+                        loadingDialog.setCanceledOnTouchOutside(false);
+
+                        loadingDialog.show();
+
 
                         DocumentReference filterDetailsDB = db.collection("sales").document(year).collection(month).document(scanResult);
                         filterDetailsDB.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -141,12 +159,14 @@ public class ScanQRFragment extends Fragment {
                                 if (task.isSuccessful()) {
                                     DocumentSnapshot documentSnapshot = task.getResult();
                                     if (documentSnapshot.exists()) {
+                                        loadingDialog.dismiss();
                                         message.setVisibility(View.INVISIBLE);
                                         Intent intent = new Intent(getActivity(), FilterDetail.class);
                                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         intent.putExtra("documentID", scanResult);
                                         startActivity(intent);
                                     } else {
+                                        loadingDialog.dismiss();
                                         message.setText("No result found");
                                         message.setVisibility(View.VISIBLE);
                                     }

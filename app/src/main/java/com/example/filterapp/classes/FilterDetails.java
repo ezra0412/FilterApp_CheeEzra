@@ -22,22 +22,22 @@ public class FilterDetails {
     private String filter5LC;
     private String wt;
     private String wt_s;
-    private String FC_D;
+    private String fc_D;
     private String wtLC;
     private String wt_sLC;
-    private String FC_DLC;
-    private boolean img;
+    private String fc_DLC;
+    private String imageLocation;
 
 
     public FilterDetails() {
         this("", "", "", "", "-", "-", "-", "-", "-", "",
                 "", "", "", "No Record", "No Record", "No Record", "No Record", "No Record",
-                "WT", "WT-S", "FC-D", "No Record", "No Record", "No Record", false);
+                "0", "0", "0", "No Record", "No Record", "No Record", "");
     }
 
     public FilterDetails(String invoiceNumber, String mobile, String fName, String fModel, String filter1, String filter2, String filter3,
                          String filter4, String filter5, String commission, String price, String note, String salesID, String filter1LC, String filter2LC,
-                         String filter3LC, String filter4LC, String filter5LC, String wt, String wt_s, String FC_D, String wtLC, String wt_sLC, String FC_DLC, boolean img) {
+                         String filter3LC, String filter4LC, String filter5LC, String wt, String wt_s, String fc_D, String wtLC, String wt_sLC, String fc_DLC, String imageLocation) {
         this.invoiceNumber = invoiceNumber;
         this.mobile = mobile;
         this.fName = fName;
@@ -58,11 +58,11 @@ public class FilterDetails {
         this.filter5LC = filter5LC;
         this.wt = wt;
         this.wt_s = wt_s;
-        this.FC_D = FC_D;
+        this.fc_D = fc_D;
         this.wtLC = wtLC;
         this.wt_sLC = wt_sLC;
-        this.FC_DLC = FC_DLC;
-        this.img = img;
+        this.fc_DLC = fc_DLC;
+        this.imageLocation = imageLocation;
     }
 
     public String getInvoiceNumber() {
@@ -225,12 +225,12 @@ public class FilterDetails {
         this.wt_s = wt_s;
     }
 
-    public String getFC_D() {
-        return FC_D;
+    public String getFc_D() {
+        return fc_D;
     }
 
-    public void setFC_D(String FC_D) {
-        this.FC_D = FC_D;
+    public void setFc_D(String fc_D) {
+        this.fc_D = fc_D;
     }
 
     public String getWtLC() {
@@ -249,19 +249,19 @@ public class FilterDetails {
         this.wt_sLC = wt_sLC;
     }
 
-    public String getFC_DLC() {
-        return FC_DLC;
+    public String getFc_DLC() {
+        return fc_DLC;
     }
 
-    public void setFC_DLC(String FC_DLC) {
-        this.FC_DLC = FC_DLC;
+    public void setFc_DLC(String fc_DLC) {
+        this.fc_DLC = fc_DLC;
     }
 
-    public boolean isImg() {
-        return img;
+    public String getImageLocation() {
+        return imageLocation;
     }
 
-    public void setImg(boolean img) {
-        this.img = img;
+    public void setImageLocation(String imageLocation) {
+        this.imageLocation = imageLocation;
     }
 }
