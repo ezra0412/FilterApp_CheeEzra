@@ -27,6 +27,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <ImageView
+                android:id="@+id/imageView11"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginEnd="24dp"
+                android:onClick="history"
+                android:tint="@color/medium_green"
+                app:layout_constraintBottom_toBottomOf="@+id/textView51"
+                app:layout_constraintEnd_toEndOf="@+id/toolbar6"
+                app:layout_constraintTop_toTopOf="@+id/textView51"
+                app:srcCompat="@drawable/ic_history" />
+
             <TextView
                 android:id="@+id/textView51"
                 style="@style/top_bar"
@@ -185,7 +197,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="16dp"
                                         android:layout_marginTop="16dp"
-                                        android:text="Invoice Number :"
+                                        android:text="Invoice Number :  "
                                         app:layout_constraintBottom_toBottomOf="parent"
                                         app:layout_constraintEnd_toEndOf="parent"
                                         app:layout_constraintHorizontal_bias="0.0"
@@ -220,11 +232,28 @@
                                         android:layout_marginEnd="32dp"
                                         android:fontFamily="@font/archivo_narrow"
                                         android:text="No Record "
+                                        android:textSize="16sp"
                                         app:layout_constraintBaseline_toBaselineOf="@+id/tv_f1_filterDetails"
                                         app:layout_constraintEnd_toEndOf="parent"
                                         app:layout_constraintHorizontal_bias="1.0"
-                                        app:layout_constraintStart_toStartOf="parent"
-                                        android:textSize="16sp" />
+                                        app:layout_constraintStart_toStartOf="parent" />
+
+                                    <TextView
+                                        android:id="@+id/tv_part2_filterDetails"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="4dp"
+                                        android:layout_marginTop="16dp"
+                                        android:layout_marginEnd="12dp"
+                                        android:fontFamily="@font/archivo_narrow"
+                                        android:gravity="center"
+                                        android:text="-"
+                                        android:textSize="16sp"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="@+id/textView67"
+                                        app:layout_constraintStart_toEndOf="@+id/textView181"
+                                        app:layout_constraintTop_toBottomOf="@+id/tv_part1_filterDetails"
+                                        app:layout_constraintVertical_bias="0.0" />
 
                                     <TextView
                                         android:id="@+id/tv_part1_filterDetails"
@@ -236,8 +265,8 @@
                                         android:text="-"
                                         android:textSize="16sp"
                                         app:layout_constraintBottom_toBottomOf="parent"
-                                        app:layout_constraintEnd_toEndOf="@+id/textView67"
-                                        app:layout_constraintStart_toStartOf="@+id/textView67"
+                                        app:layout_constraintEnd_toEndOf="@+id/tv_part2_filterDetails"
+                                        app:layout_constraintStart_toStartOf="@+id/tv_part2_filterDetails"
                                         app:layout_constraintTop_toBottomOf="@+id/textView67"
                                         app:layout_constraintVertical_bias="0.0" />
 
@@ -350,21 +379,6 @@
                                         app:layout_constraintEnd_toEndOf="parent"
                                         app:layout_constraintStart_toStartOf="@+id/textView75"
                                         app:layout_constraintTop_toBottomOf="@+id/textView75"
-                                        app:layout_constraintVertical_bias="0.0" />
-
-                                    <TextView
-                                        android:id="@+id/tv_part2_filterDetails"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="16dp"
-                                        android:fontFamily="@font/archivo_narrow"
-                                        android:gravity="center"
-                                        android:text="-"
-                                        android:textSize="16sp"
-                                        app:layout_constraintBottom_toBottomOf="parent"
-                                        app:layout_constraintEnd_toEndOf="@+id/tv_part1_filterDetails"
-                                        app:layout_constraintStart_toStartOf="@+id/tv_part1_filterDetails"
-                                        app:layout_constraintTop_toBottomOf="@+id/tv_part1_filterDetails"
                                         app:layout_constraintVertical_bias="0.0" />
 
                                     <TextView
@@ -492,6 +506,7 @@
                                         style="@style/lable"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:layout_marginEnd="1dp"
                                         android:fontFamily="@font/archivo_narrow"
                                         android:text=":"
                                         app:layout_constraintBaseline_toBaselineOf="@+id/wrongname3"
@@ -506,6 +521,33 @@
                                         android:text=":"
                                         app:layout_constraintBaseline_toBaselineOf="@+id/wrongName2"
                                         app:layout_constraintEnd_toEndOf="@+id/textView170" />
+
+                                    <TextView
+                                        android:id="@+id/textView179"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="WT"
+                                        app:layout_constraintBaseline_toBaselineOf="@+id/tv_part1_filterDetails"
+                                        app:layout_constraintEnd_toEndOf="@+id/textView181"
+                                        app:layout_constraintStart_toStartOf="@+id/textView181" />
+
+                                    <TextView
+                                        android:id="@+id/textView181"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="15dp"
+                                        android:text="WT-S"
+                                        app:layout_constraintBaseline_toBaselineOf="@+id/tv_part2_filterDetails"
+                                        app:layout_constraintStart_toStartOf="@+id/textView67" />
+
+                                    <TextView
+                                        android:id="@+id/textView183"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="FCD"
+                                        app:layout_constraintBaseline_toBaselineOf="@+id/tv_part3_filterDetails"
+                                        app:layout_constraintEnd_toEndOf="@+id/textView181"
+                                        app:layout_constraintStart_toStartOf="@+id/textView181" />
 
                                 </androidx.constraintlayout.widget.ConstraintLayout>
                             </androidx.cardview.widget.CardView>
@@ -544,18 +586,6 @@
                 app:layout_constraintEnd_toEndOf="@+id/img_filterPic_filterDetails"
                 app:layout_constraintStart_toStartOf="@+id/img_filterPic_filterDetails"
                 app:layout_constraintTop_toTopOf="@+id/img_filterPic_filterDetails" />
-
-            <ImageView
-                android:id="@+id/imageView11"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginEnd="24dp"
-                android:onClick="history"
-                android:tint="@color/medium_green"
-                app:layout_constraintBottom_toBottomOf="@+id/textView51"
-                app:layout_constraintEnd_toEndOf="@+id/toolbar6"
-                app:layout_constraintTop_toTopOf="@+id/textView51"
-                app:srcCompat="@drawable/ic_history" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
