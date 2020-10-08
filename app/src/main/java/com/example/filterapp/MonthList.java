@@ -19,9 +19,12 @@ public class MonthList extends AppCompatActivity implements BtAdapterSingle.BtSi
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
     List<String> dataList = new ArrayList<>();
-    String chosenOption;
+    String chosenOptionThis;
     String fromActivity;
     String year;
+    String staffID;
+    String chosenOption;
+    String customerID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,13 @@ public class MonthList extends AppCompatActivity implements BtAdapterSingle.BtSi
 
         fromActivity = getIntent().getStringExtra("fromActivity");
         year = getIntent().getStringExtra("year");
+
+        if (fromActivity.equalsIgnoreCase("staffHistory")) {
+            staffID = getIntent().getStringExtra("staffID");
+            chosenOption = getIntent().getStringExtra("chosenOption");
+        } else if (fromActivity.equalsIgnoreCase("customerHistory")) {
+            customerID = getIntent().getStringExtra("customerID");
+        }
 
         recyclerView = findViewById(R.id.rv_month);
         recyclerView.setHasFixedSize(true);
@@ -66,15 +76,16 @@ public class MonthList extends AppCompatActivity implements BtAdapterSingle.BtSi
             Toast.makeText(MonthList.this, "Currectly is only " + convertInt(month - 1), Toast.LENGTH_SHORT).show();
         else {
             Intent intent;
-            chosenOption = convertInt(position);
+            chosenOptionThis = convertInt(position);
 
             if (fromActivity.equalsIgnoreCase("filterList"))
                 intent = new Intent(MonthList.this, FilterList.class);
-            else
-                intent = new Intent(MonthList.this, Abcd.class);
-
+            else if (fromActivity.equalsIgnoreCase("staffHistory")) {
+                intent = new Intent(MonthList.this, PurchaseHistory.class);
+            } else
+                intent = new Intent();
             intent.putExtra("year", year);
-            intent.putExtra("month", chosenOption);
+            intent.putExtra("month", chosenOptionThis);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
             startActivity(intent);

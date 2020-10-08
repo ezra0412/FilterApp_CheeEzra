@@ -80,4 +80,8 @@ public class FilterList extends AppCompatActivity implements BtAdapterDouble.BtD
     public void btDoubleListener(int position) {
         Toast.makeText(FilterList.this, position + "", Toast.LENGTH_SHORT).show();
     }
+
+    public void back(View view) {
+        super.onBackPressed();
+    }
 }

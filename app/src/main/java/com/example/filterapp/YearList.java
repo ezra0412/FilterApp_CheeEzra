@@ -176,16 +176,23 @@ public class YearList extends AppCompatActivity implements BtAdapterSingle.BtSin
 
     public void back(View view) {
         super.onBackPressed();
-        finish();
     }
 
     @Override
     public void btSingleListener(int position) {
         Intent intent;
 
-        if (fromActivity.equalsIgnoreCase("filterDetails "))
+        if (fromActivity.equalsIgnoreCase("serviceHistory"))
             intent = new Intent(YearList.this, serviceHistoryList.class);
-        else
+
+        else if (fromActivity.equalsIgnoreCase("staffHistory")) {
+            intent = new Intent(YearList.this, MonthList.class);
+            intent.putExtra("staffID", staffID);
+            intent.putExtra("chosenOption", chosenOption);
+        } else if (fromActivity.equalsIgnoreCase("customerHistory")) {
+            intent = new Intent(YearList.this, PurchaseHistory.class);
+            intent.putExtra("customerID", customerID);
+        } else
             intent = new Intent(YearList.this, MonthList.class);
 
         intent.putExtra("year", dataList.get(position));
