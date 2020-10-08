@@ -338,6 +338,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_marginEnd="24dp"
+                android:onClick="history"
                 android:tint="@color/medium_green"
                 app:layout_constraintBottom_toBottomOf="@+id/textView76"
                 app:layout_constraintEnd_toEndOf="parent"

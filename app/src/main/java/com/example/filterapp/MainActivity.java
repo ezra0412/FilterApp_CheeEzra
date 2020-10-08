@@ -319,6 +319,13 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 startActivity(GpsPage);
                 break;
 
+            case history:
+                Intent HISTORY = new Intent(MainActivity.this, HistoryType.class);
+                HISTORY.putExtra("customerID", mAuth.getCurrentUser().getUid());
+                HISTORY.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(HISTORY);
+                break;
+
             case faq:
                 Intent FAQ = new Intent(MainActivity.this, FAQ.class);
                 FAQ.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

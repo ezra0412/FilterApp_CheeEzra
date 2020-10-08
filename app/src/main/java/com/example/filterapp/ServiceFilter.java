@@ -716,11 +716,11 @@ public class ServiceFilter extends AppCompatActivity {
         DocumentReference staffHistory = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid()).collection("service").document(year);
 
 
-        final DocumentReference filterDetails = db.collection("sales").document(year).collection(month).document(documentID).collection("serviceDetails").document("serviceDetails");
+        final DocumentReference filterDetails = db.collection("sales").document(year).collection(month).document(documentID).collection("serviceDetails").document(year);
         filterDetails.set(placeHolder);
 
         DocumentReference filterDetails2 = db.collection("sales").document(year).collection(month)
-                .document(documentID).collection("serviceDetails").document("serviceDetails").collection(year).document(serviceDetails.getServiceID());
+                .document(documentID).collection("serviceDetails").document(year).collection(year).document(serviceDetails.getServiceID());
 
         filterDetails2.set(serviceDetails).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

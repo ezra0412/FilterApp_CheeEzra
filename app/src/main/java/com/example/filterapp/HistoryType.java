@@ -30,8 +30,8 @@ public class HistoryType extends AppCompatActivity implements BtAdapterSingle.Bt
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        dataList.add("Sales History");
-        dataList.add("Technician History");
+        dataList.add("Sales");
+        dataList.add("Service");
         adapter = new BtAdapterSingle(dataList, this);
 
         recyclerView.setAdapter(adapter);
@@ -44,10 +44,11 @@ public class HistoryType extends AppCompatActivity implements BtAdapterSingle.Bt
     @Override
     public void btSingleListener(int position) {
 
-        Intent intent = new Intent(HistoryType.this, HistoryList.class);
+        Intent intent = new Intent(HistoryType.this, YearList.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("staffID", staffID);
         intent.putExtra("chosenOption", position + "");
+        intent.putExtra("fromActivity", "customerHistory");
         startActivity(intent);
 
     }

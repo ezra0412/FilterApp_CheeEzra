@@ -198,7 +198,11 @@ public class FilterDetail extends AppCompatActivity {
     }
 
     public void history(View view) {
-
+        Intent intent = new Intent(FilterDetail.this, YearList.class);
+        intent.putExtra("filterID", documentID);
+        intent.putExtra("fromActivity", "serviceHistory");
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     @Override

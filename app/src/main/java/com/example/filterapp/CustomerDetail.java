@@ -343,6 +343,14 @@ public class CustomerDetail extends AppCompatActivity {
 
     }
 
+    public void history(View view) {
+        Intent intent = new Intent(CustomerDetail.this, YearList.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("customerID", customerID);
+        intent.putExtra("fromActivity", "customerHistory");
+        startActivity(intent);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();

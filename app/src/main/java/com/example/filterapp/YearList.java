@@ -30,6 +30,7 @@ public class YearList extends AppCompatActivity implements BtAdapterSingle.BtSin
     String staffID;
     String chosenOption;
     String filterID;
+    String customerID;
     String fromActivity;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -56,6 +57,7 @@ public class YearList extends AppCompatActivity implements BtAdapterSingle.BtSin
                     if (task.isSuccessful()) {
                         QuerySnapshot collectionReference = task.getResult();
                         if (collectionReference.isEmpty()) {
+                            errorMessage.setText("(No Filter History Found)");
                             errorMessage.setVisibility(View.VISIBLE);
                             recyclerView.setVisibility(View.INVISIBLE);
                         } else {
@@ -71,6 +73,92 @@ public class YearList extends AppCompatActivity implements BtAdapterSingle.BtSin
 
             });
 
+        } else if (fromActivity.equalsIgnoreCase("staffHistory")) {
+            CollectionReference year;
+            staffID = getIntent().getStringExtra("staffID");
+            chosenOption = getIntent().getStringExtra("chosenOption");
+
+            if (chosenOption.equalsIgnoreCase("0"))
+                year = db.collection("staffDetails").document(staffID)
+                        .collection("sales");
+            else
+                year = db.collection("staffDetails").document(staffID)
+                        .collection("service");
+
+            year.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot collectionReference = task.getResult();
+                        if (collectionReference.isEmpty()) {
+                            errorMessage.setText("(No History Found)");
+                            errorMessage.setVisibility(View.VISIBLE);
+                            recyclerView.setVisibility(View.INVISIBLE);
+                        } else {
+                            errorMessage.setVisibility(View.INVISIBLE);
+                            recyclerView.setVisibility(View.VISIBLE);
+                            for (QueryDocumentSnapshot documentSnapshots : task.getResult()) {
+                                storeYear(documentSnapshots.getId());
+                            }
+                        }
+                        storeAdapter();
+                    }
+                }
+            });
+        } else if (fromActivity.equalsIgnoreCase("customerHistory")) {
+            customerID = getIntent().getStringExtra("customerID");
+            String nameChar = customerID.substring(0, 1).toLowerCase();
+            CollectionReference year = db.collection("customerDetails").document("sorted")
+                    .collection(nameChar).document(customerID).collection("purchaseHistory");
+            year.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot collectionReference = task.getResult();
+                        if (collectionReference.isEmpty()) {
+                            errorMessage.setText("(No Filter Brought Before)");
+                            errorMessage.setVisibility(View.VISIBLE);
+                            recyclerView.setVisibility(View.INVISIBLE);
+                        } else {
+                            errorMessage.setVisibility(View.INVISIBLE);
+                            recyclerView.setVisibility(View.VISIBLE);
+                            for (QueryDocumentSnapshot documentSnapShots : task.getResult()) {
+                                storeYear(documentSnapShots.getId());
+                            }
+                            storeAdapter();
+                        }
+                    }
+                }
+
+            });
+
+        } else if (fromActivity.equalsIgnoreCase("serviceHistory")) {
+            filterID = getIntent().getStringExtra("filterID");
+            String yearBrought = filterID.substring(0, 4);
+            String monthBrought = filterID.substring(4, 7);
+            CollectionReference year = db.collection("sales").document(yearBrought)
+                    .collection(monthBrought).document(filterID).collection("serviceDetails");
+            year.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot collectionReference = task.getResult();
+                        if (collectionReference.isEmpty()) {
+                            errorMessage.setText("(Filter Not Being Service Before)");
+                            errorMessage.setVisibility(View.VISIBLE);
+                            recyclerView.setVisibility(View.INVISIBLE);
+                        } else {
+                            errorMessage.setVisibility(View.INVISIBLE);
+                            recyclerView.setVisibility(View.VISIBLE);
+                            for (QueryDocumentSnapshot documentSnapShots : task.getResult()) {
+                                storeYear(documentSnapShots.getId());
+                            }
+                            storeAdapter();
+                        }
+                    }
+                }
+
+            });
         }
 
 

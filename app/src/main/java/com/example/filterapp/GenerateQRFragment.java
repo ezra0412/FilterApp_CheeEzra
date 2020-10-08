@@ -695,12 +695,12 @@ public class GenerateQRFragment extends Fragment {
 
                         DocumentReference customerDB = db.collection("customerDetails").document("sorted")
                                 .collection(fName.substring(0, 1)).document(fName.substring(0, 1) + mobile)
-                                .collection("purchaseHistory").document("purchaseHistory");
+                                .collection("purchaseHistory").document(year);
                         customerDB.set(dummyData);
 
                         DocumentReference customerDB2 = db.collection("customerDetails").document("sorted")
                                 .collection(fName.substring(0, 1)).document(fName.substring(0, 1) + mobile)
-                                .collection("purchaseHistory").document("purchaseHistory").collection(year).document(documentID);
+                                .collection("purchaseHistory").document(year).collection(year).document(documentID);
                         customerDB2.set(dummyData);
 
                         customerDB.update("placeHolder", FieldValue.delete());

@@ -62,7 +62,7 @@ public class MonthList extends AppCompatActivity implements BtAdapterSingle.BtSi
         LocalDateTime timeNow = LocalDateTime.now();
         int month = timeNow.getMonthValue();
 
-        if (month - 1 != position)
+        if (position > month - 1)
             Toast.makeText(MonthList.this, "Currectly is only " + convertInt(month - 1), Toast.LENGTH_SHORT).show();
         else {
             Intent intent;
