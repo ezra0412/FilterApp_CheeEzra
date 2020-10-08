@@ -1,6 +1,7 @@
 package com.example.filterapp;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,6 +30,7 @@ public class FilterDetail extends AppCompatActivity {
     ImageView filterPic;
     TextView errorMessage;
     StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+    public static Bitmap imageBit = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,22 +112,28 @@ public class FilterDetail extends AppCompatActivity {
                     part3LC.setText(filterDetails.getFc_DLC());
                     note.setText(filterDetails.getNote());
                     setName(filterDetails.getfName(), filterDetails.getMobile());
-                    StorageReference profileRef = storageReference.child("filterPictures/" + documentID + "/" + filterDetails.getImageLocation() + "/filterPictures.jpg");
-                    profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            Picasso.get().load(uri).into(filterPic);
-                            errorMessage.setVisibility(View.INVISIBLE);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            setImage(filterDetails.getImageLocation());
-                            errorMessage.setText("Refreshing Image...");
-                            errorMessage.setTextColor(getColor(R.color.red));
-                            errorMessage.setVisibility(View.VISIBLE);
-                        }
-                    });
+
+                    if (imageBit != null) {
+                        filterPic.setImageBitmap(imageBit);
+                        imageBit = null;
+                    } else {
+                        StorageReference profileRef = storageReference.child("filterPictures/" + documentID + "/" + filterDetails.getImageLocation() + "/filterPictures.jpg");
+                        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                Picasso.get().load(uri).into(filterPic);
+                                errorMessage.setVisibility(View.INVISIBLE);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                setImage(filterDetails.getImageLocation());
+                                errorMessage.setText("Refreshing Image...");
+                                errorMessage.setTextColor(getColor(R.color.red));
+                                errorMessage.setVisibility(View.VISIBLE);
+                            }
+                        });
+                    }
                 }
             }
         });
