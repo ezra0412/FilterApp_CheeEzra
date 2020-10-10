@@ -1,9 +1,9 @@
 package com.example.filterapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +32,8 @@ public class FilterList extends AppCompatActivity implements BtAdapterDouble.BtD
     BtLongDoubleItem btLongDoubleItem;
     String year, month;
     TextView message;
+    List<FilterDetails> filterDetailsList = new LinkedList<>();
+    List<String> filterIDList = new LinkedList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +60,7 @@ public class FilterList extends AppCompatActivity implements BtAdapterDouble.BtD
                         recyclerView.setVisibility(View.VISIBLE);
                         message.setVisibility(View.INVISIBLE);
                         for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                            storeObject(documentSnapshot.toObject(FilterDetails.class));
+                            storeObject(documentSnapshot.toObject(FilterDetails.class), documentSnapshot.getId());
                         }
                         storeAdapter();
                     }
@@ -67,7 +69,9 @@ public class FilterList extends AppCompatActivity implements BtAdapterDouble.BtD
         });
     }
 
-    private void storeObject(FilterDetails filterDetails) {
+    private void storeObject(FilterDetails filterDetails, String id) {
+        filterDetailsList.add(filterDetails);
+        filterIDList.add(id);
         btLongDoubleItem = new BtLongDoubleItem(filterDetails.getDayBrought(), filterDetails.getInvoiceNumber());
         btLongDoubleItemList.add(btLongDoubleItem);
     }
@@ -80,7 +84,11 @@ public class FilterList extends AppCompatActivity implements BtAdapterDouble.BtD
 
     @Override
     public void btDoubleListener(int position) {
-        Toast.makeText(FilterList.this, position + "", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(FilterList.this, FilterDetail.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("filterDetails", filterDetailsList.get(position));
+        intent.putExtra("documentID", filterIDList.get(position));
+        startActivity(intent);
     }
 
     public void back(View view) {

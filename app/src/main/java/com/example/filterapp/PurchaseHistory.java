@@ -1,5 +1,6 @@
 package com.example.filterapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.filterapp.adapter.BtAdapterDouble;
 import com.example.filterapp.classes.BtLongDoubleItem;
+import com.example.filterapp.classes.FilterDetails;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -21,7 +23,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class PurchaseHistory extends AppCompatActivity implements BtAdapterDoubl
     RecyclerView.Adapter adapter;
     BtLongDoubleItem btLongDoubleItem;
     String year = "", customerID, nameChar;
+    List<FilterDetails> filterDetailsList = new LinkedList<>();
     List<String> filterIDList = new LinkedList<>();
 
     @Override
@@ -77,16 +79,16 @@ public class PurchaseHistory extends AppCompatActivity implements BtAdapterDoubl
         filterDetails.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                storeObject(documentSnapshot.getString("dayBrought"), documentSnapshot.getString("fModel"), documentID);
+                filterIDList.add(documentID);
+                storeObject(documentSnapshot.toObject(FilterDetails.class));
             }
         });
     }
 
-    public void storeObject(String date, String filterModel, String id) {
-        btLongDoubleItem = new BtLongDoubleItem(date, filterModel);
+    public void storeObject(FilterDetails filterDetails) {
+        btLongDoubleItem = new BtLongDoubleItem(filterDetails.getDayBrought(), filterDetails.getfModel());
         btLongDoubleItemList.add(btLongDoubleItem);
-        filterIDList.add(id);
-        Collections.reverse(btLongDoubleItemList);
+        filterDetailsList.add(filterDetails);
         storeAdapter();
 
     }
@@ -100,6 +102,11 @@ public class PurchaseHistory extends AppCompatActivity implements BtAdapterDoubl
 
     @Override
     public void btDoubleListener(int position) {
+        Intent intent = new Intent(PurchaseHistory.this, FilterDetail.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("filterDetails", filterDetailsList.get(position));
+        intent.putExtra("documentID", filterIDList.get(position));
+        startActivity(intent);
     }
 
     public void back(View view) {
