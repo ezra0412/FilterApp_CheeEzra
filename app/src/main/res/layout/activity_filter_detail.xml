@@ -55,6 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
+                android:onClick="back"
                 app:layout_constraintBottom_toBottomOf="@+id/toolbar6"
                 app:layout_constraintStart_toStartOf="@+id/toolbar6"
                 app:layout_constraintTop_toTopOf="@+id/toolbar6"
@@ -537,7 +538,7 @@
                                         android:id="@+id/textView181"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginStart="15dp"
+                                        android:layout_marginStart="6dp"
                                         android:text="WT-S"
                                         app:layout_constraintBaseline_toBaselineOf="@+id/tv_part2_filterDetails"
                                         app:layout_constraintStart_toStartOf="@+id/textView67" />

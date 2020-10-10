@@ -48,7 +48,7 @@ public class HistoryType extends AppCompatActivity implements BtAdapterSingle.Bt
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("staffID", staffID);
         intent.putExtra("chosenOption", position + "");
-        intent.putExtra("fromActivity", "customerHistory");
+        intent.putExtra("fromActivity", "staffHistory");
         startActivity(intent);
 
     }

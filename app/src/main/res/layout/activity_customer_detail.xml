@@ -277,6 +277,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginEnd="16dp"
                                         android:fontFamily="@font/archivo_narrow_bold_italic"
+                                        android:onClick="locate"
                                         android:text="Navigate Now"
                                         android:textColor="@color/light_green"
                                         app:layout_constraintBaseline_toBaselineOf="@+id/textView92"

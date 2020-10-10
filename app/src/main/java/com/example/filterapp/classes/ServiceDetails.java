@@ -3,7 +3,6 @@ package com.example.filterapp.classes;
 public class ServiceDetails {
     private String serviceID;
     private String technicianID;
-    private String commission;
     private String servicePrice;
     private String serviceDate;
     private String serviceTime;
@@ -19,17 +18,16 @@ public class ServiceDetails {
 
 
     public ServiceDetails() {
-        this("", "", "", "", "", "", "",
+        this("", "", "", "", "", "",
                 "-", "-", "-", "-", "-",
                 "-", "-", "-");
     }
 
-    public ServiceDetails(String serviceID, String technicianID, String commission, String servicePrice, String serviceDate, String serviceTime,
+    public ServiceDetails(String serviceID, String technicianID, String servicePrice, String serviceDate, String serviceTime,
                           String note, String changedFilter1, String changedFilter2, String changedFilter3, String changedFilter4,
                           String changedFilter5, String changedWt, String changedWt_s, String changedFC_D) {
         this.serviceID = serviceID;
         this.technicianID = technicianID;
-        this.commission = commission;
         this.servicePrice = servicePrice;
         this.serviceDate = serviceDate;
         this.serviceTime = serviceTime;
@@ -60,13 +58,7 @@ public class ServiceDetails {
         this.technicianID = technicianID;
     }
 
-    public String getCommission() {
-        return commission;
-    }
 
-    public void setCommission(String commission) {
-        this.commission = commission;
-    }
 
     public String getServicePrice() {
         return servicePrice;

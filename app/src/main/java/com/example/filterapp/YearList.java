@@ -144,7 +144,7 @@ public class YearList extends AppCompatActivity implements BtAdapterSingle.BtSin
                     if (task.isSuccessful()) {
                         QuerySnapshot collectionReference = task.getResult();
                         if (collectionReference.isEmpty()) {
-                            errorMessage.setText("(Filter Not Being Service Before)");
+                            errorMessage.setText("(Filter Not Being Serviced Before)");
                             errorMessage.setVisibility(View.VISIBLE);
                             recyclerView.setVisibility(View.INVISIBLE);
                         } else {
@@ -182,9 +182,10 @@ public class YearList extends AppCompatActivity implements BtAdapterSingle.BtSin
     public void btSingleListener(int position) {
         Intent intent;
 
-        if (fromActivity.equalsIgnoreCase("serviceHistory"))
+        if (fromActivity.equalsIgnoreCase("serviceHistory")) {
             intent = new Intent(YearList.this, serviceHistoryList.class);
-
+            intent.putExtra("filterID", filterID);
+        }
         else if (fromActivity.equalsIgnoreCase("staffHistory")) {
             intent = new Intent(YearList.this, MonthList.class);
             intent.putExtra("staffID", staffID);

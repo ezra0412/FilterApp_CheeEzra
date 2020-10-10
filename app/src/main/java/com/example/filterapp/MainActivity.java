@@ -321,7 +321,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
             case history:
                 Intent HISTORY = new Intent(MainActivity.this, HistoryType.class);
-                HISTORY.putExtra("customerID", mAuth.getCurrentUser().getUid());
+                HISTORY.putExtra("staffID", mAuth.getCurrentUser().getUid());
                 HISTORY.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(HISTORY);
                 break;

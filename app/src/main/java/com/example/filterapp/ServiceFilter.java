@@ -59,6 +59,8 @@ import java.time.temporal.ChronoField;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.example.filterapp.FilterDetail.imageBit;
+
 
 public class ServiceFilter extends AppCompatActivity {
     public static final int SELECT_PICTURE = 1;
@@ -645,12 +647,11 @@ public class ServiceFilter extends AppCompatActivity {
 
         serviceDetails.setServiceID(createID());
         serviceDetails.setTechnicianID(mAuth.getCurrentUser().getUid());
-        serviceDetails.setCommission(String.format("%.02f", (Double.parseDouble(servicePrice) * 0.01)));
         serviceDetails.setServicePrice(String.format("%.02f", (Double.parseDouble(servicePrice))));
         serviceDetails.setServiceDate(date);
         serviceDetails.setServiceTime(hour + ":" + minute);
         serviceDetails.setNote(note);
-
+        serviceDetailsMap.put("lastServiced", date);
         serviceDetailsMap.put("note", note);
         serviceDetailsMap.put("imageLocation", serviceDetails.getServiceID());
 
@@ -704,8 +705,8 @@ public class ServiceFilter extends AppCompatActivity {
 
         final StorageReference imageReference = storageReference.child("filterPictures/" + documentID + "/" + serviceDetails.getServiceID() + "/filterPictures.jpg");
         imageReference.putFile(getImageUri(this, bitmap));
-        String year = documentID.substring(0, 4);
-        final String month = documentID.substring(4, 7);
+        String year = serviceDetails.getServiceID().substring(0, 4);
+        final String month = serviceDetails.getServiceID().substring(4, 7);
 
 
 
@@ -713,8 +714,18 @@ public class ServiceFilter extends AppCompatActivity {
 
         Map<String, Object> placeHolder = new HashMap<>();
         placeHolder.put("dummyData", "dummyData");
-        DocumentReference staffHistory = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid()).collection("service").document(year);
 
+        Map<String, Object> data = new HashMap<>();
+        data.put("commission", String.format("%.02f", (Double.parseDouble(servicePrice) * 0.02)));
+        data.put("filterID", documentID);
+
+        final DocumentReference staffHistory = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid())
+                .collection("service").document(year);
+        staffHistory.set(placeHolder);
+
+        DocumentReference staffHistory2 = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid())
+                .collection("service").document(year).collection(month).document(serviceDetails.getServiceID());
+        staffHistory2.set(data);
 
         final DocumentReference filterDetails = db.collection("sales").document(year).collection(month).document(documentID).collection("serviceDetails").document(year);
         filterDetails.set(placeHolder);
@@ -727,6 +738,7 @@ public class ServiceFilter extends AppCompatActivity {
             public void onSuccess(Void aVoid) {
                 updateFilterDetails.update(serviceDetailsMap);
                 filterDetails.update("dummyData", FieldValue.delete());
+                staffHistory.update("dummyData", FieldValue.delete());
                 loadingDialog.dismiss();
                 Toast.makeText(ServiceFilter.this, "Service done, thank you", Toast.LENGTH_SHORT).show();
                 ServiceFilter.super.onBackPressed();
@@ -886,6 +898,7 @@ public class ServiceFilter extends AppCompatActivity {
             } else {
                 bitmap = BitmapFactory.decodeFile(currentPhotoPath);
                 filterImg.setImageBitmap(bitmap);
+                imageBit = bitmap;
                 message.setVisibility(View.GONE);
                 uploadPicture = true;
             }

@@ -675,7 +675,6 @@ public class GenerateQRFragment extends Fragment {
                             }
                         }
 
-                        filterDetails.setCommission(commission);
                         filterDetails.setPrice(price);
                         filterDetails.setNote(note);
 
@@ -698,10 +697,12 @@ public class GenerateQRFragment extends Fragment {
                                 .collection("purchaseHistory").document(year);
                         customerDB.set(dummyData);
 
+                        Map<String, Object> data = new HashMap<>();
+                        data.put("commission", commission);
                         DocumentReference customerDB2 = db.collection("customerDetails").document("sorted")
                                 .collection(fName.substring(0, 1)).document(fName.substring(0, 1) + mobile)
                                 .collection("purchaseHistory").document(year).collection(year).document(documentID);
-                        customerDB2.set(dummyData);
+                        customerDB2.set(data);
 
                         customerDB.update("placeHolder", FieldValue.delete());
 

@@ -114,6 +114,7 @@ public class FilterDetail extends AppCompatActivity {
                     setName(filterDetails.getfName(), filterDetails.getMobile());
 
                     if (imageBit != null) {
+                        errorMessage.setVisibility(View.INVISIBLE);
                         filterPic.setImageBitmap(imageBit);
                         imageBit = null;
                     } else {
@@ -211,6 +212,10 @@ public class FilterDetail extends AppCompatActivity {
         intent.putExtra("fromActivity", "serviceHistory");
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+    }
+
+    public void back(View view) {
+        super.onBackPressed();
     }
 
     @Override

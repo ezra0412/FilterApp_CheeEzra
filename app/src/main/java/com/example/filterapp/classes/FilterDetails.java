@@ -11,7 +11,6 @@ public class FilterDetails {
     private String filter3;
     private String filter4;
     private String filter5;
-    private String commission;
     private String price;
     private String note;
     private String salesID;
@@ -29,18 +28,19 @@ public class FilterDetails {
     private String imageLocation;
     private String dayBrought;
     private String timeBrought;
+    private String lastServiced;
 
 
     public FilterDetails() {
         this("", "", "", "", "-", "-", "-", "-", "-", "",
-                "", "", "", "No Record", "No Record", "No Record", "No Record", "No Record",
-                "0", "0", "0", "No Record", "No Record", "No Record", "", "", ""/*bae i loveee u*/);
+                "", "", "No Record", "No Record", "No Record", "No Record", "No Record",
+                "0", "0", "0", "No Record", "No Record", "No Record", "", "", "", "-"/*bae i loveee u*/);
     }
 
     public FilterDetails(String invoiceNumber, String mobile, String fName, String fModel, String filter1, String filter2, String filter3,
-                         String filter4, String filter5, String commission, String price, String note, String salesID, String filter1LC, String filter2LC,
+                         String filter4, String filter5, String price, String note, String salesID, String filter1LC, String filter2LC,
                          String filter3LC, String filter4LC, String filter5LC, String wt, String wt_s, String fc_D, String wtLC, String wt_sLC, String fc_DLC,
-                         String imageLocation, String dayBrought, String timeBrought) {
+                         String imageLocation, String dayBrought, String timeBrought, String lastServiced) {
         this.invoiceNumber = invoiceNumber;
         this.mobile = mobile;
         this.fName = fName;
@@ -50,7 +50,6 @@ public class FilterDetails {
         this.filter3 = filter3;
         this.filter4 = filter4;
         this.filter5 = filter5;
-        this.commission = commission;
         this.price = price;
         this.note = note;
         this.salesID = salesID;
@@ -68,6 +67,7 @@ public class FilterDetails {
         this.imageLocation = imageLocation;
         this.dayBrought = dayBrought;
         this.timeBrought = timeBrought;
+        this.lastServiced = lastServiced;
     }
 
     public String getInvoiceNumber() {
@@ -140,14 +140,6 @@ public class FilterDetails {
 
     public void setFilter5(String filter5) {
         this.filter5 = filter5;
-    }
-
-    public String getCommission() {
-        return commission;
-    }
-
-    public void setCommission(String commission) {
-        this.commission = commission;
     }
 
     public String getPrice() {
@@ -284,5 +276,13 @@ public class FilterDetails {
 
     public void setTimeBrought(String timeBrought) {
         this.timeBrought = timeBrought;
+    }
+
+    public String getLastServiced() {
+        return lastServiced;
+    }
+
+    public void setLastServiced(String lastServiced) {
+        this.lastServiced = lastServiced;
     }
 }

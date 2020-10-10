@@ -81,9 +81,12 @@ public class MonthList extends AppCompatActivity implements BtAdapterSingle.BtSi
             if (fromActivity.equalsIgnoreCase("filterList"))
                 intent = new Intent(MonthList.this, FilterList.class);
             else if (fromActivity.equalsIgnoreCase("staffHistory")) {
-                intent = new Intent(MonthList.this, PurchaseHistory.class);
+                intent = new Intent(MonthList.this, HistoryList.class);
+                intent.putExtra("chosenOption", chosenOption);
+                intent.putExtra("staffID", staffID);
             } else
                 intent = new Intent();
+
             intent.putExtra("year", year);
             intent.putExtra("month", chosenOptionThis);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
