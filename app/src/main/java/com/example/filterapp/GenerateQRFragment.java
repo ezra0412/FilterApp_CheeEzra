@@ -726,7 +726,7 @@ public class GenerateQRFragment extends Fragment {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 filterDetailsDB.update("placeHolder", FieldValue.delete());
-
+                                filters = new LinkedList<>();
                                 loadingDialog.dismiss();
                                 Intent intent = new Intent(getActivity(), QRcode.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
