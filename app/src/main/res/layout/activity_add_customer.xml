@@ -1,229 +1,243 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".AddCustomer">
 
-    <LinearLayout
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:background="@color/yellow"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+    <TextView
+        android:id="@+id/tv_title_addCustomer"
+        style="@style/top_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Customer"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar7"
+        app:layout_constraintEnd_toEndOf="@+id/toolbar7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:onClick="back"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/toolbar7"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/back_button" />
+
+    <ScrollView
+        android:id="@+id/scrollView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar7"
+        app:layout_constraintVertical_bias="0.0">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar7"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/yellow"
-                android:minHeight="?attr/actionBarSize"
-                android:theme="?attr/actionBarTheme"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/imageView9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:onClick="back"
-                app:layout_constraintBottom_toBottomOf="@+id/toolbar7"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/toolbar7"
-                app:srcCompat="@drawable/back_button" />
+                <Button
+                    android:id="@+id/bt_add_AddCustomer"
+                    style="@style/button_long"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="24dp"
+                    android:onClick="addCustomer"
+                    android:text="Add Customer"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/et_note_addCustomer"
+                    app:layout_constraintVertical_bias="0.0" />
 
-            <TextView
-                android:id="@+id/tv_title_addCustomer"
-                style="@style/top_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Customer"
-                app:layout_constraintBottom_toBottomOf="@+id/toolbar7"
-                app:layout_constraintEnd_toEndOf="@+id/toolbar7"
-                app:layout_constraintStart_toStartOf="@+id/toolbar7"
-                app:layout_constraintTop_toTopOf="@+id/toolbar7" />
+                <TextView
+                    android:id="@+id/textView81"
+                    style="@style/lable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Note"
+                    app:layout_constraintStart_toStartOf="@+id/et_note_addCustomer"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_address_addCustomer" />
 
-            <Button
-                android:id="@+id/bt_add_AddCustomer"
-                style="@style/button_long"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="24dp"
-                android:onClick="addCustomer"
-                android:text="Add Customer"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/et_note_addCustomer"
-                app:layout_constraintVertical_bias="0.0" />
+                <EditText
+                    android:id="@+id/et_note_addCustomer"
+                    style="@style/edit_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/et_medium_bg"
+                    android:ems="10"
+                    android:inputType="textMultiLine"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/bt_add_AddCustomer"
+                    app:layout_constraintStart_toStartOf="@+id/bt_add_AddCustomer"
+                    app:layout_constraintTop_toBottomOf="@+id/textView81"
+                    app:layout_constraintVertical_bias="0.0" />
 
-            <TextView
-                android:id="@+id/textView81"
-                style="@style/lable"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Note"
-                app:layout_constraintStart_toStartOf="@+id/et_note_addCustomer"
-                app:layout_constraintTop_toBottomOf="@+id/tv_address_addCustomer" />
+                <TextView
+                    android:id="@+id/tv_address_addCustomer"
+                    style="@style/tv_dropDown"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/et_medium_bg"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:onClick="openAddress"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/et_note_addCustomer"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/et_note_addCustomer"
+                    app:layout_constraintTop_toBottomOf="@+id/textView82"
+                    app:layout_constraintVertical_bias="0.0" />
 
-            <EditText
-                android:id="@+id/et_note_addCustomer"
-                style="@style/edit_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/et_medium_bg"
-                android:ems="10"
-                android:inputType="textMultiLine"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/bt_add_AddCustomer"
-                app:layout_constraintStart_toStartOf="@+id/bt_add_AddCustomer"
-                app:layout_constraintTop_toBottomOf="@+id/textView81"
-                app:layout_constraintVertical_bias="0.0" />
+                <TextView
+                    android:id="@+id/textView82"
+                    style="@style/lable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Address"
+                    app:layout_constraintStart_toStartOf="@+id/tv_address_addCustomer"
+                    app:layout_constraintTop_toBottomOf="@+id/et_email_addCustomer" />
 
-            <TextView
-                android:id="@+id/tv_address_addCustomer"
-                style="@style/tv_dropDown"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/et_medium_bg"
-                android:ems="10"
-                android:gravity="center"
-                android:onClick="openAddress"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/et_note_addCustomer"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/et_note_addCustomer"
-                app:layout_constraintTop_toBottomOf="@+id/textView82"
-                app:layout_constraintVertical_bias="0.0" />
+                <EditText
+                    android:id="@+id/et_email_addCustomer"
+                    style="@style/edit_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="  Enter Email"
+                    android:inputType="textEmailAddress"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_address_addCustomer"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/tv_address_addCustomer"
+                    app:layout_constraintTop_toBottomOf="@+id/textView83"
+                    app:layout_constraintVertical_bias="0.0" />
 
-            <TextView
-                android:id="@+id/textView82"
-                style="@style/lable"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Address"
-                app:layout_constraintStart_toStartOf="@+id/tv_address_addCustomer"
-                app:layout_constraintTop_toBottomOf="@+id/et_email_addCustomer" />
+                <TextView
+                    android:id="@+id/textView83"
+                    style="@style/lable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Email"
+                    app:layout_constraintStart_toStartOf="@+id/et_email_addCustomer"
+                    app:layout_constraintTop_toBottomOf="@+id/et_mobile_addCustomer" />
 
-            <EditText
-                android:id="@+id/et_email_addCustomer"
-                style="@style/edit_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="  Enter Email"
-                android:inputType="textEmailAddress"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/tv_address_addCustomer"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/tv_address_addCustomer"
-                app:layout_constraintTop_toBottomOf="@+id/textView83"
-                app:layout_constraintVertical_bias="0.0" />
+                <EditText
+                    android:id="@+id/et_mobile_addCustomer"
+                    style="@style/edit_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="  Enter Mobile"
+                    android:inputType="phone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/et_email_addCustomer"
+                    app:layout_constraintStart_toStartOf="@+id/et_email_addCustomer"
+                    app:layout_constraintTop_toBottomOf="@+id/textView84"
+                    app:layout_constraintVertical_bias="0.0" />
 
-            <TextView
-                android:id="@+id/textView83"
-                style="@style/lable"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Email"
-                app:layout_constraintStart_toStartOf="@+id/et_email_addCustomer"
-                app:layout_constraintTop_toBottomOf="@+id/et_mobile_addCustomer" />
+                <TextView
+                    android:id="@+id/textView84"
+                    style="@style/lable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Mobile"
+                    app:layout_constraintStart_toStartOf="@+id/et_mobile_addCustomer"
+                    app:layout_constraintTop_toBottomOf="@+id/et_fName_addCustomer" />
 
-            <EditText
-                android:id="@+id/et_mobile_addCustomer"
-                style="@style/edit_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="  Enter Mobile"
-                android:inputType="phone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/et_email_addCustomer"
-                app:layout_constraintStart_toStartOf="@+id/et_email_addCustomer"
-                app:layout_constraintTop_toBottomOf="@+id/textView84"
-                app:layout_constraintVertical_bias="0.0" />
+                <EditText
+                    android:id="@+id/et_fName_addCustomer"
+                    style="@style/edit_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:ems="10"
+                    android:hint="  Enter First Name"
+                    android:inputType="textPersonName"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/et_lName_addCustomer"
+                    app:layout_constraintEnd_toStartOf="@+id/et_lName_addCustomer"
+                    app:layout_constraintStart_toStartOf="@+id/et_mobile_addCustomer" />
 
-            <TextView
-                android:id="@+id/textView84"
-                style="@style/lable"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Mobile"
-                app:layout_constraintStart_toStartOf="@+id/et_mobile_addCustomer"
-                app:layout_constraintTop_toBottomOf="@+id/et_fName_addCustomer" />
+                <TextView
+                    android:id="@+id/textView85"
+                    style="@style/lable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="First Name"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/et_fName_addCustomer"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
 
-            <EditText
-                android:id="@+id/et_fName_addCustomer"
-                style="@style/edit_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
-                android:ems="10"
-                android:hint="  Enter First Name"
-                android:inputType="textPersonName"
-                app:layout_constraintBaseline_toBaselineOf="@+id/et_lName_addCustomer"
-                app:layout_constraintEnd_toStartOf="@+id/et_lName_addCustomer"
-                app:layout_constraintStart_toStartOf="@+id/et_mobile_addCustomer" />
+                <EditText
+                    android:id="@+id/et_lName_addCustomer"
+                    style="@style/edit_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="150dp"
+                    android:ems="10"
+                    android:hint="  Enter Last Name"
+                    android:inputType="textPersonName"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/et_mobile_addCustomer"
+                    app:layout_constraintStart_toStartOf="@+id/et_mobile_addCustomer"
+                    app:layout_constraintTop_toBottomOf="@+id/textView86"
+                    app:layout_constraintVertical_bias="0.0" />
 
-            <TextView
-                android:id="@+id/textView85"
-                style="@style/lable"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="First Name"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/et_fName_addCustomer"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar7"
-                app:layout_constraintVertical_bias="0.0" />
+                <TextView
+                    android:id="@+id/textView86"
+                    style="@style/lable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Last Name"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/textView85"
+                    app:layout_constraintStart_toStartOf="@+id/et_lName_addCustomer" />
 
-            <EditText
-                android:id="@+id/et_lName_addCustomer"
-                style="@style/edit_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="150dp"
-                android:ems="10"
-                android:hint="  Enter Last Name"
-                android:inputType="textPersonName"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/et_mobile_addCustomer"
-                app:layout_constraintStart_toStartOf="@+id/et_mobile_addCustomer"
-                app:layout_constraintTop_toBottomOf="@+id/textView86"
-                app:layout_constraintVertical_bias="0.0" />
+                <ImageView
+                    android:id="@+id/img_addSign_addCustomer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="openAddress"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_address_addCustomer"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_address_addCustomer"
+                    app:layout_constraintStart_toStartOf="@+id/tv_address_addCustomer"
+                    app:layout_constraintTop_toTopOf="@+id/tv_address_addCustomer"
+                    app:srcCompat="@drawable/plus_sign" />
 
-            <TextView
-                android:id="@+id/textView86"
-                style="@style/lable"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Last Name"
-                app:layout_constraintBaseline_toBaselineOf="@+id/textView85"
-                app:layout_constraintStart_toStartOf="@+id/et_lName_addCustomer" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <ImageView
-                android:id="@+id/img_addSign_addCustomer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="openAddress"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_address_addCustomer"
-                app:layout_constraintEnd_toEndOf="@+id/tv_address_addCustomer"
-                app:layout_constraintStart_toStartOf="@+id/tv_address_addCustomer"
-                app:layout_constraintTop_toTopOf="@+id/tv_address_addCustomer"
-                app:srcCompat="@drawable/plus_sign" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
-</ScrollView>
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

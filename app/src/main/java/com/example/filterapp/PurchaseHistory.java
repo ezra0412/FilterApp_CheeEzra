@@ -3,7 +3,7 @@ package com.example.filterapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,7 +35,7 @@ public class PurchaseHistory extends AppCompatActivity implements BtAdapterDoubl
     String year = "", customerID, nameChar;
     List<FilterDetails> filterDetailsList = new LinkedList<>();
     List<String> filterIDList = new LinkedList<>();
-
+    TextView error;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +49,8 @@ public class PurchaseHistory extends AppCompatActivity implements BtAdapterDoubl
         year = getIntent().getStringExtra("year");
         customerID = getIntent().getStringExtra("customerID");
 
+        error = findViewById(R.id.tv_error_mesage_purchaseHistory);
+
         nameChar = customerID.substring(0, 1);
 
         CollectionReference getDetails = db.collection("customerDetails").document("sorted")
@@ -59,8 +61,10 @@ public class PurchaseHistory extends AppCompatActivity implements BtAdapterDoubl
                 if (task.isSuccessful()) {
                     QuerySnapshot collectionReference = task.getResult();
                     if (collectionReference.isEmpty()) {
-                        Toast.makeText(PurchaseHistory.this, "Error, please try again later", Toast.LENGTH_SHORT).show();
+                        error.setVisibility(View.VISIBLE);
+                        recyclerView.setVisibility(View.INVISIBLE);
                     } else {
+                        error.setVisibility(View.INVISIBLE);
                         recyclerView.setVisibility(View.VISIBLE);
                         for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                             searchDetails(documentSnapshot.getId().trim());
