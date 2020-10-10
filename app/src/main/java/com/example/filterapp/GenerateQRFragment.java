@@ -680,7 +680,8 @@ public class GenerateQRFragment extends Fragment {
 
                         filterDetails.setDayBrought(date);
                         filterDetails.setTimeBrought(time);
-
+                        Map<String, Object> data = new HashMap<>();
+                        data.put("commission", commission);
                         Map<String, String> dummyData = new HashMap<>();
                         dummyData.put("placeHolder", "dummyData");
                         final DocumentReference staffDB = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid()).
@@ -688,21 +689,20 @@ public class GenerateQRFragment extends Fragment {
                         staffDB.set(dummyData);
                         DocumentReference staffDB2 = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid()).
                                 collection("sales").document(year).collection(month).document(documentID);
-                        staffDB2.set(dummyData);
+                        staffDB2.set(data);
 
                         staffDB.update("placeHolder", FieldValue.delete());
 
                         DocumentReference customerDB = db.collection("customerDetails").document("sorted")
-                                .collection(fName.substring(0, 1)).document(fName.substring(0, 1) + mobile)
+                                .collection(fName.substring(0, 1).toLowerCase()).document(fName.substring(0, 1) + mobile)
                                 .collection("purchaseHistory").document(year);
                         customerDB.set(dummyData);
 
-                        Map<String, Object> data = new HashMap<>();
-                        data.put("commission", commission);
+
                         DocumentReference customerDB2 = db.collection("customerDetails").document("sorted")
                                 .collection(fName.substring(0, 1).toLowerCase()).document(fName.substring(0, 1).toLowerCase() + mobile)
                                 .collection("purchaseHistory").document(year).collection(year).document(documentID);
-                        customerDB2.set(data);
+                        customerDB2.set(dummyData);
 
                         customerDB.update("placeHolder", FieldValue.delete());
 
@@ -752,7 +752,7 @@ public class GenerateQRFragment extends Fragment {
         int millis = timeNow.get(ChronoField.MILLI_OF_SECOND);
 
         date = day + "/" + month + "/" + year;
-        time = hour + ":" + minute;
+        time = hour + ":" + String.format("%02d", minute);
 
         switch (month) {
             case 1:

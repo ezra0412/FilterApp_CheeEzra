@@ -25,6 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -137,6 +138,7 @@ public class HistoryList extends AppCompatActivity implements BtAdapterDouble.Bt
             btLongDoubleItemList.add(btLongDoubleItem);
             filterDetailsList.add(filterDetails);
             commissionList.add(commission);
+            Collections.reverse(commissionList);
             storeAdapter();
         } else {
             btLongDoubleItem = new BtLongDoubleItem(serviceDetails.getServiceDate(), "Commission: RM " + commission);
@@ -144,6 +146,7 @@ public class HistoryList extends AppCompatActivity implements BtAdapterDouble.Bt
             serviceDetailsList.add(serviceDetails);
             commissionList.add(commission);
             filterIDList.add(filterID);
+            Collections.reverse(commissionList);
             storeAdapter();
         }
 
