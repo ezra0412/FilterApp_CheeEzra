@@ -1288,4 +1288,10 @@ public class AccountDetails extends AppCompatActivity {
 
         javaMailAPI.execute();
     }
+
+    public void forgetPassword(View view) {
+        Intent intent = new Intent(AccountDetails.this, ForgetPassword.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
 }

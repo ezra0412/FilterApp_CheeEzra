@@ -275,6 +275,18 @@
                 android:visibility="invisible"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView61"
                 app:layout_constraintStart_toEndOf="@+id/textView61" />
+
+            <TextView
+                android:id="@+id/textView194"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/archivo_narrow_italic"
+                android:onClick="forgetPassword"
+                android:text="(Forget Password?)"
+                android:textColor="@color/medium_green"
+                app:layout_constraintBaseline_toBaselineOf="@+id/textView66"
+                app:layout_constraintStart_toEndOf="@+id/textView66" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </ScrollView>
