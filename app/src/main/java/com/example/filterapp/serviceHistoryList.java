@@ -22,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -83,6 +84,7 @@ public class serviceHistoryList extends AppCompatActivity implements BtAdapterDo
         btLongDoubleItem = new BtLongDoubleItem(date, name);
         btLongDoubleItemList.add(btLongDoubleItem);
         filterIDList.add(id);
+        Collections.reverse(btLongDoubleItemList);
         storeAdapter();
     }
 

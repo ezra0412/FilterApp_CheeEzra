@@ -20,6 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -72,6 +73,7 @@ public class FilterList extends AppCompatActivity implements BtAdapterDouble.BtD
     }
 
     public void storeAdapter() {
+        Collections.reverse(btLongDoubleItemList);
         adapter = new BtAdapterDouble(btLongDoubleItemList, this);
         recyclerView.setAdapter(adapter);
     }

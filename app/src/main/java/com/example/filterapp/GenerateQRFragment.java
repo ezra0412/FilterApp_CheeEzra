@@ -700,7 +700,7 @@ public class GenerateQRFragment extends Fragment {
                         Map<String, Object> data = new HashMap<>();
                         data.put("commission", commission);
                         DocumentReference customerDB2 = db.collection("customerDetails").document("sorted")
-                                .collection(fName.substring(0, 1)).document(fName.substring(0, 1) + mobile)
+                                .collection(fName.substring(0, 1).toLowerCase()).document(fName.substring(0, 1).toLowerCase() + mobile)
                                 .collection("purchaseHistory").document(year).collection(year).document(documentID);
                         customerDB2.set(data);
 
