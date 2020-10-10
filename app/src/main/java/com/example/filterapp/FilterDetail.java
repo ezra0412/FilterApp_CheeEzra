@@ -32,6 +32,8 @@ public class FilterDetail extends AppCompatActivity {
     StorageReference storageReference = FirebaseStorage.getInstance().getReference();
     public static Bitmap imageBit = null;
     FilterDetails filterDetails;
+    public static boolean serviced;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,36 +68,31 @@ public class FilterDetail extends AppCompatActivity {
     }
 
     public void setFilterDetails() {
-
-        if (filterDetails.getImageLocation().isEmpty()) {
-            errorMessage.setVisibility(View.VISIBLE);
-            invoiceNum.setText(filterDetails.getInvoiceNumber());
-            fModel.setText(filterDetails.getfModel());
-            f1.setText(filterDetails.getFilter1());
-            f2.setText(filterDetails.getFilter2());
-            f3.setText(filterDetails.getFilter3());
-            f4.setText(filterDetails.getFilter4());
-            f5.setText(filterDetails.getFilter5());
-            f1LC.setText(filterDetails.getFilter1LC());
-            f2LC.setText(filterDetails.getFilter2LC());
-            f3LC.setText(filterDetails.getFilter3LC());
-            f4LC.setText(filterDetails.getFilter4LC());
-            f5LC.setText(filterDetails.getFilter5LC());
-            part1.setText("x " + filterDetails.getWt());
-            part2.setText("x " + filterDetails.getWt_s());
-            part3.setText("x " + filterDetails.getFc_D());
-            part1LC.setText(filterDetails.getWt_sLC());
-            part2LC.setText(filterDetails.getWt_sLC());
-            part3LC.setText(filterDetails.getFc_DLC());
-            note.setText(filterDetails.getNote());
-            setName(filterDetails.getfName(), filterDetails.getMobile());
-        } else {
-
-            if (imageBit != null) {
-                errorMessage.setVisibility(View.INVISIBLE);
-                filterPic.setImageBitmap(imageBit);
-                imageBit = null;
+        if (!serviced) {
+            if (filterDetails.getImageLocation().isEmpty()) {
+                errorMessage.setVisibility(View.VISIBLE);
+                invoiceNum.setText(filterDetails.getInvoiceNumber());
+                fModel.setText(filterDetails.getfModel());
+                f1.setText(filterDetails.getFilter1());
+                f2.setText(filterDetails.getFilter2());
+                f3.setText(filterDetails.getFilter3());
+                f4.setText(filterDetails.getFilter4());
+                f5.setText(filterDetails.getFilter5());
+                f1LC.setText(filterDetails.getFilter1LC());
+                f2LC.setText(filterDetails.getFilter2LC());
+                f3LC.setText(filterDetails.getFilter3LC());
+                f4LC.setText(filterDetails.getFilter4LC());
+                f5LC.setText(filterDetails.getFilter5LC());
+                part1.setText("x " + filterDetails.getWt());
+                part2.setText("x " + filterDetails.getWt_s());
+                part3.setText("x " + filterDetails.getFc_D());
+                part1LC.setText(filterDetails.getWt_sLC());
+                part2LC.setText(filterDetails.getWt_sLC());
+                part3LC.setText(filterDetails.getFc_DLC());
+                note.setText(filterDetails.getNote());
+                setName(filterDetails.getfName(), filterDetails.getMobile());
             } else {
+
                 StorageReference profileRef = storageReference.child("filterPictures/" + documentID + "/" + filterDetails.getImageLocation() + "/filterPictures.jpg");
                 profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
@@ -133,10 +130,43 @@ public class FilterDetail extends AppCompatActivity {
                 part3LC.setText(filterDetails.getFc_DLC());
                 note.setText(filterDetails.getNote());
                 setName(filterDetails.getfName(), filterDetails.getMobile());
-
-
             }
+        } else {
+            String year = documentID.substring(0, 4);
+            String month = documentID.substring(4, 7);
+            DocumentReference filterDetailsUpdate = db.collection("sales").document(year).collection(month).document(documentID);
+            filterDetailsUpdate.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    filterPic.setImageBitmap(imageBit);
+                    errorMessage.setVisibility(View.INVISIBLE);
+                    imageBit = null;
+                    serviced = false;
+                    FilterDetails filterDetailsUpdated = documentSnapshot.toObject(FilterDetails.class);
+                    invoiceNum.setText(filterDetailsUpdated.getInvoiceNumber());
+                    fModel.setText(filterDetailsUpdated.getfModel());
+                    f1.setText(filterDetailsUpdated.getFilter1());
+                    f2.setText(filterDetailsUpdated.getFilter2());
+                    f3.setText(filterDetailsUpdated.getFilter3());
+                    f4.setText(filterDetailsUpdated.getFilter4());
+                    f5.setText(filterDetailsUpdated.getFilter5());
+                    f1LC.setText(filterDetailsUpdated.getFilter1LC());
+                    f2LC.setText(filterDetailsUpdated.getFilter2LC());
+                    f3LC.setText(filterDetailsUpdated.getFilter3LC());
+                    f4LC.setText(filterDetailsUpdated.getFilter4LC());
+                    f5LC.setText(filterDetailsUpdated.getFilter5LC());
+                    part1.setText("x " + filterDetailsUpdated.getWt());
+                    part2.setText("x " + filterDetailsUpdated.getWt_s());
+                    part3.setText("x " + filterDetailsUpdated.getFc_D());
+                    part1LC.setText(filterDetailsUpdated.getWt_sLC());
+                    part2LC.setText(filterDetailsUpdated.getWt_sLC());
+                    part3LC.setText(filterDetailsUpdated.getFc_DLC());
+                    note.setText(filterDetailsUpdated.getNote());
+                    setName(filterDetailsUpdated.getfName(), filterDetailsUpdated.getMobile());
+                }
+            });
         }
+
     }
 
     private void setImage(final String imageLocation) {
@@ -223,5 +253,10 @@ public class FilterDetail extends AppCompatActivity {
         setFilterDetails();
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        serviced = false;
+        imageBit = null;
+    }
 }

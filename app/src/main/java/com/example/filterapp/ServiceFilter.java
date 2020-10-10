@@ -56,10 +56,12 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.example.filterapp.FilterDetail.imageBit;
+import static com.example.filterapp.FilterDetail.serviced;
 
 
 public class ServiceFilter extends AppCompatActivity {
@@ -110,7 +112,7 @@ public class ServiceFilter extends AppCompatActivity {
         documentID = getIntent().getStringExtra("documentID");
         String year = documentID.substring(0, 4);
         String month = documentID.substring(4, 7);
-
+        serviced = false;
         constrainLayout = findViewById(R.id.cl_serviceFilter);
 
         DocumentReference getFilterDetails = db.collection("sales").document(year).collection(month).document(documentID);
@@ -729,7 +731,7 @@ public class ServiceFilter extends AppCompatActivity {
 
         final DocumentReference filterDetails = db.collection("sales").document(year).collection(month).document(documentID).collection("serviceDetails").document(year);
         filterDetails.set(placeHolder);
-
+        serviced = true;
         DocumentReference filterDetails2 = db.collection("sales").document(year).collection(month)
                 .document(documentID).collection("serviceDetails").document(year).collection(year).document(serviceDetails.getServiceID());
 
@@ -908,7 +910,7 @@ public class ServiceFilter extends AppCompatActivity {
     private Uri getImageUri(Context context, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), inImage, "filterImage", null);
+        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), inImage, "filterImage" + Calendar.getInstance().getTime(), null);
         return Uri.parse(path);
     }
 
