@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
+import com.example.filterapp.classes.FilterDetails;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.Wave;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -163,6 +164,7 @@ public class ScanQRFragment extends Fragment {
                                         message.setVisibility(View.INVISIBLE);
                                         Intent intent = new Intent(getActivity(), FilterDetail.class);
                                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        intent.putExtra("filterDetails", documentSnapshot.toObject(FilterDetails.class));
                                         intent.putExtra("documentID", scanResult);
                                         startActivity(intent);
                                     } else {

@@ -31,11 +31,16 @@ public class FilterDetail extends AppCompatActivity {
     TextView errorMessage;
     StorageReference storageReference = FirebaseStorage.getInstance().getReference();
     public static Bitmap imageBit = null;
+    FilterDetails filterDetails;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter_detail);
         documentID = getIntent().getStringExtra("documentID");
+
+        filterDetails = getIntent().getParcelableExtra("filterDetails");
+
+
         name = findViewById(R.id.tv_name_filterDetails);
         invoiceNum = findViewById(R.id.tv_invNum_filterDetails);
         fModel = findViewById(R.id.tv_fModel_filterDetails);
@@ -61,83 +66,77 @@ public class FilterDetail extends AppCompatActivity {
     }
 
     public void setFilterDetails() {
-        String year = documentID.substring(0, 4);
-        final String month = documentID.substring(4, 7);
-        DocumentReference filterDetails = db.collection("sales").document(year).collection(month).document(documentID);
-        filterDetails.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                final FilterDetails filterDetails = documentSnapshot.toObject(FilterDetails.class);
 
-                if (filterDetails.getImageLocation().isEmpty()) {
-                    errorMessage.setVisibility(View.VISIBLE);
-                    invoiceNum.setText(filterDetails.getInvoiceNumber());
-                    fModel.setText(filterDetails.getfModel());
-                    f1.setText(filterDetails.getFilter1());
-                    f2.setText(filterDetails.getFilter2());
-                    f3.setText(filterDetails.getFilter3());
-                    f4.setText(filterDetails.getFilter4());
-                    f5.setText(filterDetails.getFilter5());
-                    f1LC.setText(filterDetails.getFilter1LC());
-                    f2LC.setText(filterDetails.getFilter2LC());
-                    f3LC.setText(filterDetails.getFilter3LC());
-                    f4LC.setText(filterDetails.getFilter4LC());
-                    f5LC.setText(filterDetails.getFilter5LC());
-                    part1.setText("x " + filterDetails.getWt());
-                    part2.setText("x " + filterDetails.getWt_s());
-                    part3.setText("x " + filterDetails.getFc_D());
-                    part1LC.setText(filterDetails.getWt_sLC());
-                    part2LC.setText(filterDetails.getWt_sLC());
-                    part3LC.setText(filterDetails.getFc_DLC());
-                    note.setText(filterDetails.getNote());
-                    setName(filterDetails.getfName(), filterDetails.getMobile());
-                } else {
-                    invoiceNum.setText(filterDetails.getInvoiceNumber());
-                    fModel.setText(filterDetails.getfModel());
-                    f1.setText(filterDetails.getFilter1());
-                    f2.setText(filterDetails.getFilter2());
-                    f3.setText(filterDetails.getFilter3());
-                    f4.setText(filterDetails.getFilter4());
-                    f5.setText(filterDetails.getFilter5());
-                    f1LC.setText(filterDetails.getFilter1LC());
-                    f2LC.setText(filterDetails.getFilter2LC());
-                    f3LC.setText(filterDetails.getFilter3LC());
-                    f4LC.setText(filterDetails.getFilter4LC());
-                    f5LC.setText(filterDetails.getFilter5LC());
-                    part1.setText("x " + filterDetails.getWt());
-                    part2.setText("x " + filterDetails.getWt_s());
-                    part3.setText("x " + filterDetails.getFc_D());
-                    part1LC.setText(filterDetails.getWt_sLC());
-                    part2LC.setText(filterDetails.getWt_sLC());
-                    part3LC.setText(filterDetails.getFc_DLC());
-                    note.setText(filterDetails.getNote());
-                    setName(filterDetails.getfName(), filterDetails.getMobile());
+        if (filterDetails.getImageLocation().isEmpty()) {
+            errorMessage.setVisibility(View.VISIBLE);
+            invoiceNum.setText(filterDetails.getInvoiceNumber());
+            fModel.setText(filterDetails.getfModel());
+            f1.setText(filterDetails.getFilter1());
+            f2.setText(filterDetails.getFilter2());
+            f3.setText(filterDetails.getFilter3());
+            f4.setText(filterDetails.getFilter4());
+            f5.setText(filterDetails.getFilter5());
+            f1LC.setText(filterDetails.getFilter1LC());
+            f2LC.setText(filterDetails.getFilter2LC());
+            f3LC.setText(filterDetails.getFilter3LC());
+            f4LC.setText(filterDetails.getFilter4LC());
+            f5LC.setText(filterDetails.getFilter5LC());
+            part1.setText("x " + filterDetails.getWt());
+            part2.setText("x " + filterDetails.getWt_s());
+            part3.setText("x " + filterDetails.getFc_D());
+            part1LC.setText(filterDetails.getWt_sLC());
+            part2LC.setText(filterDetails.getWt_sLC());
+            part3LC.setText(filterDetails.getFc_DLC());
+            note.setText(filterDetails.getNote());
+            setName(filterDetails.getfName(), filterDetails.getMobile());
+        } else {
 
-                    if (imageBit != null) {
+            if (imageBit != null) {
+                errorMessage.setVisibility(View.INVISIBLE);
+                filterPic.setImageBitmap(imageBit);
+                imageBit = null;
+            } else {
+                StorageReference profileRef = storageReference.child("filterPictures/" + documentID + "/" + filterDetails.getImageLocation() + "/filterPictures.jpg");
+                profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Picasso.get().load(uri).into(filterPic);
                         errorMessage.setVisibility(View.INVISIBLE);
-                        filterPic.setImageBitmap(imageBit);
-                        imageBit = null;
-                    } else {
-                        StorageReference profileRef = storageReference.child("filterPictures/" + documentID + "/" + filterDetails.getImageLocation() + "/filterPictures.jpg");
-                        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                Picasso.get().load(uri).into(filterPic);
-                                errorMessage.setVisibility(View.INVISIBLE);
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                setImage(filterDetails.getImageLocation());
-                                errorMessage.setText("Refreshing Image...");
-                                errorMessage.setTextColor(getColor(R.color.red));
-                                errorMessage.setVisibility(View.VISIBLE);
-                            }
-                        });
                     }
-                }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        setImage(filterDetails.getImageLocation());
+                        errorMessage.setText("Fetching Image...");
+                        errorMessage.setTextColor(getColor(R.color.red));
+                        errorMessage.setVisibility(View.VISIBLE);
+                    }
+                });
+
+                invoiceNum.setText(filterDetails.getInvoiceNumber());
+                fModel.setText(filterDetails.getfModel());
+                f1.setText(filterDetails.getFilter1());
+                f2.setText(filterDetails.getFilter2());
+                f3.setText(filterDetails.getFilter3());
+                f4.setText(filterDetails.getFilter4());
+                f5.setText(filterDetails.getFilter5());
+                f1LC.setText(filterDetails.getFilter1LC());
+                f2LC.setText(filterDetails.getFilter2LC());
+                f3LC.setText(filterDetails.getFilter3LC());
+                f4LC.setText(filterDetails.getFilter4LC());
+                f5LC.setText(filterDetails.getFilter5LC());
+                part1.setText("x " + filterDetails.getWt());
+                part2.setText("x " + filterDetails.getWt_s());
+                part3.setText("x " + filterDetails.getFc_D());
+                part1LC.setText(filterDetails.getWt_sLC());
+                part2LC.setText(filterDetails.getWt_sLC());
+                part3LC.setText(filterDetails.getFc_DLC());
+                note.setText(filterDetails.getNote());
+                setName(filterDetails.getfName(), filterDetails.getMobile());
+
+
             }
-        });
+        }
     }
 
     private void setImage(final String imageLocation) {
@@ -152,7 +151,7 @@ public class FilterDetail extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                errorMessage.setText("Refreshing Image...");
+                errorMessage.setText("Fetching Image...");
                 errorMessage.setTextColor(getColor(R.color.red));
                 errorMessage.setVisibility(View.VISIBLE);
                 Handler handler = new Handler();

@@ -1,7 +1,10 @@
 package com.example.filterapp.classes;
 
 
-public class FilterDetails {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class FilterDetails implements Parcelable {
     private String invoiceNumber;
     private String mobile;
     private String fName;
@@ -69,6 +72,84 @@ public class FilterDetails {
         this.timeBrought = timeBrought;
         this.lastServiced = lastServiced;
     }
+
+    protected FilterDetails(Parcel in) {
+        invoiceNumber = in.readString();
+        mobile = in.readString();
+        fName = in.readString();
+        fModel = in.readString();
+        filter1 = in.readString();
+        filter2 = in.readString();
+        filter3 = in.readString();
+        filter4 = in.readString();
+        filter5 = in.readString();
+        price = in.readString();
+        note = in.readString();
+        salesID = in.readString();
+        filter1LC = in.readString();
+        filter2LC = in.readString();
+        filter3LC = in.readString();
+        filter4LC = in.readString();
+        filter5LC = in.readString();
+        wt = in.readString();
+        wt_s = in.readString();
+        fc_D = in.readString();
+        wtLC = in.readString();
+        wt_sLC = in.readString();
+        fc_DLC = in.readString();
+        imageLocation = in.readString();
+        dayBrought = in.readString();
+        timeBrought = in.readString();
+        lastServiced = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(invoiceNumber);
+        dest.writeString(mobile);
+        dest.writeString(fName);
+        dest.writeString(fModel);
+        dest.writeString(filter1);
+        dest.writeString(filter2);
+        dest.writeString(filter3);
+        dest.writeString(filter4);
+        dest.writeString(filter5);
+        dest.writeString(price);
+        dest.writeString(note);
+        dest.writeString(salesID);
+        dest.writeString(filter1LC);
+        dest.writeString(filter2LC);
+        dest.writeString(filter3LC);
+        dest.writeString(filter4LC);
+        dest.writeString(filter5LC);
+        dest.writeString(wt);
+        dest.writeString(wt_s);
+        dest.writeString(fc_D);
+        dest.writeString(wtLC);
+        dest.writeString(wt_sLC);
+        dest.writeString(fc_DLC);
+        dest.writeString(imageLocation);
+        dest.writeString(dayBrought);
+        dest.writeString(timeBrought);
+        dest.writeString(lastServiced);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<FilterDetails> CREATOR = new Creator<FilterDetails>() {
+        @Override
+        public FilterDetails createFromParcel(Parcel in) {
+            return new FilterDetails(in);
+        }
+
+        @Override
+        public FilterDetails[] newArray(int size) {
+            return new FilterDetails[size];
+        }
+    };
 
     public String getInvoiceNumber() {
         return invoiceNumber;
