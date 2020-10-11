@@ -28,6 +28,52 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/toolbar16" />
 
+    <ImageView
+        android:id="@+id/imageView25"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:onClick="back"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar16"
+        app:layout_constraintEnd_toStartOf="@+id/textView151"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/back_button" />
+
+    <ImageView
+        android:id="@+id/imageView26"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:onClick="history"
+        app:layout_constraintBottom_toBottomOf="@+id/textView151"
+        app:layout_constraintEnd_toEndOf="@+id/toolbar16"
+        app:layout_constraintTop_toTopOf="@+id/textView151"
+        app:srcCompat="@drawable/ic_history" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar16"
+        app:layout_constraintVertical_bias="0.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
+
     <Button
         android:id="@+id/button7"
         style="@style/button_long"
@@ -281,27 +327,4 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
-    <ImageView
-        android:id="@+id/imageView25"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:onClick="back"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbar16"
-        app:layout_constraintEnd_toStartOf="@+id/textView151"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/back_button" />
-
-    <ImageView
-        android:id="@+id/imageView26"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:onClick="history"
-        app:layout_constraintBottom_toBottomOf="@+id/textView151"
-        app:layout_constraintEnd_toEndOf="@+id/toolbar16"
-        app:layout_constraintTop_toTopOf="@+id/textView151"
-        app:srcCompat="@drawable/ic_history" />
 </androidx.constraintlayout.widget.ConstraintLayout>
