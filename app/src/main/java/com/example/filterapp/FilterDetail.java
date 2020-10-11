@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.filterapp.classes.CustomerDetails;
 import com.example.filterapp.classes.FilterDetails;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,6 +34,7 @@ public class FilterDetail extends AppCompatActivity {
     public static Bitmap imageBit = null;
     FilterDetails filterDetails;
     public static boolean serviced;
+    CustomerDetails customerDetails = new CustomerDetails();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,12 +201,13 @@ public class FilterDetail extends AppCompatActivity {
 
     public void setName(String fName, String mobile) {
         customerID = fName.substring(0, 1).toLowerCase() + mobile;
-        DocumentReference customerDetails = db.collection("customerDetails").document("sorted").
+        final DocumentReference customerDetail = db.collection("customerDetails").document("sorted").
                 collection(fName.substring(0, 1).toLowerCase()).document(customerID);
-        customerDetails.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        customerDetail.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                name.setText(documentSnapshot.getString("fName") + " " + documentSnapshot.getString("lName"));
+                customerDetails = documentSnapshot.toObject(CustomerDetails.class);
+                name.setText(customerDetails.fullName());
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -217,7 +220,7 @@ public class FilterDetail extends AppCompatActivity {
     public void openCustomerDetails(View view) {
         Intent intent = new Intent(FilterDetail.this, CustomerDetail.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("customerID", customerID);
+        intent.putExtra("customerDetails", customerDetails);
         startActivity(intent);
     }
 

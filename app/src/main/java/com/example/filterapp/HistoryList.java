@@ -1,5 +1,6 @@
 package com.example.filterapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -32,18 +33,17 @@ import java.util.List;
 public class HistoryList extends AppCompatActivity implements BtAdapterDouble.BtDoubleListener {
     String staffID;
     String chosenOption;
-    TextView mTitle;
+    TextView mTitle, mError;
     RecyclerView recyclerView;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String year, month;
     List<BtLongDoubleItem> btLongDoubleItemList = new LinkedList<>();
-    BtLongDoubleItem btLongDoubleItem;
     List<FilterDetails> filterDetailsList = new LinkedList<>();
     List<String> commissionList = new LinkedList<>();
     List<ServiceDetails> serviceDetailsList = new LinkedList<>();
     List<String> filterIDList = new LinkedList<>();
-
     RecyclerView.Adapter adapter;
+    int collectionCounter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +53,7 @@ public class HistoryList extends AppCompatActivity implements BtAdapterDouble.Bt
         staffID = getIntent().getStringExtra("staffID");
         chosenOption = getIntent().getStringExtra("chosenOption");
         mTitle = findViewById(R.id.tv_title_historyList);
+        mError = findViewById(R.id.tv_error_historyList);
         recyclerView = findViewById(R.id.rv_historyList);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -70,15 +71,18 @@ public class HistoryList extends AppCompatActivity implements BtAdapterDouble.Bt
                         QuerySnapshot collectionReference = task.getResult();
                         if (collectionReference.isEmpty()) {
                             recyclerView.setVisibility(View.INVISIBLE);
+                            mError.setVisibility(View.VISIBLE);
                         } else {
+                            mError.setVisibility(View.INVISIBLE);
                             recyclerView.setVisibility(View.VISIBLE);
                             for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                                searchDetails(documentSnapshot.getId().trim(), documentSnapshot.getString("commission"), "");
+                                searchDetails(documentSnapshot.getId().trim(), documentSnapshot.getString("commission"), "", collectionReference.size());
                             }
                         }
                     }
                 }
             });
+
 
         } else {
             mTitle.setText("Service History");
@@ -91,19 +95,26 @@ public class HistoryList extends AppCompatActivity implements BtAdapterDouble.Bt
                         QuerySnapshot collectionReference = task.getResult();
                         if (collectionReference.isEmpty()) {
                             recyclerView.setVisibility(View.INVISIBLE);
+                            mError.setVisibility(View.VISIBLE);
                         } else {
+                            mError.setVisibility(View.INVISIBLE);
                             recyclerView.setVisibility(View.VISIBLE);
                             for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                                searchDetails(documentSnapshot.getId().trim(), documentSnapshot.getString("commission"), documentSnapshot.getString("filterID"));
+                                searchDetails(documentSnapshot.getId().trim(), documentSnapshot.getString("commission"), documentSnapshot.getString("filterID"), collectionReference.size());
                             }
                         }
                     }
                 }
             });
+
         }
+
+
     }
 
-    public void searchDetails(final String documentID, final String commission, final String filterID) {
+    public void searchDetails(final String documentID, final String commission, final String filterID, int size) {
+        collectionCounter = size;
+
         if (chosenOption.equalsIgnoreCase("0")) {
             String yearBrought = documentID.substring(0, 4);
             String monthBrought = documentID.substring(4, 7);
@@ -112,7 +123,7 @@ public class HistoryList extends AppCompatActivity implements BtAdapterDouble.Bt
             staffDetail.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
                 @Override
                 public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-                    storeObject(commission, documentSnapshot.toObject(FilterDetails.class), serviceDetails, "");
+                    storeObject(commission, documentSnapshot.toObject(FilterDetails.class), serviceDetails, documentID);
                 }
             });
         } else {
@@ -132,34 +143,53 @@ public class HistoryList extends AppCompatActivity implements BtAdapterDouble.Bt
 
 
     public void storeObject(String commission, FilterDetails filterDetails, ServiceDetails serviceDetails, String filterID) {
+        BtLongDoubleItem btLongDoubleItem;
 
         if (chosenOption.equalsIgnoreCase("0")) {
             btLongDoubleItem = new BtLongDoubleItem(filterDetails.getDayBrought(), filterDetails.getInvoiceNumber());
             btLongDoubleItemList.add(btLongDoubleItem);
             filterDetailsList.add(filterDetails);
             commissionList.add(commission);
-            Collections.reverse(commissionList);
-            storeAdapter();
+            filterIDList.add(filterID);
+
         } else {
             btLongDoubleItem = new BtLongDoubleItem(serviceDetails.getServiceDate(), "Commission: RM " + commission);
             btLongDoubleItemList.add(btLongDoubleItem);
             serviceDetailsList.add(serviceDetails);
             commissionList.add(commission);
             filterIDList.add(filterID);
-            Collections.reverse(commissionList);
-            storeAdapter();
         }
 
+        if (btLongDoubleItemList.size() == collectionCounter) {
+            storeAdapter();
+        }
     }
 
     public void storeAdapter() {
+        Collections.reverse(btLongDoubleItemList);
+        Collections.reverse(filterDetailsList);
+        Collections.reverse(commissionList);
+        Collections.reverse(serviceDetailsList);
+        Collections.reverse(filterIDList);
         adapter = new BtAdapterDouble(btLongDoubleItemList, this);
         recyclerView.setAdapter(adapter);
-
     }
 
     @Override
     public void btDoubleListener(int position) {
 
+        if (chosenOption.equalsIgnoreCase("0")) {
+
+            Intent intent = new Intent(HistoryList.this, SalesDetails.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("commission", commissionList.get(position));
+            intent.putExtra("filterDetails", filterDetailsList.get(position));
+            intent.putExtra("filterID", filterIDList.get(position));
+            startActivity(intent);
+        }
+    }
+
+    public void back(View view) {
+        super.onBackPressed();
     }
 }
