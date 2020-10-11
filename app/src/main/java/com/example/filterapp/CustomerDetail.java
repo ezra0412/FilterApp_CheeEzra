@@ -52,7 +52,7 @@ public class CustomerDetail extends AppCompatActivity {
     boolean showPasswordPU = false;
     Boolean verified = false;
     Dialog loadingDialog;
-    CustomerDetails def = new CustomerDetails();
+    CustomerDetails customerDetails = new CustomerDetails();
     Address defAdd = new Address();
     RequestQueue requestQueue;
     @Override
@@ -65,29 +65,22 @@ public class CustomerDetail extends AppCompatActivity {
         mAddress = findViewById(R.id.tv_address_customerDetail);
         mNote = findViewById(R.id.tv_note_customerDetail);
         delete = findViewById(R.id.bt_delete_customerDetail);
-        customerID = getIntent().getStringExtra("customerID");
         adminDialog = new Dialog(this);
         loadingDialog = new Dialog(this);
         requestQueue = Volley.newRequestQueue(this);
+
+        customerDetails = getIntent().getParcelableExtra("customerDetails");
+        customerID = customerDetails.getfName().substring(0, 1).toLowerCase() + customerDetails.getMobile();
+
+        mName.setText(customerDetails.fullName());
+        mEmail.setText(customerDetails.getEmail());
+        mMobile.setText(customerDetails.getMobile());
+        mNote.setText(customerDetails.getNote());
 
         if (getPositionCode() == 1)
             delete.setVisibility(View.VISIBLE);
         else
             delete.setVisibility(View.GONE);
-
-        DocumentReference userDetails = db.collection("customerDetails").document("sorted")
-                .collection(customerID.substring(0, 1)).document(customerID);
-        userDetails.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                CustomerDetails customerDetails = documentSnapshot.toObject(CustomerDetails.class);
-                mName.setText(customerDetails.fullName());
-                mEmail.setText(customerDetails.getEmail());
-                mMobile.setText(customerDetails.getMobile());
-                mNote.setText(customerDetails.getNote());
-                setCustomerDetails(customerDetails);
-            }
-        });
 
         DocumentReference userAddress = db.collection("customerDetails").document("sorted")
                 .collection(customerID.substring(0, 1)).document(customerID)
@@ -106,16 +99,13 @@ public class CustomerDetail extends AppCompatActivity {
         defAdd = address;
     }
 
-    private void setCustomerDetails(CustomerDetails customerDetails) {
-        def = customerDetails;
-    }
 
     public void locate(View view) {
         Intent GpsPage = new Intent(CustomerDetail.this, GPS.class);
         GpsPage.putExtra("lan", defAdd.getLan());
         GpsPage.putExtra("lon", defAdd.getLon());
-        GpsPage.putExtra("name", def.fullName());
-        GpsPage.putExtra("mobile", def.getMobile());
+        GpsPage.putExtra("name", customerDetails.fullName());
+        GpsPage.putExtra("mobile", customerDetails.getMobile());
         GpsPage.putExtra("address", defAdd.formatedAddress());
         GpsPage.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(GpsPage);
@@ -267,7 +257,7 @@ public class CustomerDetail extends AppCompatActivity {
                                                 getAdminEmail();
 
                                                 String title = "Customer Deleted";
-                                                String body = def.fullName() + " is being deleted by " + getStaffDetailsStatic().fullName() + ".";
+                                                String body = customerDetails.fullName() + " is being deleted by " + getStaffDetailsStatic().fullName() + ".";
                                                 AppNotification sendAppNotification = new AppNotification();
                                                 requestQueue.add(sendAppNotification.sendNotification("customerDeleted", title, body));
 
@@ -326,15 +316,15 @@ public class CustomerDetail extends AppCompatActivity {
         Date dt = new Date();
         String message;
 
-        message = def.fullName() + " is being deleted by admin " + getStaffDetailsStatic().fullName() + " at " + formatter.format(dt) + ".\n\n"
+        message = customerDetails.fullName() + " is being deleted by admin " + getStaffDetailsStatic().fullName() + " at " + formatter.format(dt) + ".\n\n"
                 + "------Customer Details------\n"
-                + "Name: " + def.fullName() + "\n"
-                + "Mobile: " + def.getMobile() + "\n"
-                + "Email: " + def.getEmail() + "\n"
+                + "Name: " + customerDetails.fullName() + "\n"
+                + "Mobile: " + customerDetails.getMobile() + "\n"
+                + "Email: " + customerDetails.getEmail() + "\n"
                 + "Address: \n"
                 + defAdd.formatedAddress() + "\n"
                 + "Note: \n"
-                + def.getNote();
+                + customerDetails.getNote();
 
         JavaMailAPI javaMailAPI = new JavaMailAPI(this, email,
                 "Customer Deleted", message);

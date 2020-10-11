@@ -517,7 +517,7 @@ public class GenerateQRFragment extends Fragment {
     }
 
     public void generate() {
-        invoiceNum = mInvoiceNum.getText().toString().trim();
+        invoiceNum = mInvoiceNum.getText().toString().trim().toUpperCase();
         mobile = mMobile.getText().toString().trim();
         fName = mFName.getText().toString().trim();
         fModel = mFModel.getText().toString().trim();

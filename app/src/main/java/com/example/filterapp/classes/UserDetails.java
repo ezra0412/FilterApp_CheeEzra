@@ -1,11 +1,15 @@
 package com.example.filterapp.classes;
 
-public class UserDetails {
+public class UserDetails implements Comparable<UserDetails> {
     String fName;
     String lName;
     String mobile;
     String email;
     boolean deleted;
+
+    public UserDetails() {
+        this("", "", "", "", false);
+    }
 
     public UserDetails(String fName, String lName, String mobile, String email, boolean deleted) {
         this.fName = fName;
@@ -13,8 +17,9 @@ public class UserDetails {
         this.mobile = mobile;
         this.email = email;
         this.deleted = deleted;
-
     }
+
+
 
     public String getfName() {
         return fName;
@@ -61,4 +66,9 @@ public class UserDetails {
         return getfName() + " " + getlName();
     }
 
+
+    @Override
+    public int compareTo(UserDetails o) {
+        return this.getfName().compareTo(o.getfName());
+    }
 }
