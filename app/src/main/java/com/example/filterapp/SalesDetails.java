@@ -68,7 +68,7 @@ public class SalesDetails extends AppCompatActivity {
                 if (tempo.isDeleted())
                     mName.setTextColor(getColor(R.color.red));
                 else
-                    mName.setTextColor(getColor(R.color.light_green));
+                    mName.setTextColor(getColor(R.color.medium_green));
                 storeCustomerDetails(tempo);
             }
         });

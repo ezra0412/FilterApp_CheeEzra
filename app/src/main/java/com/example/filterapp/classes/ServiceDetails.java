@@ -1,6 +1,9 @@
 package com.example.filterapp.classes;
 
-public class ServiceDetails {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class ServiceDetails implements Parcelable {
     private String serviceID;
     private String technicianID;
     private String servicePrice;
@@ -41,6 +44,35 @@ public class ServiceDetails {
         this.changedWt_s = changedWt_s;
         this.changedFC_D = changedFC_D;
     }
+
+    protected ServiceDetails(Parcel in) {
+        serviceID = in.readString();
+        technicianID = in.readString();
+        servicePrice = in.readString();
+        serviceDate = in.readString();
+        serviceTime = in.readString();
+        note = in.readString();
+        changedFilter1 = in.readString();
+        changedFilter2 = in.readString();
+        changedFilter3 = in.readString();
+        changedFilter4 = in.readString();
+        changedFilter5 = in.readString();
+        changedWt = in.readString();
+        changedWt_s = in.readString();
+        changedFC_D = in.readString();
+    }
+
+    public static final Creator<ServiceDetails> CREATOR = new Creator<ServiceDetails>() {
+        @Override
+        public ServiceDetails createFromParcel(Parcel in) {
+            return new ServiceDetails(in);
+        }
+
+        @Override
+        public ServiceDetails[] newArray(int size) {
+            return new ServiceDetails[size];
+        }
+    };
 
     public String getServiceID() {
         return serviceID;
@@ -154,5 +186,28 @@ public class ServiceDetails {
 
     public void setChangedFC_D(String changedFC_D) {
         this.changedFC_D = changedFC_D;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(serviceID);
+        parcel.writeString(technicianID);
+        parcel.writeString(servicePrice);
+        parcel.writeString(serviceDate);
+        parcel.writeString(serviceTime);
+        parcel.writeString(note);
+        parcel.writeString(changedFilter1);
+        parcel.writeString(changedFilter2);
+        parcel.writeString(changedFilter3);
+        parcel.writeString(changedFilter4);
+        parcel.writeString(changedFilter5);
+        parcel.writeString(changedWt);
+        parcel.writeString(changedWt_s);
+        parcel.writeString(changedFC_D);
     }
 }

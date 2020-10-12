@@ -136,6 +136,7 @@ public class AccountDetails extends AppCompatActivity {
             }
         });
 
+
         DocumentReference userDetails = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid());
         userDetails.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
@@ -1294,4 +1295,6 @@ public class AccountDetails extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
+
+
 }

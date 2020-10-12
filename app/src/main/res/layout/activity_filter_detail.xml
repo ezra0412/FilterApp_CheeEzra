@@ -165,6 +165,7 @@
                                             android:fontFamily="@font/archivo_narrow"
                                             android:gravity="center"
                                             android:text="-"
+                                            android:textColor="@color/text_color"
                                             android:textSize="16sp"
                                             app:layout_constraintBottom_toBottomOf="parent"
                                             app:layout_constraintEnd_toEndOf="@+id/textView55"
@@ -178,6 +179,7 @@
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/archivo_narrow"
                                             android:text="No Record "
+                                            android:textColor="@color/text_color"
                                             android:textSize="16sp"
                                             app:layout_constraintBaseline_toBaselineOf="@+id/tv_part1_filterDetails"
                                             app:layout_constraintEnd_toEndOf="@+id/tv_f5LC_filterDetails"
@@ -201,6 +203,7 @@
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/archivo_narrow"
                                             android:text="No Record "
+                                            android:textColor="@color/text_color"
                                             android:textSize="16sp"
                                             app:layout_constraintBaseline_toBaselineOf="@+id/tv_part2_filterDetails"
                                             app:layout_constraintEnd_toEndOf="@+id/tv_part1LC_filterDetails" />
@@ -212,7 +215,7 @@
                                             android:layout_height="wrap_content"
                                             android:layout_marginStart="16dp"
                                             android:layout_marginTop="16dp"
-                                            android:text="Invoice Number :  "
+                                            android:text="Invoice Number :"
                                             app:layout_constraintBottom_toBottomOf="parent"
                                             app:layout_constraintEnd_toEndOf="parent"
                                             app:layout_constraintHorizontal_bias="0.0"
@@ -226,6 +229,7 @@
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/archivo_narrow"
                                             android:text="No Record "
+                                            android:textColor="@color/text_color"
                                             android:textSize="16sp"
                                             app:layout_constraintBaseline_toBaselineOf="@+id/tv_f3_filterDetails"
                                             app:layout_constraintEnd_toEndOf="@+id/tv_f2LC_filterDetails" />
@@ -236,6 +240,7 @@
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/archivo_narrow"
                                             android:text="No Record "
+                                            android:textColor="@color/text_color"
                                             android:textSize="16sp"
                                             app:layout_constraintBaseline_toBaselineOf="@+id/tv_f5_filterDetails"
                                             app:layout_constraintEnd_toEndOf="@+id/tv_f4LC_filterDetails" />
@@ -251,7 +256,8 @@
                                             app:layout_constraintBaseline_toBaselineOf="@+id/tv_f1_filterDetails"
                                             app:layout_constraintEnd_toEndOf="parent"
                                             app:layout_constraintHorizontal_bias="1.0"
-                                            app:layout_constraintStart_toStartOf="parent" />
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            android:textColor="@color/text_color" />
 
                                         <TextView
                                             android:id="@+id/tv_part2_filterDetails"
@@ -278,6 +284,7 @@
                                             android:fontFamily="@font/archivo_narrow"
                                             android:gravity="center"
                                             android:text="-"
+                                            android:textColor="@color/text_color"
                                             android:textSize="16sp"
                                             app:layout_constraintBottom_toBottomOf="parent"
                                             app:layout_constraintEnd_toEndOf="@+id/tv_part2_filterDetails"
@@ -293,6 +300,7 @@
                                             android:fontFamily="@font/archivo_narrow"
                                             android:gravity="center"
                                             android:text="-"
+                                            android:textColor="@color/text_color"
                                             android:textSize="16sp"
                                             app:layout_constraintBottom_toTopOf="@+id/tv_note_filterDetails"
                                             app:layout_constraintEnd_toEndOf="@+id/tv_f2_filterDetails"
@@ -305,7 +313,7 @@
                                             style="@style/lable"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:layout_marginTop="16dp"
+                                            android:layout_marginTop="24dp"
                                             android:text="Note : "
                                             app:layout_constraintBottom_toBottomOf="parent"
                                             app:layout_constraintEnd_toEndOf="parent"
@@ -320,6 +328,7 @@
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/archivo_narrow"
                                             android:text="No Record "
+                                            android:textColor="@color/text_color"
                                             android:textSize="16sp"
                                             app:layout_constraintBaseline_toBaselineOf="@+id/tv_f2_filterDetails"
                                             app:layout_constraintEnd_toEndOf="@+id/tv_f1LC_filterDetails" />
@@ -332,6 +341,7 @@
                                             android:fontFamily="@font/archivo_narrow"
                                             android:gravity="center"
                                             android:text="-"
+                                            android:textColor="@color/text_color"
                                             android:textSize="16sp"
                                             app:layout_constraintBottom_toTopOf="@+id/tv_note_filterDetails"
                                             app:layout_constraintEnd_toEndOf="@+id/tv_f3_filterDetails"
@@ -361,6 +371,7 @@
                                             android:fontFamily="@font/archivo_narrow"
                                             android:gravity="center"
                                             android:text="-"
+                                            android:textColor="@color/text_color"
                                             android:textSize="16sp"
                                             app:layout_constraintBottom_toTopOf="@+id/tv_note_filterDetails"
                                             app:layout_constraintEnd_toEndOf="@+id/tv_f1_filterDetails"
@@ -374,6 +385,7 @@
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/archivo_narrow"
                                             android:text="No Record "
+                                            android:textColor="@color/text_color"
                                             android:textSize="16sp"
                                             app:layout_constraintBaseline_toBaselineOf="@+id/tv_part3_filterDetails"
                                             app:layout_constraintEnd_toEndOf="@+id/tv_part2LC_filterDetails" />
@@ -389,6 +401,7 @@
                                             android:gravity="center"
                                             android:text="No note provided"
                                             android:textAlignment="viewStart"
+                                            android:textColor="@color/text_color"
                                             android:textSize="16sp"
                                             app:layout_constraintBottom_toBottomOf="parent"
                                             app:layout_constraintEnd_toEndOf="parent"
@@ -416,6 +429,7 @@
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/archivo_narrow"
                                             android:text="No Record "
+                                            android:textColor="@color/text_color"
                                             android:textSize="16sp"
                                             app:layout_constraintBaseline_toBaselineOf="@+id/tv_f4_filterDetails"
                                             app:layout_constraintEnd_toEndOf="@+id/tv_f3LC_filterDetails" />
@@ -434,7 +448,8 @@
                                             app:layout_constraintHorizontal_bias="0.0"
                                             app:layout_constraintStart_toStartOf="@+id/tv_part2_filterDetails"
                                             app:layout_constraintTop_toBottomOf="@+id/tv_part2_filterDetails"
-                                            app:layout_constraintVertical_bias="0.0" />
+                                            app:layout_constraintVertical_bias="0.0"
+                                            android:textColor="@color/text_color" />
 
                                         <TextView
                                             android:id="@+id/tv_f5_filterDetails"
@@ -444,6 +459,7 @@
                                             android:fontFamily="@font/archivo_narrow"
                                             android:gravity="center"
                                             android:text="-"
+                                            android:textColor="@color/text_color"
                                             android:textSize="16sp"
                                             app:layout_constraintBottom_toTopOf="@+id/tv_note_filterDetails"
                                             app:layout_constraintEnd_toEndOf="@+id/tv_f4_filterDetails"
@@ -500,6 +516,7 @@
                                             android:layout_width="0dp"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/archivo_narrow"
+                                            android:textColor="@color/text_color"
                                             android:textSize="16sp"
                                             app:layout_constraintBaseline_toBaselineOf="@+id/wrongName2"
                                             app:layout_constraintEnd_toEndOf="@+id/tv_name_filterDetails"
@@ -521,7 +538,6 @@
                                             style="@style/lable"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:layout_marginEnd="1dp"
                                             android:fontFamily="@font/archivo_narrow"
                                             android:text=":"
                                             app:layout_constraintBaseline_toBaselineOf="@+id/wrongname3"
@@ -542,6 +558,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:text="WT"
+                                            android:textColor="@color/text_color"
                                             app:layout_constraintBaseline_toBaselineOf="@+id/tv_part1_filterDetails"
                                             app:layout_constraintEnd_toEndOf="@+id/textView181"
                                             app:layout_constraintStart_toStartOf="@+id/textView181" />
@@ -552,6 +569,7 @@
                                             android:layout_height="wrap_content"
                                             android:layout_marginStart="6dp"
                                             android:text="WT-S"
+                                            android:textColor="@color/text_color"
                                             app:layout_constraintBaseline_toBaselineOf="@+id/tv_part2_filterDetails"
                                             app:layout_constraintStart_toStartOf="@+id/textView67" />
 
@@ -562,7 +580,8 @@
                                             android:text="FCD"
                                             app:layout_constraintBaseline_toBaselineOf="@+id/tv_part3_filterDetails"
                                             app:layout_constraintEnd_toEndOf="@+id/textView181"
-                                            app:layout_constraintStart_toStartOf="@+id/textView181" />
+                                            app:layout_constraintStart_toStartOf="@+id/textView181"
+                                            android:textColor="@color/text_color" />
 
                                     </androidx.constraintlayout.widget.ConstraintLayout>
                                 </androidx.cardview.widget.CardView>

@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SalesDetails"></activity>
+        <activity android:name=".ServiceDetail"></activity>
+        <activity android:name=".SalesDetails" />
         <activity android:name=".PurchaseHistory" />
         <activity android:name=".FilterList" />
         <activity android:name=".serviceHistoryList" />

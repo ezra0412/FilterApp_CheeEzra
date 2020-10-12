@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ServiceDetail">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar27"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/yellow"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView38"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:onClick="back"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar27"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/toolbar27"
+        app:srcCompat="@drawable/back_button" />
+
+    <TextView
+        android:id="@+id/textView198"
+        style="@style/top_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Service History"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar27"
+        app:layout_constraintEnd_toEndOf="@+id/toolbar27"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar27">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="24dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/img_filterImage_serviceDetails"
+                    app:layout_constraintVertical_bias="0.0">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="8dp"
+                            app:cardBackgroundColor="@color/light_green"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="4dp"
+                                    android:layout_marginTop="4dp"
+                                    android:layout_marginEnd="4dp"
+                                    android:layout_marginBottom="4dp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                    <androidx.constraintlayout.widget.ConstraintLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content">
+
+                                        <TextView
+                                            android:id="@+id/wrongNameServicedetails"
+                                            style="@style/lable"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="16dp"
+                                            android:layout_marginTop="16dp"
+                                            android:text="Owner Name  "
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintHorizontal_bias="0.0"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toBottomOf="@+id/tv_invNum_serviceDetails"
+                                            app:layout_constraintVertical_bias="0.0" />
+
+                                        <TextView
+                                            android:id="@+id/tv_name_serviceDetails"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/archivo_narrow"
+                                            android:onClick="customerDetails"
+                                            android:textColor="@color/medium_green"
+                                            android:textSize="16sp"
+                                            android:textStyle="bold"
+                                            app:layout_constraintBaseline_toBaselineOf="@+id/wrongNameServicedetails"
+                                            app:layout_constraintEnd_toEndOf="@+id/tv_invNum_serviceDetails"
+                                            app:layout_constraintStart_toStartOf="@+id/tv_invNum_serviceDetails" />
+
+                                        <TextView
+                                            android:id="@+id/textView208"
+                                            style="@style/lable"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="16dp"
+                                            android:layout_marginTop="16dp"
+                                            android:text="Invoice Number :  "
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintHorizontal_bias="0.0"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toTopOf="parent"
+                                            app:layout_constraintVertical_bias="0.0" />
+
+                                        <TextView
+                                            android:id="@+id/tv_invNum_serviceDetails"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="16dp"
+                                            android:layout_marginEnd="16dp"
+                                            android:fontFamily="@font/archivo_narrow"
+                                            android:onClick="openFilterDetails"
+                                            android:textColor="@color/medium_green"
+                                            android:textSize="16sp"
+                                            android:textStyle="bold"
+                                            app:layout_constraintBaseline_toBaselineOf="@+id/textView208"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintStart_toEndOf="@+id/textView208" />
+
+                                        <TextView
+                                            android:id="@+id/textView210"
+                                            style="@style/lable"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="16dp"
+                                            android:text="Date : "
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintStart_toStartOf="@+id/wrongNameServicedetails"
+                                            app:layout_constraintTop_toBottomOf="@+id/tv_name_serviceDetails"
+                                            app:layout_constraintVertical_bias="0.0" />
+
+                                        <TextView
+                                            android:id="@+id/tv_date_serviceDetails"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="16dp"
+                                            android:fontFamily="@font/archivo_narrow"
+                                            android:textColor="@color/text_color"
+                                            android:textSize="16sp"
+                                            app:layout_constraintBaseline_toBaselineOf="@+id/textView210"
+                                            app:layout_constraintStart_toEndOf="@+id/textView210" />
+
+                                        <TextView
+                                            android:id="@+id/textView212"
+                                            style="@style/lable"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="16dp"
+                                            android:text="Time : "
+                                            app:layout_constraintBaseline_toBaselineOf="@+id/tv_date_serviceDetails"
+                                            app:layout_constraintStart_toEndOf="@+id/tv_date_serviceDetails" />
+
+                                        <TextView
+                                            android:id="@+id/tv_time_serviceDetails"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="16dp"
+                                            android:layout_marginEnd="16dp"
+                                            android:fontFamily="@font/archivo_narrow"
+                                            android:textColor="@color/text_color"
+                                            android:textSize="16sp"
+                                            app:layout_constraintBaseline_toBaselineOf="@+id/textView212"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintStart_toEndOf="@+id/textView212" />
+
+                                        <TextView
+                                            android:id="@+id/textView214"
+                                            style="@style/lable"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="32dp"
+                                            android:layout_marginTop="24dp"
+                                            android:text="Filter "
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="@+id/textView215"
+                                            app:layout_constraintHorizontal_bias="0.0"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toBottomOf="@+id/textView210"
+                                            app:layout_constraintVertical_bias="0.0" />
+
+                                        <TextView
+                                            android:id="@+id/textView215"
+                                            style="@style/lable"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="24dp"
+                                            android:layout_marginEnd="32dp"
+                                            android:text="Spare Part  "
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintTop_toBottomOf="@+id/tv_time_serviceDetails" />
+
+                                        <TextView
+                                            android:id="@+id/tv_f2_serviceDetails"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="16dp"
+                                            android:fontFamily="@font/archivo_narrow"
+                                            android:text="-"
+                                            android:textColor="@color/text_color"
+                                            android:textSize="16sp"
+                                            app:layout_constraintEnd_toEndOf="@+id/tv_f1_serviceDetails"
+                                            app:layout_constraintStart_toStartOf="@+id/tv_f1_serviceDetails"
+                                            app:layout_constraintTop_toBottomOf="@+id/tv_f1_serviceDetails" />
+
+                                        <TextView
+                                            android:id="@+id/tv_f5_serviceDetails"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="16dp"
+                                            android:fontFamily="@font/archivo_narrow"
+                                            android:text="-"
+                                            android:textColor="@color/text_color"
+                                            android:textSize="16sp"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="@+id/tv_f4_serviceDetails"
+                                            app:layout_constraintStart_toStartOf="@+id/tv_f4_serviceDetails"
+                                            app:layout_constraintTop_toBottomOf="@+id/tv_f4_serviceDetails"
+                                            app:layout_constraintVertical_bias="0.0" />
+
+                                        <TextView
+                                            android:id="@+id/tv_f3_serviceDetails"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="16dp"
+                                            android:fontFamily="@font/archivo_narrow"
+                                            android:text="-"
+                                            android:textColor="@color/text_color"
+                                            android:textSize="16sp"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="@+id/tv_f2_serviceDetails"
+                                            app:layout_constraintStart_toStartOf="@+id/tv_f2_serviceDetails"
+                                            app:layout_constraintTop_toBottomOf="@+id/tv_f2_serviceDetails"
+                                            app:layout_constraintVertical_bias="0.0" />
+
+                                        <TextView
+                                            android:id="@+id/tv_f4_serviceDetails"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="16dp"
+                                            android:fontFamily="@font/archivo_narrow"
+                                            android:text="-"
+                                            android:textColor="@color/text_color"
+                                            android:textSize="16sp"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="@+id/tv_f3_serviceDetails"
+                                            app:layout_constraintStart_toStartOf="@+id/tv_f3_serviceDetails"
+                                            app:layout_constraintTop_toBottomOf="@+id/tv_f3_serviceDetails"
+                                            app:layout_constraintVertical_bias="0.0" />
+
+                                        <TextView
+                                            android:id="@+id/tv_f1_serviceDetails"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="16dp"
+                                            android:fontFamily="@font/archivo_narrow"
+                                            android:text="-"
+                                            android:textColor="@color/text_color"
+                                            android:textSize="16sp"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="@+id/textView214"
+                                            app:layout_constraintStart_toStartOf="@+id/textView214"
+                                            app:layout_constraintTop_toBottomOf="@+id/textView214"
+                                            app:layout_constraintVertical_bias="0.0" />
+
+                                        <TextView
+                                            android:id="@+id/textView228"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="16dp"
+                                            android:fontFamily="@font/archivo_narrow"
+                                            android:text="WT"
+                                            android:textColor="@color/text_color"
+                                            android:textSize="16dp"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="@+id/textView229"
+                                            app:layout_constraintStart_toStartOf="@+id/textView229"
+                                            app:layout_constraintTop_toBottomOf="@+id/textView215"
+                                            app:layout_constraintVertical_bias="0.0" />
+
+                                        <TextView
+                                            android:id="@+id/textView229"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="6dp"
+                                            android:layout_marginTop="16dp"
+                                            android:fontFamily="@font/archivo_narrow"
+                                            android:text="WT-S"
+                                            android:textColor="@color/text_color"
+                                            android:textSize="16dp"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintStart_toStartOf="@+id/textView215"
+                                            app:layout_constraintTop_toBottomOf="@+id/textView228"
+                                            app:layout_constraintVertical_bias="0.0" />
+
+                                        <TextView
+                                            android:id="@+id/textView230"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="16dp"
+                                            android:fontFamily="@font/archivo_narrow"
+                                            android:text="FCD"
+                                            android:textColor="@color/text_color"
+                                            android:textSize="16dp"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="@+id/textView229"
+                                            app:layout_constraintStart_toStartOf="@+id/textView229"
+                                            app:layout_constraintTop_toBottomOf="@+id/textView229"
+                                            app:layout_constraintVertical_bias="0.0" />
+
+                                        <TextView
+                                            android:id="@+id/tv_wts_serviceDetails"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="4dp"
+                                            android:layout_marginEnd="6dp"
+                                            android:fontFamily="@font/archivo_narrow"
+                                            android:text="-"
+                                            android:textAlignment="center"
+                                            android:textColor="@color/text_color"
+                                            android:textSize="16dp"
+                                            app:layout_constraintBaseline_toBaselineOf="@+id/textView229"
+                                            app:layout_constraintEnd_toEndOf="@+id/textView215"
+                                            app:layout_constraintStart_toEndOf="@+id/textView229" />
+
+                                        <TextView
+                                            android:id="@+id/tv_wt_serviceDetails"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/archivo_narrow"
+                                            android:text="-"
+                                            android:textAlignment="center"
+                                            android:textColor="@color/text_color"
+                                            android:textSize="16dp"
+                                            app:layout_constraintBaseline_toBaselineOf="@+id/textView228"
+                                            app:layout_constraintEnd_toEndOf="@+id/tv_wts_serviceDetails"
+                                            app:layout_constraintStart_toStartOf="@+id/tv_wts_serviceDetails" />
+
+                                        <TextView
+                                            android:id="@+id/tv_fcd_serviceDetails"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/archivo_narrow"
+                                            android:text="-"
+                                            android:textAlignment="center"
+                                            android:textColor="@color/text_color"
+                                            android:textSize="16sp"
+                                            app:layout_constraintBaseline_toBaselineOf="@+id/textView230"
+                                            app:layout_constraintEnd_toEndOf="@+id/tv_wts_serviceDetails"
+                                            app:layout_constraintStart_toStartOf="@+id/tv_wts_serviceDetails" />
+
+                                        <TextView
+                                            android:id="@+id/textView234"
+                                            style="@style/lable"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginEnd="2dp"
+                                            android:text=":"
+                                            app:layout_constraintBaseline_toBaselineOf="@+id/wrongNameServicedetails"
+                                            app:layout_constraintEnd_toEndOf="@+id/textView208" />
+
+                                        <TextView
+                                            android:id="@+id/textView237"
+                                            style="@style/lable"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="24dp"
+                                            android:text="Note : "
+                                            app:layout_constraintStart_toStartOf="@+id/textView210"
+                                            app:layout_constraintTop_toBottomOf="@+id/tv_f5_serviceDetails" />
+
+                                        <TextView
+                                            android:id="@+id/tv_note_serviceDetails"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="16dp"
+                                            android:layout_marginEnd="16dp"
+                                            android:layout_marginBottom="24dp"
+                                            android:fontFamily="@font/archivo_narrow"
+                                            android:textColor="@color/text_color"
+                                            android:textSize="16sp"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintStart_toStartOf="@+id/textView237"
+                                            app:layout_constraintTop_toBottomOf="@+id/textView237"
+                                            app:layout_constraintVertical_bias="0.0" />
+                                    </androidx.constraintlayout.widget.ConstraintLayout>
+                                </androidx.cardview.widget.CardView>
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </androidx.cardview.widget.CardView>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/img_filterImage_serviceDetails"
+                    android:layout_width="339dp"
+                    android:layout_height="342dp"
+                    android:layout_marginTop="24dp"
+                    android:src="@drawable/white_image"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/cardView5"
+                    app:layout_constraintStart_toStartOf="@+id/cardView5"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:riv_border_color="@color/medium_green"
+                    app:riv_border_width="3dp"
+                    app:riv_corner_radius="4dp" />
+
+                <TextView
+                    android:id="@+id/tv_error_serviceDetails"
+                    style="@style/lable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@+id/img_filterImage_serviceDetails"
+                    app:layout_constraintEnd_toEndOf="@+id/img_filterImage_serviceDetails"
+                    app:layout_constraintStart_toStartOf="@+id/img_filterImage_serviceDetails"
+                    app:layout_constraintTop_toTopOf="@+id/img_filterImage_serviceDetails" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -186,6 +186,13 @@ public class HistoryList extends AppCompatActivity implements BtAdapterDouble.Bt
             intent.putExtra("filterDetails", filterDetailsList.get(position));
             intent.putExtra("filterID", filterIDList.get(position));
             startActivity(intent);
+        } else {
+            Intent intent = new Intent(HistoryList.this, ServiceDetail.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("commission", commissionList.get(position));
+            intent.putExtra("serviceDetails", serviceDetailsList.get(position));
+            intent.putExtra("filterID", filterIDList.get(position));
+            startActivity(intent);
         }
     }
 
