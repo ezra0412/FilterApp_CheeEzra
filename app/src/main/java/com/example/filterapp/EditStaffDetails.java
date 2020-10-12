@@ -2,10 +2,12 @@ package com.example.filterapp;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -19,7 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.RequestQueue;
@@ -33,9 +35,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -77,7 +77,7 @@ public class EditStaffDetails extends AppCompatActivity {
         branchDialog = new Dialog(this);
         positionDialog = new Dialog(this);
         adminDialog = new Dialog(this);
-
+        staffDetailsThis = getIntent().getParcelableExtra("staffDetails");
         requestQueue = Volley.newRequestQueue(this);
         requestQueue2 = Volley.newRequestQueue(this);
         requestQueue3 = Volley.newRequestQueue(this);
@@ -101,29 +101,17 @@ public class EditStaffDetails extends AppCompatActivity {
         };
 
         staffID = getIntent().getStringExtra("staffID");
-        final DocumentReference setStuffDetails = db.collection("staffDetails").document(staffID);
-        setStuffDetails.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                StaffDetails staffDetails = value.toObject(StaffDetails.class);
-                mFName.setText("  " + staffDetails.getfName());
-                mLName.setText("  " + staffDetails.getlName());
-                mEmail.setText("  " + staffDetails.getEmail());
-                mBranch.setText("  Branch " + staffDetails.getBranch());
-                mPosition.setText("  " + staffDetails.getPosition());
-                mMobile.setText("  " + staffDetails.getMobile());
-                mMobile.addTextChangedListener(textWatcher);
-                storeStaffDetails(staffDetails);
 
-            }
-        });
-
+        mFName.setText("  " + staffDetailsThis.getfName());
+        mLName.setText("  " + staffDetailsThis.getlName());
+        mEmail.setText("  " + staffDetailsThis.getEmail());
+        mBranch.setText("  Branch " + staffDetailsThis.getBranch());
+        mPosition.setText("  " + staffDetailsThis.getPosition());
+        mMobile.setText("  " + staffDetailsThis.getMobile());
+        mMobile.addTextChangedListener(textWatcher);
 
     }
 
-    private void storeStaffDetails(StaffDetails staffDetails) {
-        this.staffDetailsThis = staffDetails;
-    }
 
     public void branchPopUp(View view) {
         ImageView close;
@@ -351,27 +339,29 @@ public class EditStaffDetails extends AppCompatActivity {
         String branch = mBranch.getText().toString().trim();
         final String position = mPosition.getText().toString().trim();
 
-        if (mobile.isEmpty()) {
-            mMobile.setError("Mobile cannot be empty");
-            mMobile.requestFocus();
-        }
-
-        if (!Patterns.PHONE.matcher(mobile).matches()) {
-            mMobile.setError("Invalid mobile format");
-            mMobile.requestFocus();
-        }
-
-        if (branch.equalsIgnoreCase("Branch LG"))
-            branch = "LG";
-
-        else if (branch.equalsIgnoreCase("Branch PB"))
-            branch = "PB";
-
-        else
-            branch = "PT";
 
         Map<String, Object> updatedStaffDetails = new HashMap<>();
         if (branchChanged || positionChanged || mobileChanged) {
+
+            if (mobile.isEmpty()) {
+                mMobile.setError("Mobile cannot be empty");
+                mMobile.requestFocus();
+            }
+
+            if (!Patterns.PHONE.matcher(mobile).matches()) {
+                mMobile.setError("Invalid mobile format");
+                mMobile.requestFocus();
+            }
+
+            if (branch.equalsIgnoreCase("Branch LG"))
+                branch = "LG";
+
+            else if (branch.equalsIgnoreCase("Branch PB"))
+                branch = "PB";
+
+            else
+                branch = "PT";
+
             if (mobileChanged) {
                 mobileChangeUser(staffDetailsThis.getEmail(), mMobile.getText().toString().trim());
 
@@ -564,6 +554,12 @@ public class EditStaffDetails extends AppCompatActivity {
                     mobileChanged = false;
                     branchChanged = false;
                     positionChanged = false;
+                    Intent intent = new Intent(EditStaffDetails.this, StaffDetail.class);
+                    intent.putExtra("staffDetails", staffDetailsThis);
+                    intent.putExtra("staffID", staffID);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -586,7 +582,53 @@ public class EditStaffDetails extends AppCompatActivity {
     }
 
     public void back(View view) {
-        super.onBackPressed();
+        if (branchChanged || positionChanged || mobileChanged) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            final AlertDialog dialog = builder.setMessage("Are you sure you wanna go back? All changed won't be saved")
+                    .setTitle(Html.fromHtml("<font color='#ff0f0f'>BACK CONFIRMATION</font>"))
+                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Intent intent = new Intent(EditStaffDetails.this, StaffDetail.class);
+                            intent.putExtra("staffDetails", staffDetailsThis);
+                            intent.putExtra("staffID", staffID);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                        }
+                    })
+
+                    .create();
+
+
+            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface dialogInterface) {
+
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.red));
+                    dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.cancel_grey));
+
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+                    dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setAllCaps(false);
+
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextSize(17);
+                    dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextSize(17);
+
+                }
+            });
+
+            dialog.show();
+        } else {
+            Intent intent = new Intent(EditStaffDetails.this, StaffDetail.class);
+            intent.putExtra("staffDetails", staffDetailsThis);
+            intent.putExtra("staffID", staffID);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }
     }
 
     public void positionChange(String email, String oldPosition, String newPosition) {
