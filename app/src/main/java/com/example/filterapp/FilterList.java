@@ -78,6 +78,8 @@ public class FilterList extends AppCompatActivity implements BtAdapterDouble.BtD
 
     public void storeAdapter() {
         Collections.reverse(btLongDoubleItemList);
+        Collections.reverse(filterDetailsList);
+        Collections.reverse(filterIDList);
         adapter = new BtAdapterDouble(btLongDoubleItemList, this);
         recyclerView.setAdapter(adapter);
     }

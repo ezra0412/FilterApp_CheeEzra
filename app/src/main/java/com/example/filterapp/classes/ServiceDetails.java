@@ -23,7 +23,7 @@ public class ServiceDetails implements Parcelable {
     public ServiceDetails() {
         this("", "", "", "", "", "",
                 "-", "-", "-", "-", "-",
-                "-", "-", "-");
+                "0", "0", "0");
     }
 
     public ServiceDetails(String serviceID, String technicianID, String servicePrice, String serviceDate, String serviceTime,

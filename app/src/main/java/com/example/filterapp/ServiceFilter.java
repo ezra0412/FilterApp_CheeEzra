@@ -647,6 +647,7 @@ public class ServiceFilter extends AppCompatActivity {
             note = "No note provided";
         }
 
+
         serviceDetails.setServiceID(createID());
         serviceDetails.setTechnicianID(mAuth.getCurrentUser().getUid());
         serviceDetails.setServicePrice(String.format("%.02f", (Double.parseDouble(servicePrice))));
@@ -704,6 +705,7 @@ public class ServiceFilter extends AppCompatActivity {
             serviceDetailsMap.put("fc_D", mFCD.getText().toString().trim());
             serviceDetailsMap.put("fc_DLC", date);
         }
+
 
         final StorageReference imageReference = storageReference.child("filterPictures/" + documentID + "/" + serviceDetails.getServiceID() + "/filterPictures.jpg");
         imageReference.putFile(getImageUri(this, bitmap));

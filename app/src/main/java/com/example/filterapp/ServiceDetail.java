@@ -66,7 +66,6 @@ public class ServiceDetail extends AppCompatActivity {
         mNote = findViewById(R.id.tv_note_serviceDetails);
 
         serviceDetails = getIntent().getParcelableExtra("serviceDetails");
-        filterDetails = getIntent().getParcelableExtra("filterDetails");
         filterID = getIntent().getStringExtra("filterID");
         setImage(serviceDetails.getServiceID());
 

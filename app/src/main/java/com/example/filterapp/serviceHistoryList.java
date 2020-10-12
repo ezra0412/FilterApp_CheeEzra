@@ -1,5 +1,6 @@
 package com.example.filterapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.filterapp.adapter.BtAdapterDouble;
 import com.example.filterapp.classes.BtLongDoubleItem;
+import com.example.filterapp.classes.ServiceDetails;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -34,8 +36,8 @@ public class serviceHistoryList extends AppCompatActivity implements BtAdapterDo
     List<BtLongDoubleItem> btLongDoubleItemList = new LinkedList<>();
     RecyclerView.Adapter adapter;
     BtLongDoubleItem btLongDoubleItem;
-    List<String> filterIDList = new LinkedList<>();
-
+    List<ServiceDetails> serviceDetailsList = new LinkedList<>();
+    int collectionSize;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +62,7 @@ public class serviceHistoryList extends AppCompatActivity implements BtAdapterDo
                     } else {
                         recyclerView.setVisibility(View.VISIBLE);
                         for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                            searchDetails(documentSnapshot.getString("technicianID"), documentSnapshot.getString("serviceDate"), documentSnapshot.getId());
+                            searchDetails(documentSnapshot.toObject(ServiceDetails.class), collectionReference.size());
                         }
                     }
                 }
@@ -69,23 +71,27 @@ public class serviceHistoryList extends AppCompatActivity implements BtAdapterDo
 
     }
 
-    public void searchDetails(final String staffID, final String date, final String id) {
-
-        DocumentReference staffDetails = db.collection("staffDetails").document(staffID);
+    public void searchDetails(final ServiceDetails tempo, int size) {
+        collectionSize = size;
+        serviceDetailsList.add(tempo);
+        DocumentReference staffDetails = db.collection("staffDetails").document(tempo.getTechnicianID());
         staffDetails.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                storeObject(date, documentSnapshot.getString("fName") + " " + documentSnapshot.getString("lName"), id);
+                storeObject(tempo.getServiceDate(), documentSnapshot.getString("fName") + " " + documentSnapshot.getString("lName"));
             }
         });
     }
 
-    public void storeObject(String date, String name, String id) {
+    public void storeObject(String date, String name) {
         btLongDoubleItem = new BtLongDoubleItem(date, name);
         btLongDoubleItemList.add(btLongDoubleItem);
-        filterIDList.add(id);
-        Collections.reverse(btLongDoubleItemList);
-        storeAdapter();
+
+        if (btLongDoubleItemList.size() == collectionSize) {
+            Collections.reverse(btLongDoubleItemList);
+            Collections.reverse(serviceDetailsList);
+            storeAdapter();
+        }
     }
 
     public void storeAdapter() {
@@ -97,6 +103,10 @@ public class serviceHistoryList extends AppCompatActivity implements BtAdapterDo
 
     @Override
     public void btDoubleListener(int position) {
-
+        Intent intent = new Intent(serviceHistoryList.this, ServiceDetail.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("serviceDetails", serviceDetailsList.get(position));
+        intent.putExtra("filterID", filterID);
+        startActivity(intent);
     }
 }

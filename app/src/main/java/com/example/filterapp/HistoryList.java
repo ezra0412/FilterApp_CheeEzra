@@ -161,16 +161,17 @@ public class HistoryList extends AppCompatActivity implements BtAdapterDouble.Bt
         }
 
         if (btLongDoubleItemList.size() == collectionCounter) {
+            Collections.reverse(btLongDoubleItemList);
+            Collections.reverse(filterDetailsList);
+            Collections.reverse(commissionList);
+            Collections.reverse(serviceDetailsList);
+            Collections.reverse(filterIDList);
             storeAdapter();
         }
     }
 
     public void storeAdapter() {
-        Collections.reverse(btLongDoubleItemList);
-        Collections.reverse(filterDetailsList);
-        Collections.reverse(commissionList);
-        Collections.reverse(serviceDetailsList);
-        Collections.reverse(filterIDList);
+
         adapter = new BtAdapterDouble(btLongDoubleItemList, this);
         recyclerView.setAdapter(adapter);
     }
@@ -189,7 +190,6 @@ public class HistoryList extends AppCompatActivity implements BtAdapterDouble.Bt
         } else {
             Intent intent = new Intent(HistoryList.this, ServiceDetail.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.putExtra("commission", commissionList.get(position));
             intent.putExtra("serviceDetails", serviceDetailsList.get(position));
             intent.putExtra("filterID", filterIDList.get(position));
             startActivity(intent);
