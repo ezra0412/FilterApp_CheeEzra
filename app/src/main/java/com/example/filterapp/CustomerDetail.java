@@ -55,6 +55,7 @@ public class CustomerDetail extends AppCompatActivity {
     CustomerDetails customerDetails = new CustomerDetails();
     Address defAdd = new Address();
     RequestQueue requestQueue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +77,14 @@ public class CustomerDetail extends AppCompatActivity {
         mEmail.setText(customerDetails.getEmail());
         mMobile.setText(customerDetails.getMobile());
         mNote.setText(customerDetails.getNote());
+
+        if (customerDetails.isDeleted()) {
+            delete.setText("Restore");
+            mName.setTextColor(getColor(R.color.red));
+        } else {
+            delete.setText("Delete");
+            mName.setTextColor(getColor(R.color.light_green));
+        }
 
         if (getPositionCode() == 1)
             delete.setVisibility(View.VISIBLE);
@@ -123,124 +132,73 @@ public class CustomerDetail extends AppCompatActivity {
     }
 
     public void delete(View view) {
-        ProgressBar progressBar;
-        Sprite style = new Wave();
-        loadingDialog.setContentView(R.layout.pop_up_loading_screen);
-        loadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        progressBar = loadingDialog.findViewById(R.id.sk_loadingPU);
-        progressBar.setIndeterminateDrawable(style);
-        loadingDialog.setCanceledOnTouchOutside(false);
+        if (customerDetails.isDeleted()) {
+           AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            final AlertDialog dialog = builder.setMessage("Are you sure you wanna restore this customer")
+                    .setTitle(Html.fromHtml("<font color='#1D8A43'>RESTORATION CONFIRMATION</font>"))
+                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            DocumentReference restoreUser = db.collection("customerDetails").document("sorted")
+                                    .collection(customerID.substring(0, 1)).document(customerID);
+                            restoreUser.update("deleted",false);
+                            delete.setText("Delete");
+                            mName.setTextColor(getColor(R.color.light_green));
+                            Toast.makeText(CustomerDetail.this,"Customer Restored",Toast.LENGTH_SHORT).show();
+                            customerDetails.setDeleted(false);
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Toast.makeText(CustomerDetail.this, "Customer Restore Canceled", Toast.LENGTH_SHORT).show();
+                        }
+                    })
 
-        if (isVerfiedAdmin()) {
-            DocumentReference userAddress = db.collection("customerDetails").document("sorted")
-                    .collection(customerID.substring(0, 1)).document(customerID)
-                    .collection("address").document("address");
-            userAddress.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialogInterface) {
+                            Toast.makeText(CustomerDetail.this, "Customer Restore Canceled", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .create();
+
+
+            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
                 @Override
-                public void onSuccess(Void aVoid) {
-                    DocumentReference userDetails = db.collection("customerDetails").document("sorted")
-                            .collection(customerID.substring(0, 1)).document(customerID);
-                    userDetails.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            loadingDialog.dismiss();
-                            CollectionReference adminEmails = db.collection("adminDetails").document("adminList").collection("notificationPreference");
-                            adminEmails.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                @Override
-                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                    for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                                        if (documentSnapshot.getBoolean("positionChangeEmail")) {
-                                            deleteCustomerEmail(documentSnapshot.getString("email"));
-                                        }
-                                    }
-                                }
-                            });
-                            Toast.makeText(CustomerDetail.this, "Customer details deleted", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(CustomerDetail.this, CustomerList.class);
-                            intent.putExtra("chosenOption", customerID.substring(0, 1));
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intent);
-                            finish();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            loadingDialog.dismiss();
-                            Toast.makeText(CustomerDetail.this, "Fail to delete customer details", Toast.LENGTH_LONG).show();
-                        }
-                    });
+                public void onShow(DialogInterface dialogInterface) {
+
+                    dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.light_green));
+                    dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.cancel_grey));
+
+                    dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+                    dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setAllCaps(false);
+
+                    dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextSize(17);
+                    dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextSize(17);
 
                 }
             });
+
+            dialog.show();
         } else {
+            ProgressBar progressBar;
+            Sprite style = new Wave();
+            loadingDialog.setContentView(R.layout.pop_up_loading_screen);
+            loadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            progressBar = loadingDialog.findViewById(R.id.sk_loadingPU);
+            progressBar.setIndeterminateDrawable(style);
+            loadingDialog.setCanceledOnTouchOutside(false);
 
-            final ImageView close, showPassword;
-            Button done;
-            final EditText etPassword;
-            adminDialog.setContentView(R.layout.pop_up_admin_password_check);
-            adminDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            close = adminDialog.findViewById(R.id.img_close_adminPU);
+            if (isVerfiedAdmin()) {
 
-            showPassword = adminDialog.findViewById(R.id.img_showPassword_adminPU);
 
-            etPassword = adminDialog.findViewById(R.id.et_enterCode_adminPU);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                final AlertDialog dialog = builder.setMessage("Are you sure you wan to terminate this customer?")
+                        .setTitle(Html.fromHtml("<font color='#ff0f0f'>DELETE CONFIRMATION</font>"))
+                        .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //TODO:Loop document to delete
 
-            done = adminDialog.findViewById(R.id.bt_done_adminPU);
-
-            adminDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialogInterface) {
-                    if (!verified)
-                        Toast.makeText(CustomerDetail.this, "Admin verification failed", Toast.LENGTH_SHORT).show();
-
-                }
-            });
-
-            close.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    adminDialog.dismiss();
-                }
-            });
-
-            showPassword.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (!showPasswordPU) {
-                        showPassword.setImageResource(R.drawable.hide_password_icon);
-                        etPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                        etPassword.setSelection(etPassword.getText().length());
-                        showPasswordPU = true;
-                    } else {
-                        showPassword.setImageResource(R.drawable.show_password_icon);
-                        etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                        etPassword.setSelection(etPassword.getText().length());
-                        showPasswordPU = false;
-                    }
-                }
-            });
-
-            done.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    final String password = etPassword.getText().toString().trim();
-
-                    if (password.isEmpty()) {
-                        etPassword.setError("Cannot leave empty");
-                        etPassword.requestFocus();
-                        return;
-                    }
-
-                    DocumentReference passwordCheck = db.collection("adminDetails").document("loginDetails");
-                    passwordCheck.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                        @Override
-                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            if (password.equals(documentSnapshot.getString("verificationPassword"))) {
-                                verified = true;
-                                loadingDialog.show();
-
-                                Toast.makeText(CustomerDetail.this, "Admin verification successfully", Toast.LENGTH_SHORT).show();
-                                adminDialog.dismiss();
                                 DocumentReference userAddress = db.collection("customerDetails").document("sorted")
                                         .collection(customerID.substring(0, 1)).document(customerID)
                                         .collection("address").document("address");
@@ -253,14 +211,17 @@ public class CustomerDetail extends AppCompatActivity {
                                             @Override
                                             public void onSuccess(Void aVoid) {
                                                 loadingDialog.dismiss();
-
-                                                getAdminEmail();
-
-                                                String title = "Customer Deleted";
-                                                String body = customerDetails.fullName() + " is being deleted by " + getStaffDetailsStatic().fullName() + ".";
-                                                AppNotification sendAppNotification = new AppNotification();
-                                                requestQueue.add(sendAppNotification.sendNotification("customerDeleted", title, body));
-
+                                                CollectionReference adminEmails = db.collection("adminDetails").document("adminList").collection("notificationPreference");
+                                                adminEmails.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                                                            if (documentSnapshot.getBoolean("positionChangeEmail")) {
+                                                                deleteCustomerEmail(documentSnapshot.getString("email"));
+                                                            }
+                                                        }
+                                                    }
+                                                });
                                                 Toast.makeText(CustomerDetail.this, "Customer details deleted", Toast.LENGTH_LONG).show();
                                                 Intent intent = new Intent(CustomerDetail.this, CustomerList.class);
                                                 intent.putExtra("chosenOption", customerID.substring(0, 1));
@@ -275,25 +236,162 @@ public class CustomerDetail extends AppCompatActivity {
                                                 Toast.makeText(CustomerDetail.this, "Fail to delete customer details", Toast.LENGTH_LONG).show();
                                             }
                                         });
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        loadingDialog.dismiss();
-                                        Toast.makeText(CustomerDetail.this, "Fail to delete customer details", Toast.LENGTH_LONG).show();
-
 
                                     }
                                 });
-                            } else {
-                                adminDialog.dismiss();
                             }
+                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Toast.makeText(CustomerDetail.this, "Canceled", Toast.LENGTH_LONG).show();
+
+                            }
+                        }).setOnCancelListener(new DialogInterface.OnCancelListener() {
+                            @Override
+                            public void onCancel(DialogInterface dialogInterface) {
+                                Toast.makeText(CustomerDetail.this, "Canceled", Toast.LENGTH_LONG).show();
+
+                            }
+                        }).create();
+                dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialogInterface) {
+                        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.red));
+                        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.cancel_grey));
+
+                        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+                        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setAllCaps(false);
+
+                        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextSize(17);
+                        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextSize(17);
+
+                    }
+                });
+
+            } else {
+
+                final ImageView close, showPassword;
+                Button done;
+                final EditText etPassword;
+                adminDialog.setContentView(R.layout.pop_up_admin_password_check);
+                adminDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                close = adminDialog.findViewById(R.id.img_close_adminPU);
+
+                showPassword = adminDialog.findViewById(R.id.img_showPassword_adminPU);
+
+                etPassword = adminDialog.findViewById(R.id.et_enterCode_adminPU);
+
+                done = adminDialog.findViewById(R.id.bt_done_adminPU);
+
+                adminDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        if (!verified)
+                            Toast.makeText(CustomerDetail.this, "Admin verification failed", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+                close.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        adminDialog.dismiss();
+                    }
+                });
+
+                showPassword.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (!showPasswordPU) {
+                            showPassword.setImageResource(R.drawable.hide_password_icon);
+                            etPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                            etPassword.setSelection(etPassword.getText().length());
+                            showPasswordPU = true;
+                        } else {
+                            showPassword.setImageResource(R.drawable.show_password_icon);
+                            etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                            etPassword.setSelection(etPassword.getText().length());
+                            showPasswordPU = false;
                         }
-                    });
-                }
-            });
-            adminDialog.show();
+                    }
+                });
+
+                done.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        final String password = etPassword.getText().toString().trim();
+
+                        if (password.isEmpty()) {
+                            etPassword.setError("Cannot leave empty");
+                            etPassword.requestFocus();
+                            return;
+                        }
+
+                        DocumentReference passwordCheck = db.collection("adminDetails").document("loginDetails");
+                        passwordCheck.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                if (password.equals(documentSnapshot.getString("verificationPassword"))) {
+                                    verified = true;
+                                    loadingDialog.show();
+
+                                    Toast.makeText(CustomerDetail.this, "Admin verification successfully", Toast.LENGTH_SHORT).show();
+                                    adminDialog.dismiss();
+                                    DocumentReference userAddress = db.collection("customerDetails").document("sorted")
+                                            .collection(customerID.substring(0, 1)).document(customerID)
+                                            .collection("address").document("address");
+                                    userAddress.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            DocumentReference userDetails = db.collection("customerDetails").document("sorted")
+                                                    .collection(customerID.substring(0, 1)).document(customerID);
+                                            userDetails.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    loadingDialog.dismiss();
+
+                                                    getAdminEmail();
+
+                                                    String title = "Customer Deleted";
+                                                    String body = customerDetails.fullName() + " is being deleted by " + getStaffDetailsStatic().fullName() + ".";
+                                                    AppNotification sendAppNotification = new AppNotification();
+                                                    requestQueue.add(sendAppNotification.sendNotification("customerDeleted", title, body));
+
+                                                    Toast.makeText(CustomerDetail.this, "Customer details deleted", Toast.LENGTH_LONG).show();
+                                                    Intent intent = new Intent(CustomerDetail.this, CustomerList.class);
+                                                    intent.putExtra("chosenOption", customerID.substring(0, 1));
+                                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                    startActivity(intent);
+                                                    finish();
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    loadingDialog.dismiss();
+                                                    Toast.makeText(CustomerDetail.this, "Fail to delete customer details", Toast.LENGTH_LONG).show();
+                                                }
+                                            });
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            loadingDialog.dismiss();
+                                            Toast.makeText(CustomerDetail.this, "Fail to delete customer details", Toast.LENGTH_LONG).show();
+
+
+                                        }
+                                    });
+                                } else {
+                                    adminDialog.dismiss();
+                                }
+                            }
+                        });
+                    }
+                });
+                adminDialog.show();
+            }
         }
+
 
     }
 

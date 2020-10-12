@@ -232,6 +232,7 @@
                                             android:fontFamily="@font/archivo_narrow"
                                             android:textColor="@color/text_color"
                                             android:textSize="16sp"
+                                            android:textStyle="bold"
                                             app:layout_constraintBaseline_toBaselineOf="@+id/textView78"
                                             app:layout_constraintEnd_toEndOf="parent"
                                             app:layout_constraintHorizontal_bias="0.0"
