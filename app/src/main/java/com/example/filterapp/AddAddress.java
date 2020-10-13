@@ -1,11 +1,13 @@
 package com.example.filterapp;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
@@ -17,10 +19,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.filterapp.classes.Address;
-import com.example.filterapp.geocoding.GeocodingLocation;
 
 import static com.example.filterapp.AddCustomer.isAddAddress;
-import static com.example.filterapp.AddCustomer.madeChanges;
+import static com.example.filterapp.AddCustomer.isMadeChanges;
 import static com.example.filterapp.AddCustomer.sAddress;
 import static com.example.filterapp.AddCustomer.setAddAddress;
 import static com.example.filterapp.AddCustomer.setMadeChanges;
@@ -119,6 +120,11 @@ public class AddAddress extends AppCompatActivity {
         state = mState.getText().toString().trim();
         postCode = mPostCode.getText().toString().trim();
 
+        if (isMadeChanges()){
+            Toast.makeText(AddAddress.this,"Nothing Changed", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (houseNum.isEmpty()) {
             mHouseNum.setError("House number cannot be empty");
             mHouseNum.requestFocus();
@@ -183,7 +189,49 @@ public class AddAddress extends AppCompatActivity {
     }
 
     public void back(View view) {
-        super.onBackPressed();
+        if (!isMadeChanges())
+            super.onBackPressed();
+        else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            final AlertDialog dialog = builder.setMessage("Are you sure you wanna go back? Any changes made wouldn't be saved.")
+                    .setTitle(Html.fromHtml("<font color='#ff0f0f'>BACK CONFIRMATION</font>"))
+                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            AddAddress.super.onBackPressed();
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                        }
+                    })
+
+                    .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialogInterface) {
+                        }
+                    })
+                    .create();
+
+
+            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface dialogInterface) {
+
+                    dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.red));
+                    dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.cancel_grey));
+
+                    dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+                    dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setAllCaps(false);
+
+                    dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextSize(17);
+                    dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextSize(17);
+
+                }
+            });
+
+            dialog.show();
+        }
+
     }
 
     public void choseState(View view) {
