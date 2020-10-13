@@ -598,6 +598,13 @@ public class GenerateQRFragment extends Fragment {
                         return;
                     } else {
 
+                        if (documentSnapshot.getBoolean("deleted")){
+                            loadingDialog.dismiss();
+                            mFName.setError("Customer terminated");
+                            mFName.requestFocus();
+                            return;
+                        }
+
                         FilterDetails filterDetails = new FilterDetails();
                         documentID = createID();
 

@@ -82,12 +82,12 @@ public class CustomerDetail extends AppCompatActivity {
         mNote.setText(customerDetails.getNote());
 
         if (customerDetails.isDeleted()) {
-            delete.setText("Restore");
+            delete.setText("RESTORE");
             mStatus.setTextColor(getColor(R.color.red));
             mStatus.setText("TERMINATED");
 
         } else {
-            delete.setText("Delete");
+            delete.setText("TERMINATE");
             mStatus.setTextColor(getColor(R.color.dark_green));
             mStatus.setText("ACTIVE");
         }
@@ -155,7 +155,7 @@ public class CustomerDetail extends AppCompatActivity {
                                     requestQueue.add(sendAppNotification.sendNotification("customerDeleted", title, body));
                                 }
                             });
-                            delete.setText("Delete");
+                            delete.setText("TERMINATE");
                             mStatus.setText("ACTIVE");
                             mStatus.setTextColor(getColor(R.color.dark_green));
                             Toast.makeText(CustomerDetail.this, "Customer Restored", Toast.LENGTH_SHORT).show();
@@ -206,7 +206,7 @@ public class CustomerDetail extends AppCompatActivity {
             if (isVerfiedAdmin()) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 final AlertDialog dialog = builder.setMessage("Are you sure you wan to terminate this customer?")
-                        .setTitle(Html.fromHtml("<font color='#ff0f0f'>DELETE CONFIRMATION</font>"))
+                        .setTitle(Html.fromHtml("<font color='#ff0f0f'>TERMINATE CONFIRMATION</font>"))
                         .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -230,8 +230,10 @@ public class CustomerDetail extends AppCompatActivity {
                                             }
                                         });
 
-                                        String title = "Customer Deleted";
-                                        String body = customerDetails.fullName() + " is being deleted by " + getStaffDetailsStatic().fullName() + ".";
+                                        getAdminEmail();
+
+                                        String title = "Customer Terminated";
+                                        String body = customerDetails.fullName() + " is being terminate by " + getStaffDetailsStatic().fullName() + ".";
                                         AppNotification sendAppNotification = new AppNotification();
                                         requestQueue.add(sendAppNotification.sendNotification("customerDeleted", title, body));
 
@@ -241,14 +243,14 @@ public class CustomerDetail extends AppCompatActivity {
 
                                         mStatus.setTextColor(getColor(R.color.red));
                                         customerDetails.setDeleted(true);
-                                        Toast.makeText(CustomerDetail.this, "Customer details deleted", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(CustomerDetail.this, "Customer Terminated", Toast.LENGTH_LONG).show();
 
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
                                         loadingDialog.dismiss();
-                                        Toast.makeText(CustomerDetail.this, "Fail to delete customer details", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(CustomerDetail.this, "Fail to terminate customer details", Toast.LENGTH_LONG).show();
                                     }
                                 });
 
@@ -355,7 +357,7 @@ public class CustomerDetail extends AppCompatActivity {
 
                                     AlertDialog.Builder builder = new AlertDialog.Builder(CustomerDetail.this);
                                     final AlertDialog dialog = builder.setMessage("Are you sure you wan to terminate this customer?")
-                                            .setTitle(Html.fromHtml("<font color='#ff0f0f'>DELETE CONFIRMATION</font>"))
+                                            .setTitle(Html.fromHtml("<font color='#ff0f0f'>TERMINATE CONFIRMATION</font>"))
                                             .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -380,8 +382,10 @@ public class CustomerDetail extends AppCompatActivity {
                                                                 }
                                                             });
 
-                                                            String title = "Customer Deleted";
-                                                            String body = customerDetails.fullName() + " is being deleted by " + getStaffDetailsStatic().fullName() + ".";
+                                                            getAdminEmail();
+
+                                                            String title = "Customer Terminated";
+                                                            String body = customerDetails.fullName() + " is being terminated by " + getStaffDetailsStatic().fullName() + ".";
                                                             AppNotification sendAppNotification = new AppNotification();
                                                             requestQueue.add(sendAppNotification.sendNotification("customerDeleted", title, body));
 
@@ -390,7 +394,7 @@ public class CustomerDetail extends AppCompatActivity {
                                                             mStatus.setText("TERMINATED");
                                                             mStatus.setTextColor(getColor(R.color.red));
                                                             customerDetails.setDeleted(true);
-                                                            Toast.makeText(CustomerDetail.this, "Customer details deleted", Toast.LENGTH_LONG).show();
+                                                            Toast.makeText(CustomerDetail.this, "Customer Terminated", Toast.LENGTH_LONG).show();
 
                                                         }
                                                     }).addOnFailureListener(new OnFailureListener() {
@@ -466,7 +470,7 @@ public class CustomerDetail extends AppCompatActivity {
         Date dt = new Date();
         String message;
 
-        message = customerDetails.fullName() + " is being deleted by admin " + getStaffDetailsStatic().fullName() + " at " + formatter.format(dt) + ".\n\n"
+        message = customerDetails.fullName() + " is being terminated by " + getStaffDetailsStatic().fullName() + " at " + formatter.format(dt) + ".\n\n"
                 + "------Customer Details------\n"
                 + "Name: " + customerDetails.fullName() + "\n"
                 + "Mobile: " + customerDetails.getMobile() + "\n"
@@ -477,7 +481,7 @@ public class CustomerDetail extends AppCompatActivity {
                 + customerDetails.getNote();
 
         JavaMailAPI javaMailAPI = new JavaMailAPI(this, email,
-                "Customer Deleted", message);
+                "Customer Terminated", message);
 
         javaMailAPI.execute();
 

@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -232,10 +233,14 @@ public class FilterDetail extends AppCompatActivity {
     }
 
     public void serviceFilter(View view) {
-        Intent intent = new Intent(FilterDetail.this, ServiceFilter.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("documentID", documentID);
-        startActivity(intent);
+        if (customerDetails.isDeleted()){
+            Toast.makeText(FilterDetail.this,"Customer Terminated",Toast.LENGTH_SHORT).show();
+        }else {
+            Intent intent = new Intent(FilterDetail.this, ServiceFilter.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("documentID", documentID);
+            startActivity(intent);
+        }
     }
 
     public void history(View view) {
