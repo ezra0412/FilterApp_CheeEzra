@@ -111,6 +111,7 @@ public class CustomerList extends AppCompatActivity implements BtAdapterDouble.B
         intent.putExtra("customerDetails", customerDetailsList.get(position));
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+        finish();
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -123,4 +124,5 @@ public class CustomerList extends AppCompatActivity implements BtAdapterDouble.B
     public void back(View view) {
         super.onBackPressed();
     }
+
 }
