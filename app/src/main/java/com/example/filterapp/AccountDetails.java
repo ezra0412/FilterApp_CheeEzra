@@ -1,6 +1,7 @@
 package com.example.filterapp;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Html;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Patterns;
@@ -184,11 +186,11 @@ public class AccountDetails extends AppCompatActivity {
         staffDetailsStatic.setProfilePic(true);
         DocumentReference userDetails = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid());
         userDetails.update("profilePic",true);
-        final StorageReference imageRefence = storageReference.child("staff/" + mAuth.getCurrentUser().getUid() + "/profileImage.jpg");
-        imageRefence.putFile(image).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        final StorageReference imageReference = storageReference.child("staff/" + mAuth.getCurrentUser().getUid() + "/profileImage.jpg");
+        imageReference.putFile(image).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                imageRefence.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                imageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
                         Picasso.get().load(uri).into(pi);
@@ -562,6 +564,14 @@ public class AccountDetails extends AppCompatActivity {
         branch = mBranch.getText().toString().trim();
         position = mPosition.getText().toString().trim();
         Map<String, Object> user = new HashMap<>();
+
+        if (fName.equalsIgnoreCase(staffDetailsStatic.getfName())&&lName.equalsIgnoreCase(staffDetailsStatic.getlName())&&mobile.equalsIgnoreCase(staffDetailsStatic.getMobile())
+        &&branch.equalsIgnoreCase("Branch "+staffDetailsStatic.getBranch())&&position.equalsIgnoreCase(staffDetailsStatic.getPosition())){
+            Toast.makeText(AccountDetails.this,"Nothing Changed",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
 
         //Information verification
         if (fName.isEmpty()) {
@@ -1192,7 +1202,50 @@ public class AccountDetails extends AppCompatActivity {
     }
 
     public void back(View view) {
-        super.onBackPressed();
+        if (mFName.getText().toString().trim().equalsIgnoreCase(staffDetailsStatic.getfName())&&mLName.getText().toString().trim().equalsIgnoreCase(staffDetailsStatic.getlName())&&mMobile.getText().toString().trim().equalsIgnoreCase(staffDetailsStatic.getMobile())
+                &&mBranch.getText().toString().trim().equalsIgnoreCase("Branch "+staffDetailsStatic.getBranch())&&mPosition.getText().toString().trim().equalsIgnoreCase(staffDetailsStatic.getPosition()))
+            super.onBackPressed();
+        else{
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            final AlertDialog dialog = builder.setMessage("Are you sure you wanna go back? Any changes made wouldn't be saved.")
+                    .setTitle(Html.fromHtml("<font color='#ff0f0f'>BACK CONFIRMATION</font>"))
+                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            AccountDetails.super.onBackPressed();
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                        }
+                    })
+
+                    .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialogInterface) {
+                        }
+                    })
+                    .create();
+
+
+            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface dialogInterface) {
+
+                    dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.red));
+                    dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.cancel_grey));
+
+                    dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+                    dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setAllCaps(false);
+
+                    dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextSize(17);
+                    dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextSize(17);
+
+                }
+            });
+
+            dialog.show();
+        }
+
     }
 
     public String capitalize(String s) {
