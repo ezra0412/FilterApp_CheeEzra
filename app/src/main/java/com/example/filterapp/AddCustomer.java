@@ -123,19 +123,15 @@ public class AddCustomer extends AppCompatActivity {
             return;
         }
 
-        if (email.isEmpty()) {
-            mEmail.setError("Email cannot be empty");
-            mEmail.requestFocus();
-            return;
+        if (!email.isEmpty()||!email.equalsIgnoreCase("-")) {
+            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                mEmail.setError("Wrong email format");
+                mEmail.requestFocus();
+                return;
+            }
+        }else{
+            email ="-";
         }
-
-        //Check if the email format is correct
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            mEmail.setError("Wrong email format");
-            mEmail.requestFocus();
-            return;
-        }
-
 
         if (mobile.isEmpty()) {
             mMobile.setError("Mobile cannot be empty");
@@ -166,7 +162,6 @@ public class AddCustomer extends AppCompatActivity {
         progressBar = loadingDialog.findViewById(R.id.sk_loadingPU);
         progressBar.setIndeterminateDrawable(style);
 
-        //Make the loading dialog not dismissible
         loadingDialog.setCanceledOnTouchOutside(false);
 
         loadingDialog.show();
