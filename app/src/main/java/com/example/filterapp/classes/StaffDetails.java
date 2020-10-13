@@ -8,6 +8,7 @@ public class StaffDetails extends UserDetails implements Parcelable {
     String branch;
     boolean Google;
     String token;
+    boolean profilePic;
 
     public StaffDetails(){
         super("", "", "", "", false);
@@ -16,14 +17,16 @@ public class StaffDetails extends UserDetails implements Parcelable {
         Google = false;
         deleted = false;
         token = "";
+        profilePic = false;
     }
 
-    public StaffDetails(String fName, String lName, String mobile, String position, String branch, String email, boolean google, boolean deleted, String token) {
+    public StaffDetails(String fName, String lName, String mobile, String position, String branch, String email, boolean google, boolean deleted, String token, boolean profilePic ) {
         super(fName, lName, mobile, email, deleted);
         this.position = position;
         this.branch = branch;
-        Google = google;
+        this.Google = google;
         this.token = token;
+        this.profilePic = profilePic;
     }
 
     protected StaffDetails(Parcel in) {
@@ -36,6 +39,7 @@ public class StaffDetails extends UserDetails implements Parcelable {
         branch = in.readString();
         Google = in.readByte() != 0;
         token = in.readString();
+        profilePic = in.readByte() !=0;
     }
 
     public static final Creator<StaffDetails> CREATOR = new Creator<StaffDetails>() {
@@ -82,6 +86,14 @@ public class StaffDetails extends UserDetails implements Parcelable {
         this.token = token;
     }
 
+    public boolean isProfilePic() {
+        return profilePic;
+    }
+
+    public void setProfilePic(boolean profilePic) {
+        this.profilePic = profilePic;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -98,6 +110,7 @@ public class StaffDetails extends UserDetails implements Parcelable {
         parcel.writeString(branch);
         parcel.writeByte((byte) (Google ? 1 : 0));
         parcel.writeString(token);
+        parcel.writeByte((byte) (profilePic ? 1 : 0));
     }
 }
 

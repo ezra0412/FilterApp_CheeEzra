@@ -500,7 +500,7 @@ public class SignUp extends AppCompatActivity {
                     }
                 });
 
-        staffDetails = new StaffDetails(capitalize(fName), capitalize(lName), mobile, position, branch, email, false, false, token);
+        staffDetails = new StaffDetails(capitalize(fName), capitalize(lName), mobile, position, branch, email, false, false, token,false);
         //Create the staff account
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {

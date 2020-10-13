@@ -194,13 +194,17 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
             }
         });
 
-        StorageReference profileRef = storageReference.child("staff/" + mAuth.getCurrentUser().getUid() + "/profileImage.jpg");
-        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).into(pi);
-            }
-        });
+
+        if (staffDetailsStatic.isProfilePic()){
+            StorageReference profileRef = storageReference.child("staff/" + mAuth.getCurrentUser().getUid() + "/profileImage.jpg");
+            profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Picasso.get().load(uri).into(pi);
+                }
+            });
+        }
+
 
         position.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -395,6 +399,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
             if (resultCode == Activity.RESULT_OK) {
                 Uri image = data.getData();
                 uploadImageToFirebase(image);
+
             }
         }
     }
@@ -408,6 +413,11 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         progressBar.setIndeterminateDrawable(style);
         loadingDialog.setCanceledOnTouchOutside(false);
         loadingDialog.show();
+
+        staffDetailsStatic.setProfilePic(true);
+        DocumentReference userDetails = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid());
+        userDetails.update("profilePic",true);
+
         final StorageReference imageRefence = storageReference.child("staff/" + mAuth.getCurrentUser().getUid() + "/profileImage.jpg");
         imageRefence.putFile(image).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -546,19 +556,20 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         });
 
 
-        StorageReference profileRef = storageReference.child("staff/" + mAuth.getCurrentUser().getUid() + "/profileImage.jpg");
-        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).into(pi);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                pi.setImageDrawable(getDrawable(R.drawable.profile_picture));
-            }
-        });
-
+        if (staffDetailsStatic.isProfilePic()){
+            StorageReference profileRef = storageReference.child("staff/" + mAuth.getCurrentUser().getUid() + "/profileImage.jpg");
+            profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Picasso.get().load(uri).into(pi);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    pi.setImageDrawable(getDrawable(R.drawable.profile_picture));
+                }
+            });
+        }
     }
 
     public static int getPositionCode() {

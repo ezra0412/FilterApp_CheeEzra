@@ -7,6 +7,7 @@ public class UserDetails implements Comparable<UserDetails> {
     String email;
     boolean deleted;
 
+
     public UserDetails() {
         this("", "", "", "", false);
     }

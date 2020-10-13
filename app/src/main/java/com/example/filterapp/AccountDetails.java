@@ -22,14 +22,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.example.filterapp.classes.EmailNotification;
 import com.example.filterapp.classes.JavaMailAPI;
-import com.example.filterapp.classes.StaffDetails;
 import com.example.filterapp.fcm.AppNotification;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.Wave;
@@ -46,9 +44,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -65,6 +61,7 @@ import java.util.Map;
 import static com.example.filterapp.MainActivity.getPositionCode;
 import static com.example.filterapp.MainActivity.getStaffDetailsStatic;
 import static com.example.filterapp.MainActivity.setPositionCode;
+import static com.example.filterapp.MainActivity.staffDetailsStatic;
 
 public class AccountDetails extends AppCompatActivity {
     boolean showPasswordPU = false;
@@ -136,38 +133,32 @@ public class AccountDetails extends AppCompatActivity {
             }
         });
 
+        mFName.setText("  " + staffDetailsStatic.getfName());
+        mLName.setText("  " + staffDetailsStatic.getlName());
+        mEmail.setText("  " + mAuth.getCurrentUser().getEmail());
+        mMobile.setText("  " + staffDetailsStatic.getMobile());
+        if (staffDetailsStatic.getBranch().equalsIgnoreCase("LG")) {
+            mBranch.setText("  Branch LG");
+        } else if (staffDetailsStatic.getBranch().equalsIgnoreCase("PB")) {
+            mBranch.setText("  Branch PB");
+        } else {
+            mBranch.setText("  Branch PT");
+        }
+        mPosition.setText("  " + staffDetailsStatic.getPosition());
+        if (staffDetailsStatic.getPosition().equalsIgnoreCase("admin")) {
+            verifiedAdmin = true;
+        }
 
-        DocumentReference userDetails = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid());
-        userDetails.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                StaffDetails staffDetails = new StaffDetails();
-                staffDetails = value.toObject(StaffDetails.class);
-                mFName.setText("  " + staffDetails.getfName());
-                mLName.setText("  " + staffDetails.getlName());
-                mEmail.setText("  " + mAuth.getCurrentUser().getEmail());
-                mMobile.setText("  " + staffDetails.getMobile());
-                if (value.getString("branch").equalsIgnoreCase("LG")) {
-                    mBranch.setText("  Branch LG");
-                } else if (value.getString("branch").equalsIgnoreCase("PB")) {
-                    mBranch.setText("  Branch PB");
-                } else {
-                    mBranch.setText("  Branch PT");
+        if (staffDetailsStatic.isProfilePic()) {
+            StorageReference profileRef = storageReference.child("staff/" + mAuth.getCurrentUser().getUid() + "/profileImage.jpg");
+            profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Picasso.get().load(uri).into(pi);
                 }
-                mPosition.setText("  " + staffDetails.getPosition());
-                if (staffDetails.getPosition().equalsIgnoreCase("admin")) {
-                    verifiedAdmin = true;
-                }
-            }
-        });
+            });
+        }
 
-        StorageReference profileRef = storageReference.child("staff/" + mAuth.getCurrentUser().getUid() + "/profileImage.jpg");
-        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).into(pi);
-            }
-        });
     }
 
     @Override
@@ -190,6 +181,9 @@ public class AccountDetails extends AppCompatActivity {
         progressBar.setIndeterminateDrawable(style);
         loadingDialog.setCanceledOnTouchOutside(false);
         loadingDialog.show();
+        staffDetailsStatic.setProfilePic(true);
+        DocumentReference userDetails = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid());
+        userDetails.update("profilePic",true);
         final StorageReference imageRefence = storageReference.child("staff/" + mAuth.getCurrentUser().getUid() + "/profileImage.jpg");
         imageRefence.putFile(image).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -199,6 +193,7 @@ public class AccountDetails extends AppCompatActivity {
                     public void onSuccess(Uri uri) {
                         Picasso.get().load(uri).into(pi);
                         loadingDialog.dismiss();
+                        staffDetailsStatic.setProfilePic(true);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -230,8 +225,13 @@ public class AccountDetails extends AppCompatActivity {
             @Override
             public void onSuccess(Void aVoid) {
                 loadingDialog.dismiss();
+                staffDetailsStatic.setProfilePic(false);
                 Toast.makeText(AccountDetails.this, "Profile picture removed", Toast.LENGTH_LONG).show();
                 pi.setImageDrawable(getDrawable(R.drawable.profile_picture));
+
+                DocumentReference userDetails = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid());
+                userDetails.update("profilePic",false);
+                staffDetailsStatic.setProfilePic(false);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -1296,5 +1296,18 @@ public class AccountDetails extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        if (staffDetailsStatic.isProfilePic()) {
+            StorageReference profileRef = storageReference.child("staff/" + mAuth.getCurrentUser().getUid() + "/profileImage.jpg");
+            profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Picasso.get().load(uri).into(pi);
+                }
+            });
+        }
+    }
 }
