@@ -120,7 +120,7 @@ public class AddAddress extends AppCompatActivity {
         state = mState.getText().toString().trim();
         postCode = mPostCode.getText().toString().trim();
 
-        if (isMadeChanges()){
+        if (!isMadeChanges()){
             Toast.makeText(AddAddress.this,"Nothing Changed", Toast.LENGTH_SHORT).show();
             return;
         }

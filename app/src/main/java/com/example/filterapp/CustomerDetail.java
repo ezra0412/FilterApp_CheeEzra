@@ -133,6 +133,8 @@ public class CustomerDetail extends AppCompatActivity {
     public void edit(View view) {
         Intent intent = new Intent(CustomerDetail.this, AddCustomer.class);
         intent.putExtra("customerID", customerID);
+        intent.putExtra("customerDetails",customerDetails);
+        intent.putExtra("address",defAdd);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }

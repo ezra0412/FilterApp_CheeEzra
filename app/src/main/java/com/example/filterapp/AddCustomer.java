@@ -1,10 +1,15 @@
 package com.example.filterapp;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.Html;
+import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -42,7 +47,10 @@ public class AddCustomer extends AppCompatActivity {
     CustomerDetails customerDetails;
     String documentCollection, documentID;
     String customerID = "";
+    Address passedAddress = new Address();
+    CustomerDetails passedCustomerDetails = new CustomerDetails();
     Dialog loadingDialog;
+    boolean changedDetails = false;
 
 
     @Override
@@ -63,44 +71,49 @@ public class AddCustomer extends AppCompatActivity {
         customerID = getIntent().getStringExtra("customerID");
 
         if (!customerID.equalsIgnoreCase("non")) {
-            DocumentReference userDetails = db.collection("customerDetails").document("sorted")
-                    .collection(customerID.substring(0, 1)).document(customerID);
-            userDetails.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
+            passedAddress = getIntent().getParcelableExtra("address");
+            passedCustomerDetails = getIntent().getParcelableExtra("customerDetails");
+
                     title.setText("Customer Details");
                     btAdd.setText("Update Customer Details");
-                    CustomerDetails customerDetails = documentSnapshot.toObject(CustomerDetails.class);
-                    mFName.setText(customerDetails.getfName());
-                    mLName.setText(customerDetails.getlName());
-                    mEmail.setText(customerDetails.getEmail());
-                    mMobile.setText(customerDetails.getMobile());
-                    mNote.setText(customerDetails.getNote());
+                    mFName.setText(passedCustomerDetails.getfName());
+                    mLName.setText(passedCustomerDetails.getlName());
+                    mEmail.setText(passedCustomerDetails.getEmail());
+                    mMobile.setText(passedCustomerDetails.getMobile());
+                    mNote.setText(passedCustomerDetails.getNote());
                     mFName.setEnabled(false);
                     mLName.setEnabled(false);
                     mMobile.setEnabled(false);
-                }
-            });
 
-            DocumentReference userAddress = db.collection("customerDetails").document("sorted")
-                    .collection(customerID.substring(0, 1)).document(customerID)
-                    .collection("address").document("address");
-            userAddress.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    addSign.setVisibility(View.INVISIBLE);
-                    Address address = documentSnapshot.toObject(Address.class);
-                    storeAddress(address);
-                    mAddress.setText(address.formatedAddress());
-                }
-            });
+
+                    mAddress.setText(passedAddress.formatedAddress());
+
         }
+
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                changedDetails = true;
+            }
+        };
+        mFName.addTextChangedListener(textWatcher);
+        mLName.addTextChangedListener(textWatcher);
+        mEmail.addTextChangedListener(textWatcher);
+        mMobile.addTextChangedListener(textWatcher);
+        mNote.addTextChangedListener(textWatcher);
+
     }
 
-    private void storeAddress(Address address) {
-        sAddress = address;
-        addAddress = true;
-    }
 
     public void addCustomer(View view) {
         String fName, lName, email, mobile, note;
@@ -109,6 +122,12 @@ public class AddCustomer extends AppCompatActivity {
         email = mEmail.getText().toString().trim();
         mobile = mMobile.getText().toString().trim();
         note = mNote.getText().toString();
+
+
+        if (!changedDetails&&!madeChanges){
+            Toast.makeText(AddCustomer.this,"Nothing Changed",Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         //Information verification
         if (fName.isEmpty()) {
@@ -302,9 +321,53 @@ public class AddCustomer extends AppCompatActivity {
     }
 
     public void back(View view) {
-        super.onBackPressed();
-        finish();
+        if (!changedDetails&&!madeChanges) {
+            super.onBackPressed();
+            finish();
+        }else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            final AlertDialog dialog = builder.setMessage("Are you sure you wanna go back? Any changes made wouldn't be saved.")
+                    .setTitle(Html.fromHtml("<font color='#ff0f0f'>BACK CONFIRMATION</font>"))
+                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            AddCustomer.super.onBackPressed();
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                        }
+                    })
+
+                    .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialogInterface) {
+                        }
+                    })
+                    .create();
+
+
+            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface dialogInterface) {
+
+                    dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.red));
+                    dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.cancel_grey));
+
+                    dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+                    dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setAllCaps(false);
+
+                    dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextSize(17);
+                    dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextSize(17);
+
+                }
+            });
+
+            dialog.show();
+        }
+
     }
+
 
     @Override
     protected void onDestroy() {

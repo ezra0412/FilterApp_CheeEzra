@@ -1,6 +1,9 @@
 package com.example.filterapp.classes;
 
-public class Address {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Address implements Parcelable {
     String houseNumber;
     String level;
     String block;
@@ -28,6 +31,31 @@ public class Address {
         this.lan = lan;
         this.lon = lon;
     }
+
+    protected Address(Parcel in) {
+        houseNumber = in.readString();
+        level = in.readString();
+        block = in.readString();
+        building = in.readString();
+        streetName = in.readString();
+        area = in.readString();
+        postCode = in.readString();
+        state = in.readString();
+        lan = in.readDouble();
+        lon = in.readDouble();
+    }
+
+    public static final Creator<Address> CREATOR = new Creator<Address>() {
+        @Override
+        public Address createFromParcel(Parcel in) {
+            return new Address(in);
+        }
+
+        @Override
+        public Address[] newArray(int size) {
+            return new Address[size];
+        }
+    };
 
     public String getHouseNumber() {
         return houseNumber;
@@ -126,4 +154,22 @@ public class Address {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(houseNumber);
+        parcel.writeString(level);
+        parcel.writeString(block);
+        parcel.writeString(building);
+        parcel.writeString(streetName);
+        parcel.writeString(area);
+        parcel.writeString(postCode);
+        parcel.writeString(state);
+        parcel.writeDouble(lan);
+        parcel.writeDouble(lon);
+    }
 }
