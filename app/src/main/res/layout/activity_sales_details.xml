@@ -171,6 +171,7 @@
                                             android:layout_marginStart="16dp"
                                             android:layout_marginEnd="16dp"
                                             android:fontFamily="@font/archivo_narrow"
+                                            android:textColor="@color/text_color"
                                             android:textSize="16sp"
                                             app:layout_constraintBaseline_toBaselineOf="@+id/textView202"
                                             app:layout_constraintEnd_toEndOf="parent"
@@ -182,6 +183,7 @@
                                             android:layout_height="wrap_content"
                                             android:layout_marginStart="16dp"
                                             android:fontFamily="@font/archivo_narrow"
+                                            android:textColor="@color/text_color"
                                             android:textSize="16sp"
                                             app:layout_constraintBaseline_toBaselineOf="@+id/textView200"
                                             app:layout_constraintStart_toEndOf="@+id/textView200" />
@@ -240,6 +242,7 @@
                                             android:layout_marginStart="16dp"
                                             android:layout_marginEnd="16dp"
                                             android:fontFamily="@font/archivo_narrow"
+                                            android:textColor="@color/text_color"
                                             android:textSize="16sp"
                                             app:layout_constraintBaseline_toBaselineOf="@+id/textView204"
                                             app:layout_constraintEnd_toEndOf="parent"
@@ -250,6 +253,7 @@
                                             android:layout_width="0dp"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/archivo_narrow"
+                                            android:textColor="@color/text_color"
                                             android:textSize="16sp"
                                             app:layout_constraintBaseline_toBaselineOf="@+id/textView205"
                                             app:layout_constraintEnd_toEndOf="@+id/tv_fModel_salesDetails"
@@ -263,7 +267,8 @@
                                             android:textSize="16sp"
                                             app:layout_constraintBaseline_toBaselineOf="@+id/textView206"
                                             app:layout_constraintEnd_toEndOf="@+id/tv_soldPrice_salesDetails"
-                                            app:layout_constraintStart_toStartOf="@+id/tv_soldPrice_salesDetails" />
+                                            app:layout_constraintStart_toStartOf="@+id/tv_soldPrice_salesDetails"
+                                            android:textColor="@color/text_color" />
                                     </androidx.constraintlayout.widget.ConstraintLayout>
                                 </androidx.cardview.widget.CardView>
                             </androidx.constraintlayout.widget.ConstraintLayout>

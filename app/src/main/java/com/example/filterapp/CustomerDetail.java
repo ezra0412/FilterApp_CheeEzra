@@ -44,6 +44,7 @@ import java.util.Date;
 import static com.example.filterapp.MainActivity.getPositionCode;
 import static com.example.filterapp.MainActivity.getStaffDetailsStatic;
 import static com.example.filterapp.MainActivity.isVerfiedAdmin;
+import static com.example.filterapp.MainActivity.staffDetailsStatic;
 
 public class CustomerDetail extends AppCompatActivity {
     TextView mName, mEmail, mMobile, mAddress, mNote,mStatus;
@@ -92,7 +93,7 @@ public class CustomerDetail extends AppCompatActivity {
             mStatus.setText("ACTIVE");
         }
 
-        if (getPositionCode() == 1)
+        if (staffDetailsStatic.getPosition().equalsIgnoreCase("admin"))
             delete.setVisibility(View.VISIBLE);
         else
             delete.setVisibility(View.GONE);

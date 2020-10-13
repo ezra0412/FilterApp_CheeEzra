@@ -85,6 +85,7 @@ public class AddCustomer extends AppCompatActivity {
                     mLName.setEnabled(false);
                     mMobile.setEnabled(false);
 
+                    sAddress = passedAddress;
 
                     mAddress.setText(passedAddress.formatedAddress());
 
@@ -142,14 +143,15 @@ public class AddCustomer extends AppCompatActivity {
             return;
         }
 
-        if (!email.isEmpty()||!email.equalsIgnoreCase("-")) {
+        if (email.isEmpty()||email.equalsIgnoreCase("-")) {
+            email ="-";
+
+        }else{
             if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 mEmail.setError("Wrong email format");
                 mEmail.requestFocus();
                 return;
             }
-        }else{
-            email ="-";
         }
 
         if (mobile.isEmpty()) {
@@ -235,7 +237,7 @@ public class AddCustomer extends AppCompatActivity {
 
                         Intent intent = new Intent(AddCustomer.this, CustomerDetail.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        intent.putExtra("customerID", documentID);
+                        intent.putExtra("customerDetails", customerDetails);
                         startActivity(intent);
                         finish();
 

@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -201,7 +202,7 @@ public class ServiceFilter extends AppCompatActivity {
         if (changedFilter || changeSparePart || uploadPicture) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             final AlertDialog dialog = builder.setMessage("Details will not be saved, are you sure you want to go back?")
-                    .setTitle("Confirmation")
+                    .setTitle(Html.fromHtml("<font color='#ff0f0f'>BACK CONFIRMATION</font>"))
                     .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -213,7 +214,7 @@ public class ServiceFilter extends AppCompatActivity {
                         public void onClick(DialogInterface dialogInterface, int i) {
 
                         }
-                    }).setIcon(getDrawable(R.drawable.ic_warning))
+                    })
                     .create();
 
             dialog.setOnShowListener(new DialogInterface.OnShowListener() {
