@@ -61,9 +61,9 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
+                    android:layout_marginStart="24dp"
                     android:layout_marginTop="24dp"
-                    android:layout_marginEnd="32dp"
+                    android:layout_marginEnd="24dp"
                     android:layout_marginBottom="24dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -159,7 +159,7 @@
                                             style="@style/lable"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:layout_marginStart="32dp"
+                                            android:layout_marginStart="16dp"
                                             android:text="Time:"
                                             app:layout_constraintBaseline_toBaselineOf="@+id/tv_date_salesDetails"
                                             app:layout_constraintStart_toEndOf="@+id/tv_date_salesDetails" />

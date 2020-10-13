@@ -60,9 +60,9 @@
                     android:id="@+id/cardView5"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
+                    android:layout_marginStart="24dp"
                     android:layout_marginTop="24dp"
-                    android:layout_marginEnd="32dp"
+                    android:layout_marginEnd="24dp"
                     android:layout_marginBottom="24dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -441,7 +441,7 @@
 
                 <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/img_filterImage_serviceDetails"
-                    android:layout_width="339dp"
+                    android:layout_width="0dp"
                     android:layout_height="342dp"
                     android:layout_marginTop="24dp"
                     android:src="@drawable/white_image"

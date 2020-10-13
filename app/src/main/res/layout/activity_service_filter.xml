@@ -63,16 +63,16 @@
 
                 <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/img_filter_serviceFilter"
-                    android:layout_width="341dp"
+                    android:layout_width="0dp"
                     android:layout_height="342dp"
                     android:layout_marginTop="24dp"
                     android:onClick="takePictures"
+                    android:src="@drawable/white_image"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/tv_changedFilter1_serviceFIlter"
                     app:layout_constraintStart_toStartOf="@+id/tv_changedFilter1_serviceFIlter"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.0"
-                    android:src="@drawable/white_image"
                     app:riv_border_color="@color/medium_green"
                     app:riv_border_width="3dp"
                     app:riv_corner_radius="4dp" />
@@ -107,9 +107,11 @@
                 <Button
                     android:id="@+id/button11"
                     style="@style/button_long"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
                     android:layout_marginTop="16dp"
+                    android:layout_marginEnd="24dp"
                     android:layout_marginBottom="24dp"
                     android:onClick="service"
                     android:text="Service"
