@@ -15,16 +15,46 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ServiceDetail"></activity>
-        <activity android:name=".SalesDetails" />
-        <activity android:name=".PurchaseHistory" />
-        <activity android:name=".FilterList" />
-        <activity android:name=".serviceHistoryList" />
-        <activity android:name=".ServiceFilter" />
-        <activity android:name=".MonthList" />
-        <activity android:name=".YearList" />
-        <activity android:name=".HistoryList" />
-        <activity android:name=".HistoryType" />
+        <activity
+            android:name=".ServiceDetail"
+            android:screenOrientation="nosensor" />
+
+        <activity
+            android:name=".SalesDetails"
+            android:screenOrientation="nosensor" />
+
+        <activity
+            android:name=".PurchaseHistory"
+            android:screenOrientation="nosensor" />
+
+        <activity
+            android:name=".FilterList"
+            android:screenOrientation="nosensor" />
+
+        <activity
+            android:name=".serviceHistoryList"
+            android:screenOrientation="nosensor" />
+
+        <activity
+            android:name=".ServiceFilter"
+            android:screenOrientation="nosensor" />
+
+        <activity
+            android:name=".MonthList"
+            android:screenOrientation="nosensor" />
+
+        <activity
+            android:name=".YearList"
+            android:screenOrientation="nosensor" />
+
+        <activity
+            android:name=".HistoryList"
+            android:screenOrientation="nosensor" />
+
+        <activity
+            android:name=".HistoryType"
+            android:screenOrientation="nosensor" />
+
         <activity
             android:name=".EditStaffDetails"
             android:screenOrientation="nosensor" />

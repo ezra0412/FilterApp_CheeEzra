@@ -46,7 +46,7 @@ public class FAQAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public FAQAdapter(List<FAQitem> faqItems) {
         this.faqItems = faqItems;
-        for (int i = 0; i < faqItems.size(); i++) {
+        for (int i = 0; i < getItemCount(); i++) {
             expandState.append(i, false);
         }
     }
@@ -80,17 +80,18 @@ public class FAQAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
             @Override
+            public void onPreClose() {
+                changeRotate(viewHolder.button, 0f, 180f).start();
+                expandState.put(position, false);
+            }
+
+
+            @Override
             public void onPreOpen() {
                 changeRotate(viewHolder.button, 180f, 0f).start();
                 expandState.put(position, true);
             }
 
-
-            @Override
-            public void onPreClose() {
-                changeRotate(viewHolder.button, 0f, 180f).start();
-                expandState.put(position, false);
-            }
         });
 
         viewHolder.button.setRotation(expandState.get(position) ? 180f : 0f);
