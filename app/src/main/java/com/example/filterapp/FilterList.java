@@ -1,8 +1,13 @@
 package com.example.filterapp;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.filterapp.adapter.BtAdapterDouble;
 import com.example.filterapp.classes.BtLongDoubleItem;
 import com.example.filterapp.classes.FilterDetails;
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.Wave;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -34,6 +41,7 @@ public class FilterList extends AppCompatActivity implements BtAdapterDouble.BtD
     TextView message;
     List<FilterDetails> filterDetailsList = new LinkedList<>();
     List<String> filterIDList = new LinkedList<>();
+    Dialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +53,8 @@ public class FilterList extends AppCompatActivity implements BtAdapterDouble.BtD
         message = findViewById(R.id.tv_errorMessage_filterList);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        loadingDialog = new Dialog(this);
 
         CollectionReference getFilters = db.collection("sales").document(year)
                 .collection(month);
@@ -86,11 +96,29 @@ public class FilterList extends AppCompatActivity implements BtAdapterDouble.BtD
 
     @Override
     public void btDoubleListener(int position) {
+        ProgressBar progressBar;
+        final Sprite style = new Wave();
+        loadingDialog.setContentView(R.layout.pop_up_loading_screen);
+        loadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        progressBar = loadingDialog.findViewById(R.id.sk_loadingPU);
+        progressBar.setIndeterminateDrawable(style);
+        loadingDialog.show();
+
+        loadingDialog.setCanceledOnTouchOutside(false);
+
         Intent intent = new Intent(FilterList.this, FilterDetail.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("filterDetails", filterDetailsList.get(position));
         intent.putExtra("documentID", filterIDList.get(position));
         startActivity(intent);
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loadingDialog.dismiss();
+            }
+        }, 200);
     }
 
     public void back(View view) {

@@ -1,8 +1,13 @@
 package com.example.filterapp;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +20,8 @@ import com.example.filterapp.adapter.BtAdapterDouble;
 import com.example.filterapp.classes.BtLongDoubleItem;
 import com.example.filterapp.classes.FilterDetails;
 import com.example.filterapp.classes.ServiceDetails;
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.Wave;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -44,11 +51,14 @@ public class HistoryList extends AppCompatActivity implements BtAdapterDouble.Bt
     List<String> filterIDList = new LinkedList<>();
     RecyclerView.Adapter adapter;
     int collectionCounter;
+    Dialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history_list);
+
+        loadingDialog = new Dialog(this);
 
         staffID = getIntent().getStringExtra("staffID");
         chosenOption = getIntent().getStringExtra("chosenOption");
@@ -178,7 +188,15 @@ public class HistoryList extends AppCompatActivity implements BtAdapterDouble.Bt
 
     @Override
     public void btDoubleListener(int position) {
+        ProgressBar progressBar;
+        final Sprite style = new Wave();
+        loadingDialog.setContentView(R.layout.pop_up_loading_screen);
+        loadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        progressBar = loadingDialog.findViewById(R.id.sk_loadingPU);
+        progressBar.setIndeterminateDrawable(style);
+        loadingDialog.show();
 
+        loadingDialog.setCanceledOnTouchOutside(false);
         if (chosenOption.equalsIgnoreCase("0")) {
 
             Intent intent = new Intent(HistoryList.this, SalesDetails.class);
@@ -194,6 +212,14 @@ public class HistoryList extends AppCompatActivity implements BtAdapterDouble.Bt
             intent.putExtra("filterID", filterIDList.get(position));
             startActivity(intent);
         }
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loadingDialog.dismiss();
+            }
+        }, 200);
     }
 
     public void back(View view) {

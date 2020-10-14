@@ -21,7 +21,7 @@ public class ServiceDetails implements Parcelable {
 
 
     public ServiceDetails() {
-        this("", "", "", "", "", "",
+        this("", "", "", "", "", "No note provided",
                 "-", "-", "-", "-", "-",
                 "0", "0", "0");
     }

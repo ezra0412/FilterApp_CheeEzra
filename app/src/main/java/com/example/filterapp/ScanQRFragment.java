@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -160,13 +161,19 @@ public class ScanQRFragment extends Fragment {
                                 if (task.isSuccessful()) {
                                     DocumentSnapshot documentSnapshot = task.getResult();
                                     if (documentSnapshot.exists()) {
-                                        loadingDialog.dismiss();
                                         message.setVisibility(View.INVISIBLE);
                                         Intent intent = new Intent(getActivity(), FilterDetail.class);
                                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         intent.putExtra("filterDetails", documentSnapshot.toObject(FilterDetails.class));
                                         intent.putExtra("documentID", scanResult);
                                         startActivity(intent);
+                                        Handler handler = new Handler();
+                                        handler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                loadingDialog.dismiss();
+                                            }
+                                        }, 200);
                                     } else {
                                         loadingDialog.dismiss();
                                         message.setText("No result found");

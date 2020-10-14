@@ -65,6 +65,7 @@
                     android:layout_marginTop="24dp"
                     android:layout_marginEnd="24dp"
                     android:layout_marginBottom="24dp"
+                    app:cardBackgroundColor="@color/light_green"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -78,11 +79,10 @@
                         <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginBottom="8dp"
-                            app:cardBackgroundColor="@color/light_green"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginEnd="4dp"
+                            android:layout_marginBottom="4dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -92,185 +92,167 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent">
 
-                                <androidx.cardview.widget.CardView
-                                    android:layout_width="match_parent"
+                                <TextView
+                                    android:id="@+id/textView196"
+                                    style="@style/lable"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="4dp"
-                                    android:layout_marginTop="4dp"
-                                    android:layout_marginEnd="4dp"
-                                    android:layout_marginBottom="4dp"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginTop="16dp"
+                                    android:layout_marginBottom="32dp"
+                                    android:text="Invoice Number:"
                                     app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent">
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintVertical_bias="0.0" />
 
-                                    <androidx.constraintlayout.widget.ConstraintLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent">
+                                <TextView
+                                    android:id="@+id/tv_invNum_salesDetails"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/archivo_narrow_bold"
+                                    android:onClick="openFilterDetails"
+                                    android:textColor="@color/light_green"
+                                    android:textSize="16sp"
+                                    app:layout_constraintBaseline_toBaselineOf="@+id/textView196"
+                                    app:layout_constraintEnd_toEndOf="@+id/tv_customerName_salesDetails"
+                                    app:layout_constraintStart_toStartOf="@+id/tv_customerName_salesDetails" />
 
-                                        <TextView
-                                            android:id="@+id/textView196"
-                                            style="@style/lable"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginStart="16dp"
-                                            android:layout_marginTop="16dp"
-                                            android:layout_marginBottom="32dp"
-                                            android:text="Invoice Number:"
-                                            app:layout_constraintBottom_toBottomOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="parent"
-                                            app:layout_constraintVertical_bias="0.0" />
+                                <TextView
+                                    android:id="@+id/textView199"
+                                    style="@style/lable"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="16dp"
+                                    android:text="Customer Name:"
+                                    app:layout_constraintStart_toStartOf="@+id/textView196"
+                                    app:layout_constraintTop_toBottomOf="@+id/tv_invNum_salesDetails" />
 
-                                        <TextView
-                                            android:id="@+id/tv_invNum_salesDetails"
-                                            android:layout_width="0dp"
-                                            android:layout_height="wrap_content"
-                                            android:fontFamily="@font/archivo_narrow_bold"
-                                            android:onClick="openFilterDetails"
-                                            android:textColor="@color/light_green"
-                                            android:textSize="16sp"
-                                            app:layout_constraintBaseline_toBaselineOf="@+id/textView196"
-                                            app:layout_constraintEnd_toEndOf="@+id/tv_customerName_salesDetails"
-                                            app:layout_constraintStart_toStartOf="@+id/tv_customerName_salesDetails" />
+                                <TextView
+                                    android:id="@+id/textView200"
+                                    style="@style/lable"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="16dp"
+                                    android:text="Date:"
+                                    app:layout_constraintStart_toStartOf="@+id/textView199"
+                                    app:layout_constraintTop_toBottomOf="@+id/tv_customerName_salesDetails" />
 
-                                        <TextView
-                                            android:id="@+id/textView199"
-                                            style="@style/lable"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginTop="16dp"
-                                            android:text="Customer Name:"
-                                            app:layout_constraintStart_toStartOf="@+id/textView196"
-                                            app:layout_constraintTop_toBottomOf="@+id/tv_invNum_salesDetails" />
+                                <TextView
+                                    android:id="@+id/textView202"
+                                    style="@style/lable"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:text="Time:"
+                                    app:layout_constraintBaseline_toBaselineOf="@+id/tv_date_salesDetails"
+                                    app:layout_constraintStart_toEndOf="@+id/tv_date_salesDetails" />
 
-                                        <TextView
-                                            android:id="@+id/textView200"
-                                            style="@style/lable"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginTop="16dp"
-                                            android:text="Date:"
-                                            app:layout_constraintStart_toStartOf="@+id/textView199"
-                                            app:layout_constraintTop_toBottomOf="@+id/tv_customerName_salesDetails" />
+                                <TextView
+                                    android:id="@+id/tv_time_salesDetails"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginEnd="16dp"
+                                    android:fontFamily="@font/archivo_narrow"
+                                    android:textColor="@color/text_color"
+                                    android:textSize="16sp"
+                                    app:layout_constraintBaseline_toBaselineOf="@+id/textView202"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/textView202" />
 
-                                        <TextView
-                                            android:id="@+id/textView202"
-                                            style="@style/lable"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginStart="16dp"
-                                            android:text="Time:"
-                                            app:layout_constraintBaseline_toBaselineOf="@+id/tv_date_salesDetails"
-                                            app:layout_constraintStart_toEndOf="@+id/tv_date_salesDetails" />
+                                <TextView
+                                    android:id="@+id/tv_date_salesDetails"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:fontFamily="@font/archivo_narrow"
+                                    android:textColor="@color/text_color"
+                                    android:textSize="16sp"
+                                    app:layout_constraintBaseline_toBaselineOf="@+id/textView200"
+                                    app:layout_constraintStart_toEndOf="@+id/textView200" />
 
-                                        <TextView
-                                            android:id="@+id/tv_time_salesDetails"
-                                            android:layout_width="0dp"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginStart="16dp"
-                                            android:layout_marginEnd="16dp"
-                                            android:fontFamily="@font/archivo_narrow"
-                                            android:textColor="@color/text_color"
-                                            android:textSize="16sp"
-                                            app:layout_constraintBaseline_toBaselineOf="@+id/textView202"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toEndOf="@+id/textView202" />
+                                <TextView
+                                    android:id="@+id/textView204"
+                                    style="@style/lable"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="16dp"
+                                    android:text="Filter Model :"
+                                    app:layout_constraintStart_toStartOf="@+id/textView200"
+                                    app:layout_constraintTop_toBottomOf="@+id/textView200" />
 
-                                        <TextView
-                                            android:id="@+id/tv_date_salesDetails"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginStart="16dp"
-                                            android:fontFamily="@font/archivo_narrow"
-                                            android:textColor="@color/text_color"
-                                            android:textSize="16sp"
-                                            app:layout_constraintBaseline_toBaselineOf="@+id/textView200"
-                                            app:layout_constraintStart_toEndOf="@+id/textView200" />
+                                <TextView
+                                    android:id="@+id/textView205"
+                                    style="@style/lable"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="16dp"
+                                    android:text="Sold Price :"
+                                    app:layout_constraintStart_toStartOf="@+id/textView204"
+                                    app:layout_constraintTop_toBottomOf="@+id/textView204" />
 
-                                        <TextView
-                                            android:id="@+id/textView204"
-                                            style="@style/lable"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginTop="16dp"
-                                            android:text="Filter Model :"
-                                            app:layout_constraintStart_toStartOf="@+id/textView200"
-                                            app:layout_constraintTop_toBottomOf="@+id/textView200" />
+                                <TextView
+                                    android:id="@+id/textView206"
+                                    style="@style/lable"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="16dp"
+                                    android:layout_marginBottom="16dp"
+                                    android:text="Comission :"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="@+id/textView205"
+                                    app:layout_constraintTop_toBottomOf="@+id/textView205"
+                                    app:layout_constraintVertical_bias="0.0" />
 
-                                        <TextView
-                                            android:id="@+id/textView205"
-                                            style="@style/lable"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginTop="16dp"
-                                            android:text="Sold Price :"
-                                            app:layout_constraintStart_toStartOf="@+id/textView204"
-                                            app:layout_constraintTop_toBottomOf="@+id/textView204" />
+                                <TextView
+                                    android:id="@+id/tv_customerName_salesDetails"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginEnd="16dp"
+                                    android:fontFamily="@font/archivo_narrow_bold"
+                                    android:onClick="openCustomer"
+                                    android:textColor="@color/light_green"
+                                    android:textSize="16sp"
+                                    app:layout_constraintBaseline_toBaselineOf="@+id/textView199"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/textView199" />
 
-                                        <TextView
-                                            android:id="@+id/textView206"
-                                            style="@style/lable"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginTop="16dp"
-                                            android:layout_marginBottom="16dp"
-                                            android:text="Comission :"
-                                            app:layout_constraintBottom_toBottomOf="parent"
-                                            app:layout_constraintStart_toStartOf="@+id/textView205"
-                                            app:layout_constraintTop_toBottomOf="@+id/textView205"
-                                            app:layout_constraintVertical_bias="0.0" />
+                                <TextView
+                                    android:id="@+id/tv_fModel_salesDetails"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginEnd="16dp"
+                                    android:fontFamily="@font/archivo_narrow"
+                                    android:textColor="@color/text_color"
+                                    android:textSize="16sp"
+                                    app:layout_constraintBaseline_toBaselineOf="@+id/textView204"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/textView204" />
 
-                                        <TextView
-                                            android:id="@+id/tv_customerName_salesDetails"
-                                            android:layout_width="0dp"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginStart="16dp"
-                                            android:layout_marginEnd="16dp"
-                                            android:fontFamily="@font/archivo_narrow_bold"
-                                            android:onClick="openCustomer"
-                                            android:textColor="@color/light_green"
-                                            android:textSize="16sp"
-                                            app:layout_constraintBaseline_toBaselineOf="@+id/textView199"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toEndOf="@+id/textView199" />
+                                <TextView
+                                    android:id="@+id/tv_soldPrice_salesDetails"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/archivo_narrow"
+                                    android:textColor="@color/text_color"
+                                    android:textSize="16sp"
+                                    app:layout_constraintBaseline_toBaselineOf="@+id/textView205"
+                                    app:layout_constraintEnd_toEndOf="@+id/tv_fModel_salesDetails"
+                                    app:layout_constraintStart_toStartOf="@+id/tv_fModel_salesDetails" />
 
-                                        <TextView
-                                            android:id="@+id/tv_fModel_salesDetails"
-                                            android:layout_width="0dp"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginStart="16dp"
-                                            android:layout_marginEnd="16dp"
-                                            android:fontFamily="@font/archivo_narrow"
-                                            android:textColor="@color/text_color"
-                                            android:textSize="16sp"
-                                            app:layout_constraintBaseline_toBaselineOf="@+id/textView204"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toEndOf="@+id/textView204" />
-
-                                        <TextView
-                                            android:id="@+id/tv_soldPrice_salesDetails"
-                                            android:layout_width="0dp"
-                                            android:layout_height="wrap_content"
-                                            android:fontFamily="@font/archivo_narrow"
-                                            android:textColor="@color/text_color"
-                                            android:textSize="16sp"
-                                            app:layout_constraintBaseline_toBaselineOf="@+id/textView205"
-                                            app:layout_constraintEnd_toEndOf="@+id/tv_fModel_salesDetails"
-                                            app:layout_constraintStart_toStartOf="@+id/tv_fModel_salesDetails" />
-
-                                        <TextView
-                                            android:id="@+id/tv_comission_salesDetails"
-                                            android:layout_width="0dp"
-                                            android:layout_height="wrap_content"
-                                            android:fontFamily="@font/archivo_narrow"
-                                            android:textSize="16sp"
-                                            app:layout_constraintBaseline_toBaselineOf="@+id/textView206"
-                                            app:layout_constraintEnd_toEndOf="@+id/tv_soldPrice_salesDetails"
-                                            app:layout_constraintStart_toStartOf="@+id/tv_soldPrice_salesDetails"
-                                            android:textColor="@color/text_color" />
-                                    </androidx.constraintlayout.widget.ConstraintLayout>
-                                </androidx.cardview.widget.CardView>
+                                <TextView
+                                    android:id="@+id/tv_comission_salesDetails"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/archivo_narrow"
+                                    android:textColor="@color/text_color"
+                                    android:textSize="16sp"
+                                    app:layout_constraintBaseline_toBaselineOf="@+id/textView206"
+                                    app:layout_constraintEnd_toEndOf="@+id/tv_soldPrice_salesDetails"
+                                    app:layout_constraintStart_toStartOf="@+id/tv_soldPrice_salesDetails" />
                             </androidx.constraintlayout.widget.ConstraintLayout>
                         </androidx.cardview.widget.CardView>
                     </androidx.constraintlayout.widget.ConstraintLayout>

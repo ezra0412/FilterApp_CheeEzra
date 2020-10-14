@@ -239,6 +239,8 @@ public class FilterDetail extends AppCompatActivity {
             Intent intent = new Intent(FilterDetail.this, ServiceFilter.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra("documentID", documentID);
+            intent.putExtra("customerDetails",customerDetails);
+            intent.putExtra("filterDetails",filterDetails);
             startActivity(intent);
         }
     }
@@ -257,6 +259,7 @@ public class FilterDetail extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
         setFilterDetails();
     }
 
