@@ -1,9 +1,5 @@
 package com.example.filterapp.fcm;
 
-import android.provider.ContactsContract;
-import android.util.Log;
-import android.widget.Toast;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -140,7 +136,7 @@ public class AppNotification {
         this.staffDeleted = staffDeleted;
     }
 
-    public JsonObjectRequest sendNotification(String topic, String title, String body) {
+    public JsonObjectRequest sendNotification(String topic, String title, String body, String from, String staffID, String customerID, String filterID, String serviceID) {
         JSONObject mainObj = new JSONObject();
         String URL = "https://fcm.googleapis.com/fcm/send";
         try {
@@ -149,9 +145,34 @@ public class AppNotification {
             notificationObj.put("title", title);
             notificationObj.put("body", body);
             notificationObj.put("sound", "default");
-            mainObj.put("data", notificationObj);
+
+            JSONObject extraData = new JSONObject();
+            if (from.equals("1")||from.equals("2")||from.equals("3")||from.equals("11")){
+                notificationObj.put("from123",from);
+                notificationObj.put("staffID",staffID);
+            }
+
+            else if (from.equals("4")||from.equals("5")){
+                notificationObj.put("from123",from);
+                notificationObj.put("customerID",customerID);
+            }
+
+            else if(from.equals("6")){
+                notificationObj.put("from123",from);
+                notificationObj.put("filterID",filterID);
+            }
+
+            else if(from.equals("7")){
+                notificationObj.put("from123",""+from);
+                notificationObj.put("filterID",filterID);
+                notificationObj.put("serviceID",serviceID);
+            }else
+                notificationObj.put("from123",from);
+
             JSONObject priority = new JSONObject();
             priority.put("priority", "high");
+            //mainObj.put("notification", notificationObj);
+            mainObj.put("data",notificationObj);
             mainObj.put("android", priority);
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,
                     mainObj, new Response.Listener<JSONObject>() {

@@ -9,7 +9,7 @@ import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
-import com.example.filterapp.LoginPage;
+import com.example.filterapp.MainActivity;
 import com.example.filterapp.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -34,6 +34,60 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String title = remoteMessage.getData().get("title");
         String body = remoteMessage.getData().get("body");
 
+
+        Intent intent = new Intent(this, MainActivity.class);
+
+
+       if (remoteMessage.getData().get("from123").equals("1")){
+           intent.putExtra("from123",remoteMessage.getData().get("from123"));
+           intent.putExtra("staffID",remoteMessage.getData().get("staffID"));
+       }
+
+       else if (remoteMessage.getData().get("from123").equals("2")){
+           intent.putExtra("from123",remoteMessage.getData().get("from123"));
+           intent.putExtra("staffID",remoteMessage.getData().get("staffID"));
+        }
+
+       else if (remoteMessage.getData().get("from123").equals("3")){
+           intent.putExtra("from123",remoteMessage.getData().get("from123"));
+           intent.putExtra("staffID",remoteMessage.getData().get("staffID"));
+       }
+
+       else if (remoteMessage.getData().get("from123").equals("11")){
+           intent.putExtra("from123",remoteMessage.getData().get("from123"));
+           intent.putExtra("staffID",remoteMessage.getData().get("staffID"));
+       }
+
+       else if (remoteMessage.getData().get("from123").equals("4")){
+           intent.putExtra("from123",remoteMessage.getData().get("from123"));
+           intent.putExtra("staffID",remoteMessage.getData().get("customerID"));
+
+       }
+
+       else if (remoteMessage.getData().get("from123").equals("5")){
+           intent.putExtra("from123",remoteMessage.getData().get("from123"));
+           intent.putExtra("staffID",remoteMessage.getData().get("customerID"));
+
+       }
+
+       else if (remoteMessage.getData().get("from123").equals("6")){
+           intent.putExtra("from123",remoteMessage.getData().get("from123"));
+           intent.putExtra("staffID",remoteMessage.getData().get("filterID"));
+
+       }
+
+       else if (remoteMessage.getData().get("from123").equals("7")){
+           intent.putExtra("from123",remoteMessage.getData().get("from123"));
+           intent.putExtra("staffID",remoteMessage.getData().get("filterID"));
+           intent.putExtra("staffID",remoteMessage.getData().get("serviceID"));
+
+       }else
+           intent.putExtra("from123",remoteMessage.getData().get("from123"));
+
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 10, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, "Ashita")
                         .setContentTitle(title)
@@ -42,8 +96,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText(body));
 
-        Intent intent = new Intent(this, LoginPage.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 10, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         notificationBuilder.setContentIntent(pendingIntent);
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -57,6 +109,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         notificationManager.notify(id, notificationBuilder.build());
     }
+
 
     private void sendRegistrationToServer(String token) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();

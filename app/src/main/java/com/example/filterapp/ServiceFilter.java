@@ -723,7 +723,7 @@ public class ServiceFilter extends AppCompatActivity {
         String body = staffDetailsStatic.fullName() + " had just finished servicing " + customerDetails.fullName()
                 + "'s filter.\nService price: RM " + serviceDetails.getServicePrice();
         AppNotification appNotificationSend = new AppNotification();
-        requestQueue.add(appNotificationSend.sendNotification("serviceDone", title, body));
+        requestQueue.add(appNotificationSend.sendNotification("serviceDone", title, body,"7","","",documentID,serviceDetails.getServiceID()));
 
         if (!customerDetails.getEmail().equalsIgnoreCase("-"))
             sentCustomerEmail();

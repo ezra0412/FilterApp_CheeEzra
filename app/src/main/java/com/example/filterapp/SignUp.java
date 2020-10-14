@@ -563,7 +563,7 @@ public class SignUp extends AppCompatActivity {
                                             String title = "New Staff Sign Up";
                                             String body = staffDetails.fullName() + " had signed up as " + staffDetails.getPosition() + ".";
                                             AppNotification appNotificationSend = new AppNotification();
-                                            requestQueue.add(appNotificationSend.sendNotification("staffSignUp", title, body));
+                                            requestQueue.add(appNotificationSend.sendNotification("staffSignUp", title, body,"0",mAuth.getCurrentUser().getUid(),"","",""));
 
                                             if (staffDetails.getPosition().equalsIgnoreCase("admin")) {
 
@@ -834,7 +834,7 @@ public class SignUp extends AppCompatActivity {
                     String title = "New Staff Sign Up";
                     String body = staffDetails.fullName() + " had signed up as " + staffDetails.getPosition() + ".";
                     AppNotification appNotificationSend = new AppNotification();
-                    requestQueue.add(appNotificationSend.sendNotification("staffSignUp", title, body));
+                    requestQueue.add(appNotificationSend.sendNotification("staffSignUp", title, body,"0",mAuth.getCurrentUser().getUid(),"","",""));
 
                     CollectionReference adminEmails = db.collection("adminDetails").document("adminList").
                             collection("emailNotificationPreference");

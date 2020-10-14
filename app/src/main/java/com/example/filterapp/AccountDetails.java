@@ -688,7 +688,7 @@ public class AccountDetails extends AppCompatActivity {
                     String title = "Staff Changed Position";
                     String body = user.get("fName") + " " + user.get("lName") + " From " + oldPosition + " -> " + user.get("position");
                     AppNotification sendAppNotification = new AppNotification();
-                    requestQueue1.add(sendAppNotification.sendNotification("changePosition", title, body));
+                    requestQueue1.add(sendAppNotification.sendNotification("changePosition", title, body,"3",mAuth.getCurrentUser().getUid(),"","",""));
 
                 }
                 break;
@@ -746,7 +746,7 @@ public class AccountDetails extends AppCompatActivity {
                     String title = "Staff Changed Position";
                     String body = user.get("fName") + " " + user.get("lName") + " From " + oldPosition + " -> " + user.get("position");
                     AppNotification sendAppNotification = new AppNotification();
-                    requestQueue1.add(sendAppNotification.sendNotification("changePosition", title, body));
+                    requestQueue1.add(sendAppNotification.sendNotification("changePosition", title, body,"3",mAuth.getCurrentUser().getUid(),"","",""));
                 }
                 break;
             }
@@ -804,7 +804,7 @@ public class AccountDetails extends AppCompatActivity {
                     String title = "Staff Changed Position";
                     String body = user.get("fName") + " " + user.get("lName") + " From " + oldPosition + " -> " + user.get("position");
                     AppNotification sendAppNotification = new AppNotification();
-                    requestQueue1.add(sendAppNotification.sendNotification("changePosition", title, body));
+                    requestQueue1.add(sendAppNotification.sendNotification("changePosition", title, body,"3",""+mAuth.getCurrentUser().getUid(),"","",""));
 
                 }
                 break;
@@ -831,7 +831,7 @@ public class AccountDetails extends AppCompatActivity {
                 String title = "Staff Changed Branch";
                 String body = user.get("fName") + " " + user.get("lName") + " From LG -> PB";
                 AppNotification sendAppNotification = new AppNotification();
-                requestQueue2.add(sendAppNotification.sendNotification("changeBranch", title, body));
+                requestQueue2.add(sendAppNotification.sendNotification("changeBranch", title, body,"2",""+mAuth.getCurrentUser().getUid(),"","",""));
             } else if (branch.equalsIgnoreCase("PT")) {
                 CollectionReference adminEmails = db.collection("adminDetails").document("adminList")
                         .collection("emailNotificationPreference");
@@ -850,7 +850,7 @@ public class AccountDetails extends AppCompatActivity {
                 String title = "Staff Changed Branch";
                 String body = user.get("fName") + " " + user.get("lName") + " From LG -> PT";
                 AppNotification sendAppNotification = new AppNotification();
-                requestQueue2.add(sendAppNotification.sendNotification("changeBranch", title, body));
+                requestQueue2.add(sendAppNotification.sendNotification("changeBranch", title, body,"2",""+mAuth.getCurrentUser().getUid(),"","",""));
             }
 
         } else if (getStaffDetailsStatic().getBranch().equalsIgnoreCase("PB")) {
@@ -872,7 +872,7 @@ public class AccountDetails extends AppCompatActivity {
                 String title = "Staff Changed Branch";
                 String body = user.get("fName") + " " + user.get("lName") + " From PB -> LG";
                 AppNotification sendAppNotification = new AppNotification();
-                requestQueue2.add(sendAppNotification.sendNotification("changeBranch", title, body));
+                requestQueue2.add(sendAppNotification.sendNotification("changeBranch", title, body,"2",""+mAuth.getCurrentUser().getUid(),"","",""));
 
             } else if (branch.equalsIgnoreCase("PT")) {
                 CollectionReference adminEmails = db.collection("adminDetails").document("adminList")
@@ -892,7 +892,7 @@ public class AccountDetails extends AppCompatActivity {
                 String title = "Staff Changed Branch";
                 String body = user.get("fName") + " " + user.get("lName") + " From PB -> PT";
                 AppNotification sendAppNotification = new AppNotification();
-                requestQueue2.add(sendAppNotification.sendNotification("changeBranch", title, body));
+                requestQueue2.add(sendAppNotification.sendNotification("changeBranch", title, body,"2",""+mAuth.getCurrentUser().getUid(),"","",""));
             }
         } else if (getStaffDetailsStatic().getBranch().equalsIgnoreCase("PT")) {
             if (branch.equalsIgnoreCase("LG")) {
@@ -913,7 +913,7 @@ public class AccountDetails extends AppCompatActivity {
                 String title = "Staff Changed Branch";
                 String body = user.get("fName") + " " + user.get("lName") + " From PT -> LG";
                 AppNotification sendAppNotification = new AppNotification();
-                requestQueue2.add(sendAppNotification.sendNotification("changeBranch", title, body));
+                requestQueue2.add(sendAppNotification.sendNotification("changeBranch", title, body,"2",mAuth.getCurrentUser().getUid(),"","",""));
             } else if (branch.equalsIgnoreCase("PB")) {
                 CollectionReference adminEmails = db.collection("adminDetails").document("adminList")
                         .collection("emailNotificationPreference");
@@ -932,7 +932,7 @@ public class AccountDetails extends AppCompatActivity {
                 String title = "Staff Changed Branch";
                 String body = user.get("fName") + " " + user.get("lName") + " From PT -> PB";
                 AppNotification sendAppNotification = new AppNotification();
-                requestQueue2.add(sendAppNotification.sendNotification("changeBranch", title, body));
+                requestQueue2.add(sendAppNotification.sendNotification("changeBranch", title, body,"2",mAuth.getCurrentUser().getUid(),"","",""));
             }
         }
 

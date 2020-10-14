@@ -1,9 +1,5 @@
 package com.example.filterapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,12 +10,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.example.filterapp.classes.Address;
-import com.example.filterapp.fcm.AppNotification;
 import com.example.filterapp.classes.CustomerDetails;
 import com.example.filterapp.classes.JavaMailAPI;
+import com.example.filterapp.fcm.AppNotification;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -39,6 +39,7 @@ public class GPS extends AppCompatActivity {
     String name, mobile, address;
     Double lan, lon;
     String fName;
+    String customerID;
     CardView CVcustomerDetails;
     TextView mName, mPhone, mAddress, navigateBy, mFName, mMobile;
     EditText etFName, etMobile;
@@ -79,6 +80,7 @@ public class GPS extends AppCompatActivity {
             mSearch.setVisibility(View.VISIBLE);
 
         } else {
+            customerID = getIntent().getStringExtra("customerID");
             CVcustomerDetails.setVisibility(View.VISIBLE);
             navigateBy.setVisibility(View.VISIBLE);
             mGoogle.setVisibility(View.VISIBLE);
@@ -115,6 +117,8 @@ public class GPS extends AppCompatActivity {
             etMobile.requestFocus();
             return;
         }
+
+        customerID = fName.substring(0, 1).toLowerCase() + mobile;
 
         DocumentReference checkCustomer = db.collection("customerDetails").document("sorted").collection(fName.substring(0, 1).toLowerCase()).document(fName.substring(0, 1).toLowerCase() + mobile);
         checkCustomer.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -180,7 +184,7 @@ public class GPS extends AppCompatActivity {
         String title = "Staff Start Navigation";
         String body = getStaffDetailsStatic().fullName() + " started navigation to " + mName.getText().toString().trim() + " using Google Map.";
         AppNotification sendAppNotification = new AppNotification();
-        requestQueue.add(sendAppNotification.sendNotification("staffStartNavigation", title, body));
+        requestQueue.add(sendAppNotification.sendNotification("staffStartNavigation", title, body,"5","",customerID,"",""));
 
         getEmail("Google map");
         Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + lan + "," + lon + "&mode=d"));
@@ -194,7 +198,7 @@ public class GPS extends AppCompatActivity {
         String title = "Staff Started Navigation";
         String body = getStaffDetailsStatic().fullName() + " started navigation to " + mName.getText().toString().trim() + " using Waze.";
         AppNotification sendAppNotification = new AppNotification();
-        requestQueue.add(sendAppNotification.sendNotification("staffStartNavigation", title, body));
+        requestQueue.add(sendAppNotification.sendNotification("staffStartNavigation", title, body,"5","",customerID,"",""));
 
         getEmail("Waze");
         String url = "https://waze.com/ul?q=" + lan + "," + lon + "&navigate=yes";

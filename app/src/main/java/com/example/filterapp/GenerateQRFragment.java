@@ -747,7 +747,7 @@ public class GenerateQRFragment extends Fragment {
                                 + "\nPrice: Rm " + String.format("%.02f", (Double.parseDouble(price))) + "\nComission: Rm " + String.format("%.02f", (Double.parseDouble(commission)));
 
                         AppNotification appNotificationSend = new AppNotification();
-                        requestQueue.add(appNotificationSend.sendNotification("soldNewFilter", title, body));
+                        requestQueue.add(appNotificationSend.sendNotification("soldNewFilter", title, body,"6","","",documentID,""));
 
                         CollectionReference adminEmails = db.collection("adminDetails").document("adminList").collection("emailNotificationPreference");
                         adminEmails.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {

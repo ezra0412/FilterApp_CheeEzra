@@ -210,12 +210,11 @@ public class StaffDetail extends AppCompatActivity {
                                     }
                                 });
 
-                                String title = "Admin Changed Staff's Branch";
+                                String title = "Admin Deleted Staff Account";
                                 String body = staffDetailsStatic.fullName()
-                                        + " changed " + staffDetailsThis.fullName() + " branch from " + staffDetailsThis.getBranch()
-                                        + " -> " + branch;
+                                        + " deleted " + staffDetailsThis.fullName() + "'s account";
                                 AppNotification sendAppNotification = new AppNotification();
-                                requestQueue2.add(sendAppNotification.sendNotification("changeBranch", title, body));
+                                requestQueue2.add(sendAppNotification.sendNotification("changeBranch", title, body,"11",staffID,"","",""));
                                 loadingDialog.dismiss();
                                 Toast.makeText(StaffDetail.this, "Staff Deleted", Toast.LENGTH_SHORT).show();
                                 onBackPressed();

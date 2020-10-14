@@ -400,7 +400,7 @@ public class EditStaffDetails extends AppCompatActivity {
                         + " changed " + staffDetailsThis.fullName() + " position from " + staffDetailsThis.getPosition()
                         + " -> " + position;
                 AppNotification sendAppNotification = new AppNotification();
-                requestQueue2.add(sendAppNotification.sendNotification("changePosition", title, body));
+                requestQueue2.add(sendAppNotification.sendNotification("changePosition", title, body,"3","","","",""));
 
                 if (staffDetailsThis.getPosition().equalsIgnoreCase("admin")) {
                     FirebaseMessaging.getInstance().unsubscribeFromTopic("staffSignUp");
@@ -534,7 +534,7 @@ public class EditStaffDetails extends AppCompatActivity {
                         + " changed " + staffDetailsThis.fullName() + " branch from " + staffDetailsThis.getBranch()
                         + " -> " + branch;
                 AppNotification sendAppNotification = new AppNotification();
-                requestQueue3.add(sendAppNotification.sendNotification("changeBranch", title, body));
+                requestQueue3.add(sendAppNotification.sendNotification("changeBranch", title, body,"2",staffID,"","",""));
 
 
                 AppNotification appNotification = new AppNotification();

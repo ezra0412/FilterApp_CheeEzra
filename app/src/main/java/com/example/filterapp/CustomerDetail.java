@@ -118,6 +118,7 @@ public class CustomerDetail extends AppCompatActivity {
 
     public void locate(View view) {
         Intent GpsPage = new Intent(CustomerDetail.this, GPS.class);
+        GpsPage.putExtra("customerID",customerID);
         GpsPage.putExtra("lan", defAdd.getLan());
         GpsPage.putExtra("lon", defAdd.getLon());
         GpsPage.putExtra("name", customerDetails.fullName());
@@ -155,7 +156,7 @@ public class CustomerDetail extends AppCompatActivity {
                                     String title = "Customer Restored";
                                     String body = customerDetails.fullName() + " is being restored by " + getStaffDetailsStatic().fullName() + ".";
                                     AppNotification sendAppNotification = new AppNotification();
-                                    requestQueue.add(sendAppNotification.sendNotification("customerDeleted", title, body));
+                                    requestQueue.add(sendAppNotification.sendNotification("customerDeleted", title, body,"4","",customerID,"",""));
                                 }
                             });
                             delete.setText("TERMINATE");
@@ -238,7 +239,7 @@ public class CustomerDetail extends AppCompatActivity {
                                         String title = "Customer Terminated";
                                         String body = customerDetails.fullName() + " is being terminate by " + getStaffDetailsStatic().fullName() + ".";
                                         AppNotification sendAppNotification = new AppNotification();
-                                        requestQueue.add(sendAppNotification.sendNotification("customerDeleted", title, body));
+                                        requestQueue.add(sendAppNotification.sendNotification("customerDeleted", title, body,"4","",customerID,"",""));
 
 
                                         delete.setText("Restore");
@@ -390,7 +391,7 @@ public class CustomerDetail extends AppCompatActivity {
                                                             String title = "Customer Terminated";
                                                             String body = customerDetails.fullName() + " is being terminated by " + getStaffDetailsStatic().fullName() + ".";
                                                             AppNotification sendAppNotification = new AppNotification();
-                                                            requestQueue.add(sendAppNotification.sendNotification("customerDeleted", title, body));
+                                                            requestQueue.add(sendAppNotification.sendNotification("customerDeleted", title, body,"4","",customerID,"",""));
 
 
                                                             delete.setText("Restore");
