@@ -29,8 +29,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.FileProvider;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+import com.example.filterapp.classes.CustomerDetails;
 import com.example.filterapp.classes.FilterDetails;
+import com.example.filterapp.classes.JavaMailAPI;
 import com.example.filterapp.classes.ServiceDetails;
+import com.example.filterapp.fcm.AppNotification;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.Wave;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -38,10 +43,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.karumi.dexter.Dexter;
@@ -54,15 +61,18 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.example.filterapp.FilterDetail.imageBit;
 import static com.example.filterapp.FilterDetail.serviced;
+import static com.example.filterapp.MainActivity.staffDetailsStatic;
 
 
 public class ServiceFilter extends AppCompatActivity {
@@ -77,6 +87,7 @@ public class ServiceFilter extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FilterDetails filterDetails = new FilterDetails();
+    CustomerDetails customerDetails = new CustomerDetails();
     boolean filter1Bool = false, filter2Bool = false, filter3Bool = false, filter4Bool = false, filter5Bool = false;
     Dialog filterDialog, filterCDialog, filterMDialog, filterPDialog;
     String chosenFilter = "";
@@ -85,6 +96,8 @@ public class ServiceFilter extends AppCompatActivity {
     Bitmap bitmap;
     StorageReference storageReference = FirebaseStorage.getInstance().getReference();
     Dialog loadingDialog;
+    RequestQueue requestQueue;
+    ServiceDetails serviceDetails = new ServiceDetails();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,40 +124,34 @@ public class ServiceFilter extends AppCompatActivity {
         filterMDialog = new Dialog(this);
         filterPDialog = new Dialog(this);
         documentID = getIntent().getStringExtra("documentID");
-        String year = documentID.substring(0, 4);
-        String month = documentID.substring(4, 7);
         serviced = false;
         constrainLayout = findViewById(R.id.cl_serviceFilter);
 
-        DocumentReference getFilterDetails = db.collection("sales").document(year).collection(month).document(documentID);
-        getFilterDetails.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                storeFilterDetails(documentSnapshot.toObject(FilterDetails.class));
+        customerDetails = getIntent().getParcelableExtra("customerDetails");
 
-                FilterDetails filterDetail2 = documentSnapshot.toObject(FilterDetails.class);
+        filterDetails = getIntent().getParcelableExtra("filterDetails");
 
-                if (filterDetail2.getFilter1().equalsIgnoreCase("-"))
-                    counter--;
+        requestQueue = Volley.newRequestQueue(this);
 
-                if (filterDetail2.getFilter2().equalsIgnoreCase("-"))
-                    counter--;
 
-                if (filterDetail2.getFilter3().equalsIgnoreCase("-"))
-                    counter--;
+        if (filterDetails.getFilter1().equalsIgnoreCase("-"))
+            counter--;
 
-                if (filterDetail2.getFilter4().equalsIgnoreCase("-"))
-                    counter--;
+        if (filterDetails.getFilter2().equalsIgnoreCase("-"))
+            counter--;
 
-                if (filterDetail2.getFilter5().equalsIgnoreCase("-"))
-                    counter--;
-            }
-        });
+        if (filterDetails.getFilter3().equalsIgnoreCase("-"))
+            counter--;
+
+        if (filterDetails.getFilter4().equalsIgnoreCase("-"))
+            counter--;
+
+        if (filterDetails.getFilter5().equalsIgnoreCase("-"))
+            counter--;
+
+
     }
 
-    private void storeFilterDetails(FilterDetails filterDetails) {
-        this.filterDetails = filterDetails;
-    }
 
     public void filter1(View view) {
         mFilter1.setBackground(getDrawable(R.drawable.spinner_open));
@@ -629,7 +636,6 @@ public class ServiceFilter extends AppCompatActivity {
         int hour = timeNow.getHour();
         int minute = timeNow.getMinute();
 
-        ServiceDetails serviceDetails = new ServiceDetails();
 
         if (!uploadPicture) {
             loadingDialog.dismiss();
@@ -713,7 +719,26 @@ public class ServiceFilter extends AppCompatActivity {
         String year = serviceDetails.getServiceID().substring(0, 4);
         final String month = serviceDetails.getServiceID().substring(4, 7);
 
+        String title = "Service Done";
+        String body = staffDetailsStatic.fullName() + " had just finished servicing " + customerDetails.fullName()
+                + "'s filter.\nService price: RM " + serviceDetails.getServicePrice();
+        AppNotification appNotificationSend = new AppNotification();
+        requestQueue.add(appNotificationSend.sendNotification("serviceDone", title, body));
 
+        if (!customerDetails.getEmail().equalsIgnoreCase("-"))
+            sentCustomerEmail();
+
+        CollectionReference adminEmails = db.collection("adminDetails").document("adminList").collection("emailNotificationPreference");
+        adminEmails.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                    if (documentSnapshot.getBoolean("serviceDone")) {
+                        sendAdminEmail(documentSnapshot.getString("email"));
+                    }
+                }
+            }
+        });
 
         final DocumentReference updateFilterDetails = db.collection("sales").document(year).collection(month).document(documentID);
 
@@ -756,6 +781,62 @@ public class ServiceFilter extends AppCompatActivity {
                 Toast.makeText(ServiceFilter.this, "Error happened, please try again later", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void sentCustomerEmail() {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss ");
+        Date dt = new Date();
+        String message;
+
+        message = "Dear " + customerDetails.fullName() + ","
+                + "\tYour filter is being serviced by " + staffDetailsStatic.fullName() + " at " + formatter.format(dt) + ". \n\n"
+                + "\t------ Service Summary ------\n"
+                + "\tFilter 1: " + serviceDetails.getChangedFilter1() + "\n"
+                + "\tFilter 2: " + serviceDetails.getChangedFilter2() + "\n"
+                + "\tFilter 3: " + serviceDetails.getChangedFilter3() + "\n"
+                + "\tFilter 4: " + serviceDetails.getChangedFilter4() + "\n"
+                + "\tFilter 5: " + serviceDetails.getChangedFilter5() + "\n"
+                + "\tWT: "+serviceDetails.getChangedWt()+"\n"
+                + "\tWT-S: "+serviceDetails.getChangedWt_s()+"\n"
+                + "\tFCD: "+serviceDetails.getChangedFC_D()+"\n\n"
+                +"Total service price = RM "+serviceDetails.getServicePrice()+"\n\n"
+                +"\tIf the amount money you paid is different, please contact us and we will help you to look into it."
+                +" Thank you and have a nice day.\n\n"
+                +"Your Sincerely\n"
+                +"Ashita";
+
+
+        JavaMailAPI javaMailAPI = new JavaMailAPI(this, customerDetails.getEmail(),
+                "Service Summary", message);
+
+        javaMailAPI.execute();
+
+    }
+
+    private void sendAdminEmail(String email) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss ");
+        Date dt = new Date();
+        String message;
+
+        message = staffDetailsStatic.fullName() +" serviced "+ customerDetails.fullName()+ "'s filter at " + formatter.format(dt) + ". \n\n"
+                + "\t------ Service Summary ------\n"
+                + "\tFilter 1: " + serviceDetails.getChangedFilter1() + "\n"
+                + "\tFilter 2: " + serviceDetails.getChangedFilter2() + "\n"
+                + "\tFilter 3: " + serviceDetails.getChangedFilter3() + "\n"
+                + "\tFilter 4: " + serviceDetails.getChangedFilter4() + "\n"
+                + "\tFilter 5: " + serviceDetails.getChangedFilter5() + "\n"
+                + "\tWT: "+serviceDetails.getChangedWt()+"\n"
+                + "\tWT-S: "+serviceDetails.getChangedWt_s()+"\n"
+                + "\tFCD: "+serviceDetails.getChangedFC_D()+"\n\n"
+                +"Total service price = RM "+serviceDetails.getServicePrice()+"\n"
+                +"This history can back check back through the admin page.";
+
+
+        JavaMailAPI javaMailAPI = new JavaMailAPI(this, email,
+                "Service Done", message);
+
+        javaMailAPI.execute();
+
     }
 
     public String createID() {

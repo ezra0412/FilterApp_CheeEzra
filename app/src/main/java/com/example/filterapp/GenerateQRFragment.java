@@ -20,24 +20,35 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.example.filterapp.classes.FilterDetails;
+import com.example.filterapp.classes.JavaMailAPI;
+import com.example.filterapp.fcm.AppNotification;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.Wave;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+
+import static com.example.filterapp.MainActivity.staffDetailsStatic;
 
 
 /**
@@ -61,7 +72,9 @@ public class GenerateQRFragment extends Fragment {
     String invoiceNum, mobile, fName, fModel, commission, price, note;
     Dialog loadingDialog;
     String date, time;
-
+    RequestQueue requestQueue;
+    FilterDetails filterDetails = new FilterDetails();
+    String customerName;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -102,6 +115,8 @@ public class GenerateQRFragment extends Fragment {
         filterPDialog = new Dialog(getActivity());
 
         generate = v.findViewById(R.id.bt_generate_fQR);
+
+        requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
         generate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -550,7 +565,6 @@ public class GenerateQRFragment extends Fragment {
         }
 
 
-
         if (fModel.isEmpty()) {
             mFModel.setError("Filter model cannot be empty");
             mFModel.requestFocus();
@@ -598,14 +612,13 @@ public class GenerateQRFragment extends Fragment {
                         return;
                     } else {
 
-                        if (documentSnapshot.getBoolean("deleted")){
+                        if (documentSnapshot.getBoolean("deleted")) {
                             loadingDialog.dismiss();
                             mFName.setError("Customer terminated");
                             mFName.requestFocus();
                             return;
                         }
 
-                        FilterDetails filterDetails = new FilterDetails();
                         documentID = createID();
 
                         String year = documentID.substring(0, 4);
@@ -682,13 +695,13 @@ public class GenerateQRFragment extends Fragment {
                             }
                         }
 
-                        filterDetails.setPrice(price);
+                        filterDetails.setPrice(String.format("%.02f", (Double.parseDouble(price))));
                         filterDetails.setNote(note);
 
                         filterDetails.setDayBrought(date);
                         filterDetails.setTimeBrought(time);
                         Map<String, Object> data = new HashMap<>();
-                        data.put("commission", commission);
+                        data.put("commission", String.format("%.02f", (Double.parseDouble(commission))));
                         Map<String, String> dummyData = new HashMap<>();
                         dummyData.put("placeHolder", "dummyData");
                         final DocumentReference staffDB = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid()).
@@ -727,6 +740,26 @@ public class GenerateQRFragment extends Fragment {
                         mPrice.setText("");
                         mNote.setText("");
 
+                        setCustomerName(documentSnapshot.getString("fName") + " " + documentSnapshot.getString("lName"));
+
+                        String title = "New Sales";
+                        String body = staffDetailsStatic.fullName() + " had just made a new sale. \nCustomer Name: " + customerName+ "\nFilter model: " + fModel
+                                + "\nPrice: Rm " + String.format("%.02f", (Double.parseDouble(price))) + "\nComission: Rm " + String.format("%.02f", (Double.parseDouble(commission)));
+
+                        AppNotification appNotificationSend = new AppNotification();
+                        requestQueue.add(appNotificationSend.sendNotification("soldNewFilter", title, body));
+
+                        CollectionReference adminEmails = db.collection("adminDetails").document("adminList").collection("emailNotificationPreference");
+                        adminEmails.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                            @Override
+                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                                    if (documentSnapshot.getBoolean("soldNewFilter")) {
+                                        sendAdminEmail(documentSnapshot.getString("email"), String.format("%.02f", (Double.parseDouble(commission))),customerName);
+                                    }
+                                }
+                            }
+                        });
 
                         DocumentReference filterDetailsDB2 = db.collection("sales").document(year).collection(month).document(documentID);
                         filterDetailsDB2.set(filterDetails).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -745,6 +778,35 @@ public class GenerateQRFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void setCustomerName(String s) {
+        customerName = s;
+    }
+
+    private void sendAdminEmail(String email, String commission, String customerName) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss ");
+        Date dt = new Date();
+        String message;
+
+        message = staffDetailsStatic.fullName() + " just made a new sales at " + formatter.format(dt) + ". \n\n"
+                + "\t------ Sales Summary ------\n"
+                + "\tCustomer Name: " + customerName + "\n"
+                + "\tFilter Model " + filterDetails.getfModel() + "\n"
+                + "\tFilter 1: " + filterDetails.getFilter1() + "\n"
+                + "\tFilter 2: " + filterDetails.getFilter2() + "\n"
+                + "\tFilter 3: " + filterDetails.getFilter3() + "\n"
+                + "\tFilter 4: " + filterDetails.getFilter4() + "\n"
+                + "\tFilter 5: " + filterDetails.getFilter5() + "\n"
+                + "\tSales Price: Rm " + filterDetails.getPrice() + "\n"
+                + "\tCommission: Rm " + commission + "\n\n"
+                + "This history can back check back through the admin page.";
+
+
+        JavaMailAPI javaMailAPI = new JavaMailAPI(getContext(), email,
+                "Service Done", message);
+
+        javaMailAPI.execute();
     }
 
 
