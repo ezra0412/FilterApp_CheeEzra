@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -96,6 +97,9 @@ public class GPS extends AppCompatActivity {
     }
 
     public void search(View view) {
+
+        closeKeyboard();
+
         fName = etFName.getText().toString().trim();
         mobile = etMobile.getText().toString().trim();
 
@@ -237,6 +241,14 @@ public class GPS extends AppCompatActivity {
                 "Start drive", message);
 
         javaMailAPI.execute();
+    }
+
+    private void closeKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
 }

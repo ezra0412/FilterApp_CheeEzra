@@ -38,54 +38,36 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Intent intent = new Intent(this, MainActivity.class);
 
 
-       if (remoteMessage.getData().get("from123").equals("1")){
-           intent.putExtra("from123",remoteMessage.getData().get("from123"));
-           intent.putExtra("staffID",remoteMessage.getData().get("staffID"));
-       }
+     switch (remoteMessage.getData().get("from123")){
+         case "1":
+         case "2":
+         case "3":
+         case "11":
+             intent.putExtra("from123",remoteMessage.getData().get("from123"));
+             intent.putExtra("staffID",remoteMessage.getData().get("staffID"));
+             break;
 
-       else if (remoteMessage.getData().get("from123").equals("2")){
-           intent.putExtra("from123",remoteMessage.getData().get("from123"));
-           intent.putExtra("staffID",remoteMessage.getData().get("staffID"));
-        }
+         case "4":
+         case "5":
+             intent.putExtra("from123",remoteMessage.getData().get("from123"));
+             intent.putExtra("customerID",remoteMessage.getData().get("customerID"));
+            break;
 
-       else if (remoteMessage.getData().get("from123").equals("3")){
-           intent.putExtra("from123",remoteMessage.getData().get("from123"));
-           intent.putExtra("staffID",remoteMessage.getData().get("staffID"));
-       }
+         case "6":
+             intent.putExtra("from123",remoteMessage.getData().get("from123"));
+             intent.putExtra("filterID",remoteMessage.getData().get("filterID"));
+             break;
 
-       else if (remoteMessage.getData().get("from123").equals("11")){
-           intent.putExtra("from123",remoteMessage.getData().get("from123"));
-           intent.putExtra("staffID",remoteMessage.getData().get("staffID"));
-       }
+         case "7":
+             intent.putExtra("from123",remoteMessage.getData().get("from123"));
+             intent.putExtra("filterID",remoteMessage.getData().get("filterID"));
+             intent.putExtra("serviceID",remoteMessage.getData().get("serviceID"));
+             break;
 
-       else if (remoteMessage.getData().get("from123").equals("4")){
-           intent.putExtra("from123",remoteMessage.getData().get("from123"));
-           intent.putExtra("staffID",remoteMessage.getData().get("customerID"));
-
-       }
-
-       else if (remoteMessage.getData().get("from123").equals("5")){
-           intent.putExtra("from123",remoteMessage.getData().get("from123"));
-           intent.putExtra("staffID",remoteMessage.getData().get("customerID"));
-
-       }
-
-       else if (remoteMessage.getData().get("from123").equals("6")){
-           intent.putExtra("from123",remoteMessage.getData().get("from123"));
-           intent.putExtra("staffID",remoteMessage.getData().get("filterID"));
-
-       }
-
-       else if (remoteMessage.getData().get("from123").equals("7")){
-           intent.putExtra("from123",remoteMessage.getData().get("from123"));
-           intent.putExtra("staffID",remoteMessage.getData().get("filterID"));
-           intent.putExtra("staffID",remoteMessage.getData().get("serviceID"));
-
-       }else
-           intent.putExtra("from123",remoteMessage.getData().get("from123"));
-
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 10, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+         default:
+             intent.putExtra("from123",remoteMessage.getData().get("from123"));
+             break;
+     }
 
 
         NotificationCompat.Builder notificationBuilder =
@@ -96,6 +78,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText(body));
 
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 10, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         notificationBuilder.setContentIntent(pendingIntent);
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);

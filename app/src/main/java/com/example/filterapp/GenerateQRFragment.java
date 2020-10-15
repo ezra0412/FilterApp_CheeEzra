@@ -614,7 +614,7 @@ public class GenerateQRFragment extends Fragment {
 
                         if (documentSnapshot.getBoolean("deleted")) {
                             loadingDialog.dismiss();
-                            mFName.setError("Customer terminated");
+                            mFName.setError("Customer Terminated");
                             mFName.requestFocus();
                             return;
                         }

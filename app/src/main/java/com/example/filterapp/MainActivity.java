@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -34,7 +35,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.filterapp.adapter.MainTabAdapter;
+import com.example.filterapp.classes.CustomerDetails;
+import com.example.filterapp.classes.FilterDetails;
 import com.example.filterapp.classes.MovableFloatingActionButton;
+import com.example.filterapp.classes.ServiceDetails;
 import com.example.filterapp.classes.StaffDetails;
 import com.example.filterapp.menu.DrawerAdapter;
 import com.example.filterapp.menu.DrawerItem;
@@ -90,6 +94,11 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     Dialog loadingDialog, adminDialog;
     public static Dialog loadingDialogAdmin;
 
+    StaffDetails staffDetailsTmp ;
+    CustomerDetails customerDetailsTmp;
+    FilterDetails filterDetailsTmp;
+    ServiceDetails serviceDetailsTmp;
+
     private static final int account = 0;
     private static final int addCustomer = 1;
     private static final int customerDetails = 2;
@@ -104,6 +113,9 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
     GoogleSignInClient mGoogleSignInClient;
 
+    Intent notiIntent;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +127,18 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         loadingDialog = new Dialog(this);
         loadingDialogAdmin = new Dialog(this);
         adminDialog = new Dialog(this);
+        ProgressBar progressBar;
+        Sprite style = new Wave();
+        loadingDialogAdmin.setContentView(R.layout.pop_up_loading_screen);
+        loadingDialogAdmin.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        progressBar = loadingDialogAdmin.findViewById(R.id.sk_loadingPU);
+        progressBar.setIndeterminateDrawable(style);
+        loadingDialogAdmin.setCanceledOnTouchOutside(false);
+
+        if (mAuth.getCurrentUser() == null) {
+            startActivity( new Intent(this, LoginPage.class));
+            finish();
+        }
 
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
@@ -128,6 +152,75 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                     }
                 });
 
+
+
+        if (getIntent().hasExtra("from123")){
+            loadingDialog.show();
+            switch (getIntent().getStringExtra("from123")){
+                case "1":
+                case "2":
+                case "3":
+                case "11":
+                    notiIntent = new Intent(this, StaffDetail.class);
+                    notiIntent.putExtra("staffID",getIntent().getStringExtra("staffID"));
+                    DocumentReference getStaffDetails = db.collection("staffDetails").document(getIntent().getStringExtra("staffID"));
+                    getStaffDetails.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            storeStaffDetails(documentSnapshot.toObject(StaffDetails.class));
+                        }
+                    });
+                    break;
+                case "4":
+                case "5":
+                    notiIntent = new Intent(this, CustomerDetail.class);
+                    notiIntent.putExtra("customerID",getIntent().getStringExtra("customerID"));
+                    DocumentReference getCustomerDetails = db.collection("customerDetails").document("sorted")
+                            .collection(getIntent().getStringExtra("customerID").substring(0,1).toLowerCase()).document(getIntent().getStringExtra("customerID"));
+                    getCustomerDetails.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            storeCustomerDetails(documentSnapshot.toObject(CustomerDetails.class));
+                        }
+                    });
+                    break;
+
+                case "6":
+                    notiIntent = new Intent(this, FilterDetail.class);
+                    notiIntent.putExtra("filterID",getIntent().getStringExtra("filterID"));
+                    String year = getIntent().getStringExtra("filterID").substring(0, 4);
+                    String month = getIntent().getStringExtra("filterID").substring(4, 7);
+                    DocumentReference getFilterDetails = db.collection("sales").document(year)
+                            .collection(month).document(getIntent().getStringExtra("filterID"));
+                    getFilterDetails.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            storeFilterDetails(documentSnapshot.toObject(FilterDetails.class));
+                        }
+                    });
+                    break;
+                default:
+                    notiIntent = new Intent(this,SplashScreen.class);
+
+                case "7":
+                    notiIntent = new Intent(this, ServiceDetail.class);
+                    notiIntent.putExtra("filterID",getIntent().getStringExtra("filterID"));
+                    String year2 = getIntent().getStringExtra("filterID").substring(0, 4);
+                    String month2 = getIntent().getStringExtra("filterID").substring(4, 7);
+                    String year3 = getIntent().getStringExtra("serviceID").substring(0, 4);
+                    DocumentReference getServiceDetails = db.collection("sales").document(year2)
+                            .collection(month2).document(getIntent().getStringExtra("filterID")).collection("serviceDetails").
+                            document(year3).collection(year3).document(getIntent().getStringExtra("serviceID"));
+                    getServiceDetails.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            storeServiceDetails(documentSnapshot.toObject(ServiceDetails.class));
+                        }
+                    });
+                    break;
+            }
+
+        }
 
         DocumentReference staffDB = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid());
         staffDB.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -174,6 +267,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         branch = sideBar.findViewById(R.id.tv_branch_menu);
         position = sideBar.findViewById(R.id.tv_position_menu);
         pi = sideBar.findViewById(R.id.img_pi_menu);
+
         DocumentReference userDetails = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid());
         userDetails.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
@@ -260,6 +354,54 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
             }
         });
+    }
+
+    private void storeServiceDetails(ServiceDetails serviceDetails) {
+        notiIntent.putExtra("serviceDetails",serviceDetails);
+        startActivity(notiIntent);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loadingDialog.dismiss();
+            }
+        },500);
+    }
+
+    private void storeFilterDetails(FilterDetails filterDetails) {
+        notiIntent.putExtra("filterDetails",filterDetails);
+        startActivity(notiIntent);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loadingDialog.dismiss();
+            }
+        },500);
+    }
+
+    private void storeCustomerDetails(CustomerDetails customerDetails) {
+        notiIntent.putExtra("customerDetails",customerDetails);
+        startActivity(notiIntent);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loadingDialog.dismiss();
+            }
+        },500);
+    }
+
+    private void storeStaffDetails(StaffDetails staffDetails) {
+        notiIntent.putExtra("staffDetails",staffDetails);
+        startActivity(notiIntent);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loadingDialog.dismiss();
+            }
+        },500);
     }
 
     private void setPositionCodeDB(String position) {
@@ -440,13 +582,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     }
 
     public void adminCheck() {
-        ProgressBar progressBar;
-        Sprite style = new Wave();
-        loadingDialogAdmin.setContentView(R.layout.pop_up_loading_screen);
-        loadingDialogAdmin.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        progressBar = loadingDialogAdmin.findViewById(R.id.sk_loadingPU);
-        progressBar.setIndeterminateDrawable(style);
-        loadingDialogAdmin.setCanceledOnTouchOutside(false);
+
 
         final ImageView close, showPassword;
         Button done;
