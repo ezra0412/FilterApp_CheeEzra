@@ -72,6 +72,7 @@ public class AccountDetails extends AppCompatActivity {
     boolean showPassword2PPU = false;
     boolean showPasswordPIC = false;
     int selected = 0;
+    boolean updated = false;
 
     String emailCU, passwordCU;
     String oldPosition;
@@ -941,6 +942,7 @@ public class AccountDetails extends AppCompatActivity {
         staffDetailsDB.update(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
+                updated= true;
                 Toast.makeText(AccountDetails.this, "User Details Updated", Toast.LENGTH_LONG).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -1205,45 +1207,49 @@ public class AccountDetails extends AppCompatActivity {
         if (mFName.getText().toString().trim().equalsIgnoreCase(staffDetailsStatic.getfName())&&mLName.getText().toString().trim().equalsIgnoreCase(staffDetailsStatic.getlName())&&mMobile.getText().toString().trim().equalsIgnoreCase(staffDetailsStatic.getMobile())
                 &&mBranch.getText().toString().trim().equalsIgnoreCase("Branch "+staffDetailsStatic.getBranch())&&mPosition.getText().toString().trim().equalsIgnoreCase(staffDetailsStatic.getPosition()))
             super.onBackPressed();
-        else{
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            final AlertDialog dialog = builder.setMessage("Are you sure you wanna go back? Any changes made wouldn't be saved.")
-                    .setTitle(Html.fromHtml("<font color='#ff0f0f'>BACK CONFIRMATION</font>"))
-                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            AccountDetails.super.onBackPressed();
-                        }
-                    })
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                        }
-                    })
+        else {
+            if (updated)
+                super.onBackPressed();
+            else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                final AlertDialog dialog = builder.setMessage("Are you sure you wanna go back? Any changes made wouldn't be saved.")
+                        .setTitle(Html.fromHtml("<font color='#ff0f0f'>BACK CONFIRMATION</font>"))
+                        .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                AccountDetails.super.onBackPressed();
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                            }
+                        })
 
-                    .setOnCancelListener(new DialogInterface.OnCancelListener() {
-                        @Override
-                        public void onCancel(DialogInterface dialogInterface) {
-                        }
-                    })
-                    .create();
+                        .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                            @Override
+                            public void onCancel(DialogInterface dialogInterface) {
+                            }
+                        })
+                        .create();
 
 
-            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-                @Override
-                public void onShow(DialogInterface dialogInterface) {
+                dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialogInterface) {
 
-                    dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.red));
-                    dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.cancel_grey));
+                        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.red));
+                        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.cancel_grey));
 
-                    dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
-                    dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setAllCaps(false);
+                        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+                        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setAllCaps(false);
 
-                    dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextSize(17);
-                    dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextSize(17);
+                        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextSize(17);
+                        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextSize(17);
 
-                }
-            });
+                    }
+                });
 
-            dialog.show();
+                dialog.show();
+            }
         }
 
     }

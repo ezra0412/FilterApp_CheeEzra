@@ -448,10 +448,14 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 break;
 
             case serviceList:
-                Intent YearService = new Intent(MainActivity.this, YearList.class);
-                YearService.putExtra("fromActivity", "filterList");
-                YearService.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(YearService);
+                if (positionCode != 3) {
+                    Intent YearService = new Intent(MainActivity.this, YearList.class);
+                    YearService.putExtra("fromActivity", "filterList");
+                    YearService.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(YearService);
+                } else
+                    Toast.makeText(MainActivity.this, "Sorry technician aren't allowed", Toast.LENGTH_LONG).show();
+
                 break;
 
             case GPS:

@@ -1,8 +1,9 @@
 package com.example.filterapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
+import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class TermNCondition extends AppCompatActivity {
 
@@ -10,5 +11,9 @@ public class TermNCondition extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_term_n_condition);
+    }
+
+    public void back(View view){
+        super.onBackPressed();
     }
 }

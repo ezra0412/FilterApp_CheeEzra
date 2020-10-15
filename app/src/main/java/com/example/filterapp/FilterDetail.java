@@ -24,6 +24,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import static com.example.filterapp.MainActivity.positionCode;
+
 public class FilterDetail extends AppCompatActivity {
     String documentID, customerID;
     TextView name, invoiceNum, fModel, f1, f2, f3, f4, f5, f1LC, f2LC,
@@ -219,10 +221,14 @@ public class FilterDetail extends AppCompatActivity {
     }
 
     public void openCustomerDetails(View view) {
-        Intent intent = new Intent(FilterDetail.this, CustomerDetail.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("customerDetails", customerDetails);
-        startActivity(intent);
+        if (positionCode != 3) {
+            Intent intent = new Intent(FilterDetail.this, CustomerDetail.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("customerDetails", customerDetails);
+            startActivity(intent);
+        } else
+            Toast.makeText(FilterDetail.this, "Sorry technician aren't allowed", Toast.LENGTH_LONG).show();
+
     }
 
     public void generateQRCode(View view) {

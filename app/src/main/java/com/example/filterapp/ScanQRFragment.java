@@ -173,7 +173,7 @@ public class ScanQRFragment extends Fragment {
                                             public void run() {
                                                 loadingDialog.dismiss();
                                             }
-                                        }, 200);
+                                        }, 2000);
                                     } else {
                                         loadingDialog.dismiss();
                                         message.setText("No result found");
