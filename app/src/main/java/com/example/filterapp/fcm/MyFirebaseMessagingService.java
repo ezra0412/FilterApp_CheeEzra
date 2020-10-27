@@ -37,37 +37,39 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         Intent intent = new Intent(this, MainActivity.class);
 
+        if (remoteMessage.getData().get("from123") != null) {
 
-     switch (remoteMessage.getData().get("from123")){
-         case "1":
-         case "2":
-         case "3":
-         case "11":
-             intent.putExtra("from123",remoteMessage.getData().get("from123"));
-             intent.putExtra("staffID",remoteMessage.getData().get("staffID"));
-             break;
+            switch (remoteMessage.getData().get("from123")) {
+                case "1":
+                case "2":
+                case "3":
+                case "11":
+                    intent.putExtra("from123", remoteMessage.getData().get("from123"));
+                    intent.putExtra("staffID", remoteMessage.getData().get("staffID"));
+                    break;
 
-         case "4":
-         case "5":
-             intent.putExtra("from123",remoteMessage.getData().get("from123"));
-             intent.putExtra("customerID",remoteMessage.getData().get("customerID"));
-            break;
+                case "4":
+                case "5":
+                    intent.putExtra("from123", remoteMessage.getData().get("from123"));
+                    intent.putExtra("customerID", remoteMessage.getData().get("customerID"));
+                    break;
 
-         case "6":
-             intent.putExtra("from123",remoteMessage.getData().get("from123"));
-             intent.putExtra("filterID",remoteMessage.getData().get("filterID"));
-             break;
+                case "6":
+                    intent.putExtra("from123", remoteMessage.getData().get("from123"));
+                    intent.putExtra("filterID", remoteMessage.getData().get("filterID"));
+                    break;
 
-         case "7":
-             intent.putExtra("from123",remoteMessage.getData().get("from123"));
-             intent.putExtra("filterID",remoteMessage.getData().get("filterID"));
-             intent.putExtra("serviceID",remoteMessage.getData().get("serviceID"));
-             break;
+                case "7":
+                    intent.putExtra("from123", remoteMessage.getData().get("from123"));
+                    intent.putExtra("filterID", remoteMessage.getData().get("filterID"));
+                    intent.putExtra("serviceID", remoteMessage.getData().get("serviceID"));
+                    break;
 
-         default:
-             intent.putExtra("from123",remoteMessage.getData().get("from123"));
-             break;
-     }
+                default:
+                    intent.putExtra("from123", remoteMessage.getData().get("from123"));
+                    break;
+            }
+        }
 
 
         NotificationCompat.Builder notificationBuilder =

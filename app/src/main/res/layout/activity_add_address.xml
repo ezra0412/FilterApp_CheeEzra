@@ -161,7 +161,7 @@
                     style="@style/edit_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="200dp"
+                    android:layout_marginEnd="145dp"
                     android:ems="10"
                     android:hint="  Enter Post Code"
                     android:inputType="number"
@@ -176,14 +176,14 @@
                     style="@style/tv_dropDown"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="174dp"
+                    android:layout_marginStart="8dp"
                     android:background="@drawable/spinner_close_short"
                     android:ems="10"
                     android:hint="  Choose State"
                     android:onClick="choseState"
                     app:layout_constraintBaseline_toBaselineOf="@+id/et_postCode_address"
                     app:layout_constraintEnd_toEndOf="@+id/bt_done_addAddress"
-                    app:layout_constraintStart_toStartOf="@+id/bt_done_addAddress" />
+                    app:layout_constraintStart_toEndOf="@+id/et_postCode_address" />
 
                 <Button
                     android:id="@+id/bt_done_addAddress"
