@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
@@ -135,10 +134,10 @@ public class AdminPage extends AppCompatActivity implements DrawerAdapter.OnItem
     @SuppressWarnings("rawtypes")
     private DrawerItem createItemFor(int position) {
         return new SimpleItem(screenIcons[position], screenTitles[position])
-                .withIconTint(color(R.color.light_green))
-                .withTextTint(color(R.color.light_green))
-                .withSelectedIconTint(color(R.color.light_green))
-                .withSelectedTextTint(color(R.color.light_green));
+                .withIconTint(color(R.color.button_purple))
+                .withTextTint(color(R.color.black))
+                .withSelectedIconTint(color(R.color.button_purple))
+                .withSelectedTextTint(color(R.color.black));
     }
 
     private String[] loadScreenTitles() {

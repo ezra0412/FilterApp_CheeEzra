@@ -740,7 +740,10 @@ public class ServiceFilter extends AppCompatActivity {
             }
         });
 
-        final DocumentReference updateFilterDetails = db.collection("sales").document(year).collection(month).document(documentID);
+        String year2 = documentID.substring(0, 4);
+        String month2 = documentID.substring(4, 7);
+
+        final DocumentReference updateFilterDetails = db.collection("sales").document(year2).collection(month2).document(documentID);
 
         Map<String, Object> placeHolder = new HashMap<>();
         placeHolder.put("dummyData", "dummyData");
@@ -757,10 +760,12 @@ public class ServiceFilter extends AppCompatActivity {
                 .collection("service").document(year).collection(month).document(serviceDetails.getServiceID());
         staffHistory2.set(data);
 
-        final DocumentReference filterDetails = db.collection("sales").document(year).collection(month).document(documentID).collection("serviceDetails").document(year);
+
+
+        final DocumentReference filterDetails = db.collection("sales").document(year2).collection(month2).document(documentID).collection("serviceDetails").document(year);
         filterDetails.set(placeHolder);
         serviced = true;
-        DocumentReference filterDetails2 = db.collection("sales").document(year).collection(month)
+        DocumentReference filterDetails2 = db.collection("sales").document(year2).collection(month2)
                 .document(documentID).collection("serviceDetails").document(year).collection(year).document(serviceDetails.getServiceID());
 
         filterDetails2.set(serviceDetails).addOnSuccessListener(new OnSuccessListener<Void>() {

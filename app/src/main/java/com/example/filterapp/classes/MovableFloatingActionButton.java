@@ -12,7 +12,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MovableFloatingActionButton extends FloatingActionButton implements View.OnTouchListener {
 
-    private final static float CLICK_DRAG_TOLERANCE = 10; // Often, there will be a slight, unintentional, drag when the user taps the FAB, so we need to account for this.
+    private final static float CLICK_DRAG_TOLERANCE = 10;
 
     private float downRawX, downRawY;
     private float dX, dY;
@@ -50,7 +50,7 @@ public class MovableFloatingActionButton extends FloatingActionButton implements
                 dX = view.getX() - downRawX;
                 dY = view.getY() - downRawY;
 
-                return true; // Consumed
+                return true;
 
             case MotionEvent.ACTION_MOVE:
                 int viewWidth = view.getWidth();
@@ -61,19 +61,19 @@ public class MovableFloatingActionButton extends FloatingActionButton implements
                 int parentHeight = viewParent.getHeight();
 
                 float newX = motionEvent.getRawX() + dX;
-                newX = Math.max(0, newX); // Don't allow the FAB past the left hand side of the parent
-                newX = Math.min(parentWidth - viewWidth, newX); // Don't allow the FAB past the right hand side of the parent
+                newX = Math.max(0, newX);
+                newX = Math.min(parentWidth - viewWidth, newX);
 
                 float newY = motionEvent.getRawY() + dY;
-                newY = Math.max(0, newY); // Don't allow the FAB past the top of the parent
-                newY = Math.min(parentHeight - viewHeight, newY); // Don't allow the FAB past the bottom of the parent
+                newY = Math.max(0, newY);
+                newY = Math.min(parentHeight - viewHeight, newY);
 
                 view.animate()
                         .x(newX)
                         .y(newY)
                         .setDuration(0)
                         .start();
-                return true; // Consumed
+                return true;
 
             case MotionEvent.ACTION_UP:
 
@@ -95,34 +95,29 @@ public class MovableFloatingActionButton extends FloatingActionButton implements
                 borderY = Math.min(view.getY() - viewParent2.getTop(), viewParent2.getBottom() - view.getY());
                 borderX = Math.min(view.getX() - viewParent2.getLeft(), viewParent2.getRight() - view.getX());
 
-                //You can set your dp margin from dimension resources (Suggested)
-                //float fab_margin= getResources().getDimension(R.dimen.fab_margin);
                 float fab_margin = 15;
 
-                //check if is nearest Y o X
                 if (borderX > borderY) {
-                    if (view.getY() > viewParent2.getHeight() / 2) { //view near Bottom
+                    if (view.getY() > viewParent2.getHeight() / 2) {
                         finalY = viewParent2.getBottom() - view.getHeight();
-                        finalY = Math.min(viewParent2.getHeight() - view.getHeight(), finalY) - fab_margin; // Don't allow the FAB past the bottom of the parent
-                    } else {  //view vicina a Top
+                        finalY = Math.min(viewParent2.getHeight() - view.getHeight(), finalY) - fab_margin;
+                    } else {
                         finalY = viewParent2.getTop();
-                        finalY = Math.max(0, finalY) + fab_margin; // Don't allow the FAB past the top of the parent
+                        finalY = Math.max(0, finalY) + fab_margin;
                     }
-                    //check if X it's over fab_margin
                     finalX = oldX;
                     if (view.getX() + viewParent2.getLeft() < fab_margin)
                         finalX = viewParent2.getLeft() + fab_margin;
                     if (viewParent2.getRight() - view.getX() - view.getWidth() < fab_margin)
                         finalX = viewParent2.getRight() - view.getWidth() - fab_margin;
-                } else {  //view near Right
+                } else {
                     if (view.getX() > viewParent2.getWidth() / 2) {
                         finalX = viewParent2.getRight() - view.getWidth();
-                        finalX = Math.max(0, finalX) - fab_margin; // Don't allow the FAB past the left hand side of the parent
-                    } else {  //view near Left
+                        finalX = Math.max(0, finalX) - fab_margin;
+                    } else {
                         finalX = viewParent2.getLeft();
-                        finalX = Math.min(viewParent2.getWidth() - view.getWidth(), finalX) + fab_margin; // Don't allow the FAB past the right hand side of the parent
+                        finalX = Math.min(viewParent2.getWidth() - view.getWidth(), finalX) + fab_margin;
                     }
-                    //check if Y it's over fab_margin
                     finalY = oldY;
                     if (view.getY() + viewParent2.getTop() < fab_margin)
                         finalY = viewParent2.getTop() + fab_margin;
@@ -139,7 +134,6 @@ public class MovableFloatingActionButton extends FloatingActionButton implements
                 Log.d("MovableFAB", "ACTION_UP");
                 return false;
 
-            // A drag consumed
             default:
                 return super.onTouchEvent(motionEvent);
         }

@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         app:frameAspectRatioHeight="1"
         app:frameAspectRatioWidth="1"
-        app:frameColor="@color/light_green"
+        app:frameColor="@color/button_purple"
         app:frameCornersRadius="0dp"
         app:frameCornersSize="50dp"
         app:frameSize="0.75"

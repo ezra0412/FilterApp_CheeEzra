@@ -144,7 +144,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:buttonTint="@color/light_green"
+                android:buttonTint="@color/button_purple"
                 android:gravity="center"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"

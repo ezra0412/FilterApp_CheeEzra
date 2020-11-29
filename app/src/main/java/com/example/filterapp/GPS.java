@@ -243,6 +243,12 @@ public class GPS extends AppCompatActivity {
         javaMailAPI.execute();
     }
 
+    public void call(View view){
+        String phonenNumber = mMobile.getText().toString().trim();
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phonenNumber));
+        startActivity(intent);
+    }
+
     private void closeKeyboard() {
         View view = this.getCurrentFocus();
         if (view != null) {

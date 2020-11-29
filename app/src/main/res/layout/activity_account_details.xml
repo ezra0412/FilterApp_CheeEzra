@@ -45,7 +45,7 @@
                 android:id="@+id/toolbar3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@color/yellow"
+                android:background="@color/toolBar"
                 android:minHeight="?attr/actionBarSize"
                 android:theme="?attr/actionBarTheme"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -59,7 +59,7 @@
                 android:layout_marginTop="16dp"
                 android:onClick="changeImage"
                 android:src="@drawable/profile_picture"
-                app:civ_border_color="@color/light_green"
+                app:civ_border_color="@color/button_red"
                 app:civ_border_width="2dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -286,7 +286,7 @@
                 android:fontFamily="@font/archivo_narrow_italic"
                 android:onClick="forgetPassword"
                 android:text="(Forget Password?)"
-                android:textColor="@color/medium_green"
+                android:textColor="@color/button_purple"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView66"
                 app:layout_constraintStart_toEndOf="@+id/textView66" />
         </androidx.constraintlayout.widget.ConstraintLayout>

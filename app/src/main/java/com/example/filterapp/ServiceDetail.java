@@ -129,10 +129,7 @@ public class ServiceDetail extends AppCompatActivity {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 CustomerDetails tempo = documentSnapshot.toObject(CustomerDetails.class);
                 mName.setText(tempo.fullName());
-                if (tempo.isDeleted())
-                    mName.setTextColor(getColor(R.color.red));
-                else
-                    mName.setTextColor(getColor(R.color.medium_green));
+
 
                 storeUserDetails2(tempo);
             }

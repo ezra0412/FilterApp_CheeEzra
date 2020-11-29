@@ -19,4 +19,7 @@
     <color name="yellow">#F5E60A</color>
     <color name="pop_up_background">#E7E7E7</color>
     <color name="cancel_grey">#999999</color>
+    <color name="toolBar">#4866BD</color>
+    <color name="button_red">#FD4068</color>
+    <color name="button_purple">#4866BD</color>
 </resources>

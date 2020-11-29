@@ -234,7 +234,6 @@ public class AccountDetails extends AppCompatActivity {
 
                 DocumentReference userDetails = db.collection("staffDetails").document(mAuth.getCurrentUser().getUid());
                 userDetails.update("profilePic",false);
-                staffDetailsStatic.setProfilePic(false);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

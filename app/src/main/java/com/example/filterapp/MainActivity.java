@@ -502,10 +502,10 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     @SuppressWarnings("rawtypes")
     private DrawerItem createItemFor(int position) {
         return new SimpleItem(screenIcons[position], screenTitles[position])
-                .withIconTint(color(R.color.light_green))
-                .withTextTint(color(R.color.light_green))
-                .withSelectedIconTint(color(R.color.light_green))
-                .withSelectedTextTint(color(R.color.light_green));
+                .withIconTint(color(R.color.button_red))
+                .withTextTint(color(R.color.black))
+                .withSelectedIconTint(color(R.color.button_red))
+                .withSelectedTextTint(color(R.color.black));
     }
 
 
@@ -709,6 +709,8 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                     pi.setImageDrawable(getDrawable(R.drawable.profile_picture));
                 }
             });
+        }else{
+            pi.setImageDrawable(getDrawable(R.drawable.profile_picture));
         }
     }
 

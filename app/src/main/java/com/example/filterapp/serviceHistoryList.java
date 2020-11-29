@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -37,7 +36,6 @@ import java.util.List;
 
 public class serviceHistoryList extends AppCompatActivity implements BtAdapterDouble.BtDoubleListener {
     String year, filterID;
-    TextView errorMessage;
     RecyclerView recyclerView;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     List<BtLongDoubleItem> btLongDoubleItemList = new LinkedList<>();
@@ -136,5 +134,9 @@ public class serviceHistoryList extends AppCompatActivity implements BtAdapterDo
                 loadingDialog.dismiss();
             }
         }, 200);
+    }
+
+    public void back(View view){
+        super.onBackPressed();
     }
 }

@@ -28,7 +28,7 @@
                 app:layout_constraintStart_toStartOf="@+id/et_email_login"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
-                app:srcCompat="@drawable/logo" />
+                app:srcCompat="@drawable/logo_ss" />
 
             <EditText
                 android:id="@+id/et_email_login"
@@ -94,7 +94,7 @@
                 android:fontFamily="@font/archivo_narrow"
                 android:onClick="forgetPassword"
                 android:text="Forget Password"
-                android:textColor="@color/light_green"
+                android:textColor="@color/button_purple"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBaseline_toBaselineOf="@+id/button"
@@ -176,7 +176,7 @@
                 android:fontFamily="@font/archivo_narrow"
                 android:onClick="signUp"
                 android:text="Sign Up"
-                android:textColor="@color/light_green"
+                android:textColor="@color/button_purple"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView4"

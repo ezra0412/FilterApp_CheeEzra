@@ -146,7 +146,6 @@ public class AppNotification {
             notificationObj.put("body", body);
             notificationObj.put("sound", "default");
 
-            JSONObject extraData = new JSONObject();
             if (from.equals("1")||from.equals("2")||from.equals("3")||from.equals("11")){
                 notificationObj.put("from123",from);
                 notificationObj.put("staffID",staffID);
@@ -171,7 +170,6 @@ public class AppNotification {
 
             JSONObject priority = new JSONObject();
             priority.put("priority", "high");
-            //mainObj.put("notification", notificationObj);
             mainObj.put("data",notificationObj);
             mainObj.put("android", priority);
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,

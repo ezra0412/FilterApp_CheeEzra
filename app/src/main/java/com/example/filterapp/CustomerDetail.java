@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.HideReturnsTransformationMethod;
@@ -499,6 +500,12 @@ public class CustomerDetail extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+    public void call(View view){
+        String phonenNumber = mMobile.getText().toString().trim();
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phonenNumber));
+        startActivity(intent);
+    }
     @Override
     protected void onResume() {
         super.onResume();
