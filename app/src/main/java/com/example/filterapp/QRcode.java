@@ -1,42 +1,39 @@
-package com.example.filterapp;
+ package com.example.filterapp;
 
-import android.Manifest;
-import android.content.Context;
-import android.content.ContextWrapper;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.provider.Settings;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.Toast;
+ import android.Manifest;
+ import android.content.Context;
+ import android.content.Intent;
+ import android.graphics.Bitmap;
+ import android.net.Uri;
+ import android.os.Bundle;
+ import android.os.Environment;
+ import android.provider.MediaStore;
+ import android.provider.Settings;
+ import android.view.View;
+ import android.widget.ImageView;
+ import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+ import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.snackbar.BaseTransientBottomBar;
-import com.google.android.material.snackbar.Snackbar;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionDeniedResponse;
-import com.karumi.dexter.listener.PermissionGrantedResponse;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.single.PermissionListener;
+ import com.google.android.material.snackbar.BaseTransientBottomBar;
+ import com.google.android.material.snackbar.Snackbar;
+ import com.karumi.dexter.Dexter;
+ import com.karumi.dexter.PermissionToken;
+ import com.karumi.dexter.listener.PermissionDeniedResponse;
+ import com.karumi.dexter.listener.PermissionGrantedResponse;
+ import com.karumi.dexter.listener.PermissionRequest;
+ import com.karumi.dexter.listener.single.PermissionListener;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+ import java.io.ByteArrayOutputStream;
+ import java.io.File;
+ import java.io.FileOutputStream;
 
-import androidmads.library.qrgenearator.QRGContents;
-import androidmads.library.qrgenearator.QRGEncoder;
+ import androidmads.library.qrgenearator.QRGContents;
+ import androidmads.library.qrgenearator.QRGEncoder;
 
 public class QRcode extends AppCompatActivity {
     ImageView qr;
     Bitmap qrBits;
-    FileOutputStream outputStream;
     String documentID;
 
     @Override
@@ -61,40 +58,25 @@ public class QRcode extends AppCompatActivity {
             @Override
             public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
 
-                ContextWrapper dir = new ContextWrapper(getApplicationContext());
-                File directory = dir.getDir("Ashita_QrCodes", Context.MODE_PRIVATE);
+                QRGEncoder qrgEncoder = new QRGEncoder("/"+documentID+ ".png", null, QRGContents.Type.TEXT, 1000);
 
-                File file = new File(directory, documentID + ".jpg");
-
+                String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString()+ "/Ashita_QrCodes";
+                File myDir = new File(root);
+                myDir.mkdirs();
+                String fname =  documentID + ".png";
+                File file = new File(myDir, fname);
+                System.out.println(file.getAbsolutePath());
+                if (file.exists()) file.delete();
                 try {
-                    directory.mkdirs();
-                    outputStream = new FileOutputStream(file);
-
-                    qrBits.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-                    outputStream.close();
-
+                    FileOutputStream out = new FileOutputStream(file);
+                    qrgEncoder.getBitmap().compress(Bitmap.CompressFormat.PNG, 90, out);
+                    out.flush();
+                    out.close();
+                    Toast.makeText(QRcode.this, "Qr code saved!", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Toast.makeText(QRcode.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
-                catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    try {
-                        outputStream.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                Toast.makeText(QRcode.this, "Qr code saved!", Toast.LENGTH_SHORT).show();
-                Intent shareImage = new Intent(Intent.ACTION_SEND);
-                shareImage.setType("image/jpeg");
-                ByteArrayOutputStream byts = new ByteArrayOutputStream();
-                qrBits.compress(Bitmap.CompressFormat.JPEG, 100, byts);
-                String path = MediaStore.Images.Media.insertImage(getContentResolver(),
-                        qrBits, documentID, documentID);
-                Uri imageUri = Uri.parse(path);
-                shareImage.putExtra(Intent.EXTRA_STREAM, imageUri);
             }
 
             @Override

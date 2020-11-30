@@ -2,7 +2,6 @@ package com.example.filterapp.classes;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -44,7 +43,6 @@ public class MovableFloatingActionButton extends FloatingActionButton implements
         View viewParent;
         switch (motionEvent.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
-                Log.d("MovableFAB", "ACTION_DOWN");
                 downRawX = motionEvent.getRawX();
                 downRawY = motionEvent.getRawY();
                 dX = view.getX() - downRawX;
@@ -131,7 +129,6 @@ public class MovableFloatingActionButton extends FloatingActionButton implements
                         .setDuration(400)
                         .start();
 
-                Log.d("MovableFAB", "ACTION_UP");
                 return false;
 
             default:
