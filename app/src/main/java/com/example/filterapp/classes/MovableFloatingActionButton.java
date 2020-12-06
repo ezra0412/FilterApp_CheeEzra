@@ -74,8 +74,6 @@ public class MovableFloatingActionButton extends FloatingActionButton implements
                 return true;
 
             case MotionEvent.ACTION_UP:
-
-
                 float upRawX = motionEvent.getRawX();
                 float upRawY = motionEvent.getRawY();
 

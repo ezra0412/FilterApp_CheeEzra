@@ -189,7 +189,7 @@ public class AppNotification {
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     Map<String, String> header = new HashMap<>();
                     header.put("content-type", "application/json");
-                    header.put("authorization", "key=AAAAW3G6BnI:APA91bG8PXt8-aauFEFyh9OYbbVVed-HqZj87nxqkrx2mMt14I4WV4xpWaulQTL0SGfEjEpkV4wkFDpCdF7W_peu7pWuNJefoFvPq-CpavfAEf0mmy-Igwf3brVYkm9K2TeZzrlCsi4Q");
+                    header.put("authorization", "key=Your Key");
                     return header;
                 }
             };
@@ -233,7 +233,7 @@ public class AppNotification {
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     Map<String, String> header = new HashMap<>();
                     header.put("content-type", "application/json");
-                    header.put("authorization", "key=AAAAW3G6BnI:APA91bG8PXt8-aauFEFyh9OYbbVVed-HqZj87nxqkrx2mMt14I4WV4xpWaulQTL0SGfEjEpkV4wkFDpCdF7W_peu7pWuNJefoFvPq-CpavfAEf0mmy-Igwf3brVYkm9K2TeZzrlCsi4Q");
+                    header.put("authorization", "key= Your key");
                     return header;
                 }
             };

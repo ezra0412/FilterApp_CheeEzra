@@ -31,7 +31,7 @@ public class GeocodingLocation {
         formattedAddress += locationAddress.getState();
 
         try {
-            List<Address> addressList = geocoder.getFromLocationName(formattedAddress + "&key=AIzaSyBoqAjZUOfqUWr5GielbKUqQufkXR1Wr1U", 1);
+            List<Address> addressList = geocoder.getFromLocationName(formattedAddress + "&key= Your key", 1);
             if (addressList != null && addressList.size() > 0) {
                 Address address = addressList.get(0);
                 setAl(address.getLatitude());

@@ -1264,4 +1264,8 @@ public class SignUp extends AppCompatActivity {
         }
     }
 
+    public void adminCheck2(View view){
+        adminCheck();
+    }
+
 }

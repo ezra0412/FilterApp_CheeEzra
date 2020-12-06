@@ -421,6 +421,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:onClick="adminCheck2"
                     android:text="(Not yet verified)"
                     android:textColor="@color/red"
                     android:textSize="14sp"
